@@ -15,7 +15,7 @@ export default function TopNav({theme, setTheme}: Props) {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href="/docs">Docs</Nav.Link>
-                    <Nav.Link href="/">Choose dataset</Nav.Link>
+                    <Nav.Link href="/">Upload dataset</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             <ThemeSwitch theme={theme} setTheme={setTheme}></ThemeSwitch>

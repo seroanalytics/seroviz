@@ -37,7 +37,10 @@ export function ChooseDataset() {
     const [selectedFile, selectFile] = useState("");
     const [isUploading, setIsUploading] = useState(false);
 
-    const toggleShowOptions = () => setShowOptions(!showOptions);
+    const toggleShowOptions = (event: any) => {
+        event.preventDefault();
+        setShowOptions(!showOptions);
+    }
     const onSelectTimeColumnHeader = (e: any) => setTimeColumnHeader(e.target.value);
     const onSelectTimeColumnName = (e: any) => setTimeColumnName(e.target.value);
 

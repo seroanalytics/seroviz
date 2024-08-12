@@ -28,33 +28,22 @@ export interface Dict<T> {
     [index: string]: T
 }
 
-export interface PlotOptions {
-    [index: string]: PlotDisplay
-}
-
-export interface PlotConfig {
-    key: string
-    displayName: string
-    type: string
-}
-
-export interface Variable {
-    key: string
-    displayName: string
+export interface SelectedCovariate {
+    name: string
+    display: PlotDisplay
 }
 
 export interface Dataset {
-    key: string
-    displayName: string
-    variables: Variable[]
-    plots: PlotConfig[]
-    xAxisVariable: Variable
+    variables: string[]
+    data: any[]
+    xAxisVariable: string
 }
 
 export interface AppState {
     datasets: string[]
+    dataset: Dataset | null
     selectedDataset: string
-    selectedPlotOptions: PlotOptions
+    selectedCovariates: SelectedCovariate[]
     uploadError: PorcelainError | null
     genericError: PorcelainError | null
     language: string
