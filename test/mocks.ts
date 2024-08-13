@@ -5,8 +5,11 @@ import {AppState, PorcelainError, ResponseFailure, ResponseSuccess} from "../src
 export function mockAppState(state: Partial<AppState> = {}): AppState {
     return {
         datasets: [],
-        selectedPlotOptions: {},
-        uploadError: "",
+        dataset: null,
+        selectedDataset: "",
+        selectedCovariates: [],
+        uploadError: null,
+        genericError: null,
         language: "en",
         ...state
     }

@@ -1,5 +1,5 @@
 import Form from 'react-bootstrap/Form';
-import {Col} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 import React, {useContext} from "react";
 import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
 import CovariateOptions from "./CovariateOptions";
@@ -17,9 +17,7 @@ export default function Sidebar() {
     const selectedCovariates = state.selectedCovariates.map(v => v.name);
 
     const availableCovariates = state.dataset?.variables
-        .filter(v => selectedCovariates.indexOf(v) === -1) ?? [];
-
-    console.log(availableCovariates)
+        .filter(v => selectedCovariates.indexOf(v.name) === -1) ?? [];
 
     return <Col xs="3" className="pt-3 border-1 border-end border-secondary">
         <Form method="post">
@@ -31,8 +29,13 @@ export default function Sidebar() {
                             <option key={d} value={d}>{d}</option>)}
                     </Form.Select>
                 </Form.Group>
+                <Row className={"mb-3"}>
+                    <Col>
+                        Detected biomarkers <br/> <span className={"text-secondary"}>{state.dataset?.biomarkers.join(", ")}</span>
+                    </Col>
+                </Row>
                 <Form.Group className="mb-3">
-                    <Form.Label>Disaggregate by:</Form.Label>
+                    <Form.Label>Disaggregate by</Form.Label>
                     {availableCovariates.length > 0 && <CovariateOptions covariates={availableCovariates}/>}
                     {state.selectedCovariates.map(v => <SelectedCovariateOption
                         key={v.name}

@@ -1,23 +1,24 @@
 import {Button, Col, Form, Row} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
 import {ActionType, RootDispatchContext} from "../RootContext";
+import {Variable} from "../types";
 
 interface Props {
-    covariates: string[]
+    covariates: Variable[]
 }
 
 export default function CovariateOptions({covariates}: Props) {
 
-    const [selectedVariable, selectVariable] = useState(covariates[0]);
+    const [selectedVariableName, selectVariableName] = useState(covariates[0].name);
     const [selectedDisplayOption, selectDisplayOption] = useState("trace");
     const dispatch = useContext(RootDispatchContext);
 
     useEffect(() => {
-        selectVariable(covariates[0])
+        selectVariableName(covariates[0].name)
     }, [covariates])
 
     const onChange = (event: any) => {
-        selectVariable(event.target.value)
+        selectVariableName(event.target.value);
     }
 
     const onChangeDisplayOption = (event: any) => {
@@ -25,10 +26,12 @@ export default function CovariateOptions({covariates}: Props) {
     }
 
     const add = () => {
+        const selectedVariable = covariates.find(v => v.name === selectedVariableName)!!
         dispatch({
             type: ActionType.SELECT_COVARIATE,
             payload: {
-                name: selectedVariable,
+                name: selectedVariable.name,
+                levels: selectedVariable.levels,
                 display: selectedDisplayOption
             }
         })
@@ -40,9 +43,9 @@ export default function CovariateOptions({covariates}: Props) {
                 Variable:
             </Form.Label>
             <Col sm="6">
-                <Form.Select value={selectedVariable} onChange={onChange}>
+                <Form.Select value={selectedVariableName} onChange={onChange}>
                     {covariates.map((v) =>
-                        <option key={v} value={v}>{v}</option>
+                        <option key={v.name} value={v.name}>{v.name}</option>
                     )}
                 </Form.Select>
             </Col>

@@ -28,14 +28,19 @@ export interface Dict<T> {
     [index: string]: T
 }
 
-export interface SelectedCovariate {
-    name: string
+export interface SelectedCovariate extends Variable {
     display: PlotDisplay
 }
 
+export interface Variable {
+    name: string
+    levels: string[]
+}
+
 export interface Dataset {
-    variables: string[]
+    variables: Variable[]
     data: any[]
+    biomarkers: string[]
     xAxisVariable: string
 }
 

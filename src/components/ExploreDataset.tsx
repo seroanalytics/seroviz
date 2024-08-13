@@ -1,18 +1,47 @@
 import {useContext} from "react";
-import {RootContext, RootDispatchContext} from "../RootContext";
+import {RootContext} from "../RootContext";
 import {Col, Row} from "react-bootstrap";
 import Sidebar from "./SideBar";
 import LinePlot from "./LinePlot";
+import {calculateFacets} from "../services/plotUtils";
 
 export function ExploreDataset() {
 
     const state = useContext(RootContext);
 
+    const facetVariables = state.selectedCovariates
+        .filter(v => v.display === "facet");
+
+    const allFacetLevels = facetVariables.map(f => f.levels);
+    let facetLevels: string[][] = [];
+    if (allFacetLevels.length > 0) {
+        facetLevels = calculateFacets(allFacetLevels.shift() as any, allFacetLevels.shift() as any, ...allFacetLevels as any);
+    }
+
+    if (facetLevels.length === 0) {
+        return <Row>
+            <Sidebar/>
+            <Col sm={8}>
+                {state.dataset && state.dataset.biomarkers.map(b => <Row key={b}>
+                    <Col>
+                        <LinePlot biomarker={b}
+                                  facetVariables={facetVariables.map(v => v.name)}
+                                  facetLevels={[]}/>
+                    </Col>
+                </Row>)}
+            </Col>
+        </Row>
+    }
+
     return <Row>
         <Sidebar/>
-        <Col>
-            {state.dataset &&
-                <LinePlot biomarker={"abunits_spike"} facetLevel={"Female"} facetVariable={"sex"}></LinePlot>}
+        <Col sm={8}>
+            {state.dataset && state.dataset.biomarkers.map(b => <Row key={b}>
+                {facetLevels.map((l, i) => <LinePlot biomarker={b}
+                                                     key={b + i}
+                                                     facetVariables={facetVariables.map(v => v.name)}
+                                                     facetLevels={l}/>)}
+            </Row>)}
         </Col>
     </Row>
 }

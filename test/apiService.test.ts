@@ -22,7 +22,7 @@ describe("ApiService", () => {
             .reply(500, mockFailure("some error message"));
 
         try {
-            await api(rootState, jest.fn() as any)
+            await api(rootState.language, jest.fn() as any)
                 .get("/baseline/")
         } catch (e) {
 
@@ -40,7 +40,7 @@ describe("ApiService", () => {
 
         const dispatch = jest.fn();
 
-        await api(rootState, dispatch as any)
+        await api(rootState.language, dispatch as any)
             .get("/unusual/");
 
         expect((console.warn as jest.Mock).mock.calls[0][0])
@@ -63,14 +63,14 @@ describe("ApiService", () => {
 
         const dispatch = jest.fn();
 
-        await api(rootState, dispatch as any)
+        await api(rootState.language, dispatch as any)
             .get("/unusual/");
 
         expect((console.warn as jest.Mock).mock.calls[0][0])
             .toBe("No error handler registered for request /unusual/.");
 
         expect(dispatch.mock.calls.length).toBe(1);
-        expect(dispatch.mock.calls[0][0]).toBe(ActionType.ErrorAdded);
+        expect(dispatch.mock.calls[0][0]).toBe(ActionType.ERROR_ADDED);
         expect(dispatch.mock.calls[0][1]).toStrictEqual({
             error: "MALFORMED_RESPONSE",
             detail: "API response failed but did not contain any error information. Please contact support.",
@@ -90,8 +90,8 @@ describe("ApiService", () => {
             dispatchedPayload = payload;
         };
 
-        await api(rootState, dispatch as any)
-            .withError(ActionType.UploadErrorAdded)
+        await api(rootState.language, dispatch as any)
+            .withError(ActionType.UPLOAD_ERROR_ADDED)
             .get("/baseline/");
 
         expect(dispatchedType).toBe("UploadErrorAdded");
@@ -111,8 +111,8 @@ describe("ApiService", () => {
             dispatchedPayload = payload;
         };
 
-        await api(rootState, dispatch as any)
-            .withError(ActionType.UploadErrorAdded)
+        await api(rootState.language, dispatch as any)
+            .withError(ActionType.UPLOAD_ERROR_ADDED)
             .get("/baseline/");
 
         expect(dispatchedType).toBe("UploadErrorAdded");
@@ -131,11 +131,11 @@ describe("ApiService", () => {
             dispatchedPayload = payload;
         };
 
-        await api(rootState, dispatch as any)
-            .withSuccess(ActionType.DatasetsFetched)
+        await api(rootState.language, dispatch as any)
+            .withSuccess(ActionType.DATA_FETCHED)
             .get("/baseline/");
 
-        expect(dispatchedType).toBe(ActionType.DatasetsFetched);
+        expect(dispatchedType).toBe(ActionType.DATA_FETCHED);
         expect(dispatchedPayload).toBe(true);
     });
 
@@ -145,8 +145,8 @@ describe("ApiService", () => {
             .reply(200, mockSuccess("TEST"));
 
         const dispatch = jest.fn();
-        const response = await api(rootState, dispatch as any)
-            .withSuccess(ActionType.DatasetsFetched)
+        const response = await api(rootState.language, dispatch as any)
+            .withSuccess(ActionType.DATASET_SELECTED)
             .get("/baseline/");
 
         expect(response).toStrictEqual({data: "TEST", errors: null, status: "success"});
@@ -181,8 +181,8 @@ describe("ApiService", () => {
         mockAxios.onGet(`/baseline/`)
             .reply(500, mockFailure("some error message"));
 
-        await api(rootState, jest.fn() as any)
-            .withSuccess(ActionType.DatasetSelected)
+        await api(rootState.language, jest.fn() as any)
+            .withSuccess(ActionType.DATASET_SELECTED)
             .ignoreErrors()
             .get("/baseline/");
 
@@ -194,7 +194,7 @@ describe("ApiService", () => {
         mockAxios.onGet(`/baseline/`)
             .reply(200, mockSuccess(true));
 
-        await api(rootState, jest.fn() as any)
+        await api(rootState.language, jest.fn() as any)
             .get("/baseline/");
 
         const warnings = (console.warn as jest.Mock).mock.calls;
@@ -207,7 +207,7 @@ describe("ApiService", () => {
         mockAxios.onGet(`/baseline/`)
             .reply(200, mockSuccess(true));
 
-        await api(rootState, jest.fn() as any)
+        await api(rootState.language, jest.fn() as any)
             .ignoreSuccess()
             .get("/baseline/");
 
@@ -222,8 +222,8 @@ describe("ApiService", () => {
             .reply(200, mockSuccess("TEST"));
 
         const dispatch = jest.fn();
-        const response =    await api(rootState, dispatch as any)
-            .withSuccess(ActionType.DatasetSelected)
+        const response =    await api(rootState.language, dispatch as any)
+            .withSuccess(ActionType.DATASET_SELECTED)
             .postAndReturn("/baseline/", {});
 
         expect(response).toStrictEqual({data: "TEST", errors: null, status: "success"});
@@ -231,15 +231,14 @@ describe("ApiService", () => {
 
     async function expectCouldNotParseAPIResponseError() {
         const dispatch = jest.fn();
-        await api(rootState, dispatch as any)
+        await api(rootState.language, dispatch as any)
             .get("/baseline/");
 
         expect(dispatch.mock.calls.length).toBe(1);
-        expect(dispatch.mock.calls[0][0]).toBe(ActionType.ErrorAdded);
+        expect(dispatch.mock.calls[0][0]).toBe(ActionType.ERROR_ADDED);
         expect(dispatch.mock.calls[0][1]).toStrictEqual({
             error: "MALFORMED_RESPONSE",
             detail: "Could not parse API response. Please contact support."
         });
     }
-
 });
