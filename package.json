@@ -24,6 +24,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
+    "lint": "npx eslint ./src ",
+    "lint:fix": "npx eslint --fix ./src",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -48,6 +50,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/react": "^16.0.0",
     "axios-mock-adapter": "^2.0.0",
+    "eslint": "^8.57.0",
     "jest-environment-jsdom": "^29.7.0",
     "react-plotly.js": "^2.6.0",
     "ts-jest": "^29.2.4",

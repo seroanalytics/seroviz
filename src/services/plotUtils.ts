@@ -1,10 +1,3 @@
-import {SelectedCovariate, Variable} from "../types";
-
-export interface FacetDefinition {
-    variable: string
-    level: string
-}
-
 export const calculateFacets = (first: string[], next: string[], ...rest: string[][]): any => {
     if (!first) return [];
     if (!next) return first.map(a => [a]);
