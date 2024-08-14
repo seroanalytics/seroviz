@@ -39,25 +39,31 @@ export default function CovariateOptions({covariates}: Props) {
 
     return <Form.Group className={"border p-2 mb-2 bg-light"}>
         <Row className={"mt-2"}>
-            <Form.Label column sm="6">
+            <Form.Label column sm="6" htmlFor="variable">
                 Variable:
             </Form.Label>
             <Col sm="6">
-                <Form.Select value={selectedVariableName} onChange={onChange}>
+                <Form.Select role="listbox"
+                             name="variable"
+                             value={selectedVariableName} onChange={onChange}>
                     {covariates.map((v) =>
-                        <option key={v.name} value={v.name}>{v.name}</option>
+                        <option role="listitem" key={v.name}
+                                value={v.name}>{v.name}</option>
                     )}
                 </Form.Select>
             </Col>
         </Row>
         <Row className={"mt-2"}>
-            <Form.Label column sm="6">
+            <Form.Label column sm="6" htmlFor="displayType">
                 Display as:
             </Form.Label>
             <Col sm="6">
-                <Form.Select value={selectedDisplayOption} onChange={onChangeDisplayOption}>
-                    <option value={"trace"}>Trace</option>
-                    <option value={"facet"}>Facet</option>
+                <Form.Select role="listbox"
+                             name="displayType"
+                             value={selectedDisplayOption}
+                             onChange={onChangeDisplayOption}>
+                    <option role="listitem" value="trace">Trace</option>
+                    <option role="listitem" value="facet">Facet</option>
                 </Form.Select>
             </Col>
         </Row>
