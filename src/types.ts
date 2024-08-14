@@ -17,11 +17,6 @@ export interface PorcelainError {
     detail: string | null
 }
 
-export interface TranslatableState {
-    language: string
-    updatingLanguage: boolean
-}
-
 type PlotDisplay = "facet" | "trace"
 
 export interface Dict<T> {
@@ -37,16 +32,15 @@ export interface Variable {
     levels: string[]
 }
 
-export interface Dataset {
+export interface DatasetMetadata {
     variables: Variable[]
-    data: any[]
     biomarkers: string[]
     xAxisVariable: string
 }
 
 export interface AppState {
-    datasets: string[]
-    dataset: Dataset | null
+    datasetNames: string[]
+    datasetMetadata: DatasetMetadata | null
     selectedDataset: string
     selectedCovariates: SelectedCovariate[]
     uploadError: PorcelainError | null

@@ -1,17 +1,55 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import {AppState, PorcelainError, ResponseFailure, ResponseSuccess} from "../src/types";
+import {
+    AppState,
+    DatasetMetadata,
+    PorcelainError,
+    ResponseFailure,
+    ResponseSuccess,
+    SelectedCovariate,
+    Variable
+} from "../src/types";
 
 export function mockAppState(state: Partial<AppState> = {}): AppState {
     return {
-        datasets: [],
-        dataset: null,
+        datasetNames: [],
+        datasetMetadata: null,
         selectedDataset: "",
         selectedCovariates: [],
         uploadError: null,
         genericError: null,
         language: "en",
         ...state
+    }
+}
+
+export function mockDatasetNames(datasets: string[] = ["d1", "d2"]): string[] {
+    return datasets
+}
+
+export function mockDatasetMetadata(datasetMetadata: Partial<DatasetMetadata> = {}): DatasetMetadata {
+    return {
+        variables: [mockVariable()],
+        xAxisVariable: "day",
+        biomarkers: ["ab"],
+        ...datasetMetadata
+    }
+}
+
+export function mockVariable(variable: Partial<Variable> = {}): Variable {
+    return {
+        name: "sex",
+        levels: ["F", "M"],
+        ...variable
+    }
+}
+
+export function mockCovariate(variable: Partial<SelectedCovariate> = {}): SelectedCovariate {
+    return {
+        name: "c1",
+        levels: ["1", "2"],
+        display: "trace",
+        ...variable
     }
 }
 

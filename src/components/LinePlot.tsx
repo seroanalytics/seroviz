@@ -32,7 +32,7 @@ export default function LinePlot({biomarker, facetVariables, facetLevels}: Props
         api(state.language, dispatch)
             .ignoreSuccess()
             .withError(ActionType.ERROR_ADDED)
-            .get<any[]>("/dataset/" + state.selectedDataset + "/" + biomarker + "/?facet=" + facetDefinition + "&trace=" + traces)
+            .get<any[]>("/dataset/" + state.selectedDataset + "/" + biomarker + "/?facet=" + facetDefinition + "&trace=" + encodeURIComponent(traces))
             .then(data => {
                 if (data && data.data) {
                     setSeries(data.data)

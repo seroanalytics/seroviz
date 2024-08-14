@@ -2,12 +2,11 @@ import axios, {AxiosError, AxiosResponse} from "axios";
 import {GenericResponse, PorcelainError, ResponseFailure} from "../types";
 import {ActionType, RootAction} from "../RootContext";
 
-//declare
-let appUrl: string = "http://localhost:8888";
+declare let appUrl: string;
 
 function isPorcelainError(object: any): object is PorcelainError {
     return typeof object.error == "string"
-        && (object.detail === undefined || typeof object.detail == "string")
+        && (object.detail === undefined || object.detail === null || typeof object.detail == "string")
 }
 
 function isPorcelainResponse<T>(object: any): object is GenericResponse<T> {
@@ -17,36 +16,14 @@ function isPorcelainResponse<T>(object: any): object is GenericResponse<T> {
         && object.errors.every((e: any) => isPorcelainError(e))
 }
 
-const extractFilenameFrom = (contentDisposition: string): string => {
-    return contentDisposition
-        .split(';')[1]
-        .split('filename=')[1]
-        .replace(/"/g, '')
-        .trim();
-}
-
-const readStream = (response: AxiosResponse) => {
-    const filename = extractFilenameFrom(response.headers["content-disposition"])
-    const fileUrl = URL.createObjectURL(response.data);
-    const fileLink = document.createElement('a');
-    fileLink.href = fileUrl;
-    fileLink.setAttribute('download', filename);
-    document.body.appendChild(fileLink);
-    fileLink.click()
-    URL.revokeObjectURL(fileUrl)
-}
-
 export interface API<A> {
-
     withError: (type: A) => API<A>
     withSuccess: (type: A) => API<A>
     ignoreErrors: () => API<A>
     ignoreSuccess: () => API<A>
 
     postAndReturn<T>(url: string, data: any): Promise<void | GenericResponse<T>>
-
     get<T>(url: string): Promise<void | GenericResponse<T>>
-
     delete(url: string): Promise<void | true>
 }
 
@@ -72,7 +49,7 @@ export class APIService implements API<ActionType> {
 
     static getFirstErrorFromFailure = (failure: ResponseFailure) => {
         if (failure.errors.length === 0) {
-            return APIService.createError("apiMissingError");
+            return APIService.createError("API response failed but did not contain any error information. If error persists, please contact support.");
         }
         return failure.errors[0];
     };
@@ -131,10 +108,10 @@ export class APIService implements API<ActionType> {
             return
         }
 
-        this._handleCommitError(e.response && e.response.data)
+        this._handleDispatchError(e.response && e.response.data)
     };
 
-    private _commitError = (error: PorcelainError) => {
+    private _dispatchError = (error: PorcelainError) => {
         this._dispatch({type: ActionType.ERROR_ADDED, payload: error});
     };
 
@@ -153,49 +130,14 @@ export class APIService implements API<ActionType> {
         return this._handleAxiosResponse(axios.get(fullUrl, {headers: this._headers}));
     }
 
-    private _handleDownloadError = async (e: AxiosError) => {
-        console.log(e.response && (e.response.data || e));
-
-        const response = e.response && e.response.data;
-
-        if (response instanceof Blob) {
-
-            const fileReader = new FileReader()
-
-            const data = await response.text()
-
-            fileReader.onload = () => {
-                this._handleCommitError(JSON.parse(data))
-            }
-
-            fileReader.readAsText(response);
-        } else {
-            this._handleCommitError(response)
-        }
-    }
-
-    private _handleCommitError = (error: any) => {
+    private _handleDispatchError = (error: any) => {
         if (!isPorcelainResponse(error)) {
-            this._commitError(APIService.createError("apiCouldNotParseError"));
+            this._dispatchError(APIService.createError("Could not parse API response. If error persists, please contact support."));
         } else if (this._onError) {
             this._onError(error as ResponseFailure);
         } else {
-            this._commitError(APIService.getFirstErrorFromFailure(error as ResponseFailure));
+            this._dispatchError(APIService.getFirstErrorFromFailure(error as ResponseFailure));
         }
-    }
-
-    private _handleDownloadResponse = (response: AxiosResponse) => {
-        readStream(response)
-    }
-
-    //Initiates a download. NB any withSuccess mutation will be ignored for downloads.
-    async download(url: string): Promise<any> {
-        this._verifyHandlers(url);
-        const fullUrl = this._buildFullUrl(url);
-
-        return axios.get(fullUrl, {headers: this._headers, responseType: "blob"})
-            .then((response: AxiosResponse) => this._handleDownloadResponse(response))
-            .catch((e: AxiosError) => this._handleDownloadError(e));
     }
 
     async postAndReturn<T>(url: string, data?: any): Promise<void | GenericResponse<T>> {

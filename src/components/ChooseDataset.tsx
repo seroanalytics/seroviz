@@ -3,7 +3,7 @@ import {Button, Col, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
 import {api} from "../services/apiService";
-import {Dataset} from "../types";
+import {DatasetMetadata} from "../types";
 
 export function ChooseDataset() {
 
@@ -13,7 +13,7 @@ export function ChooseDataset() {
 
     useEffect(() => {
         api(state.language, dispatch)
-            .withSuccess(ActionType.DATASETS_FETCHED)
+            .withSuccess(ActionType.DATASET_NAMES_FETCHED)
             .withError(ActionType.ERROR_ADDED)
             .get<string[]>("/datasets/").then(datasets => {
             if (datasets && datasets.data) {
@@ -62,9 +62,9 @@ export function ChooseDataset() {
 
             if (result) {
                 await apiService
-                    .withSuccess(ActionType.DATASETS_FETCHED)
+                    .withSuccess(ActionType.DATASET_NAMES_FETCHED)
                     .withError(ActionType.ERROR_ADDED)
-                    .get<Dataset[]>("/datasets/");
+                    .get<DatasetMetadata[]>("/datasets/");
             }
         }
     }
@@ -76,7 +76,7 @@ export function ChooseDataset() {
                     <Form.Group>
                         <Form.Label htmlFor="data">Choose dataset</Form.Label>
                         <Form.Select id="data" onChange={onSelectData} value={selectedDataset}>
-                            {state.datasets.map((d: string) =>
+                            {state.datasetNames.map((d: string) =>
                                 <option key={d} value={d}>{d}</option>)}
                         </Form.Select>
                     </Form.Group>

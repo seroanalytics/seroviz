@@ -6,6 +6,7 @@ import usePersistedState from "../hooks/usePersistedState";
 import {ActionType, initialState, RootContext, RootDispatchContext, rootReducer} from "../RootContext";
 import {ExploreDataset} from "./ExploreDataset";
 import {api} from "../services/apiService";
+import AppError from "./AppError";
 
 export default function App() {
     const [theme, setTheme] = usePersistedState<string>("theme", "dark");
@@ -14,17 +15,20 @@ export default function App() {
     useEffect(() => {
         if (state.selectedDataset) {
             api(state.language, dispatch)
-                .withSuccess(ActionType.DATA_FETCHED)
+                .withSuccess(ActionType.DATASET_METADATA_FETCHED)
                 .withError(ActionType.ERROR_ADDED)
                 .get<string[]>("/dataset/" + state.selectedDataset)
         }
     }, [state.selectedDataset, state.language, dispatch]);
 
     return <RootContext.Provider value={state}>
-        <RootDispatchContext.Provider value={dispatch}><Container fluid>
+        <RootDispatchContext.Provider value={dispatch}>
             <TopNav theme={theme as string} setTheme={setTheme as (newState: string) => void}></TopNav>
-            {!state.selectedDataset && <ChooseDataset/>}
-            {state.selectedDataset && <ExploreDataset/>}
-        </Container></RootDispatchContext.Provider>
+            <AppError/>
+            <Container fluid>
+                {!state.selectedDataset && <ChooseDataset/>}
+                {state.selectedDataset && <ExploreDataset/>}
+            </Container>
+        </RootDispatchContext.Provider>
     </RootContext.Provider>
 }

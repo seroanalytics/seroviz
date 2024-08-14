@@ -1,9 +1,37 @@
-:root {
-  --primary-color: #1e90ff;
+:root, [data-bs-theme=light] {
+  --primary-color: #008be6;
+  --primary-color-darken: #004d80;
+  --secondary-color: #FFA70A;
+  --bs-secondary-bg: #ffd384;
+  --bs-tertiary-bg: #FFEDCE;
+  --bs-tertiary-bg-rgb: 255, 237, 206;
+  --bs-light-rgb: 248, 249, 250;
   --white: #ffffff;
-  color: var(--primary-color);
+}
+
+[data-bs-theme=dark] {
+  --bs-light-rgb: 33,37,41;
 }
 
 [data-bs-theme="dark"] .plot-container {
   filter: invert(75%) hue-rotate(180deg);
+}
+
+.btn-primary, .btn-success {
+  background-color: var(--primary-color);
+}
+
+.btn-success {
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--primary-color);
+  --bs-btn-border-color: var(--primary-color);
+  --bs-btn-border-radius: .5rem;
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--primary-color-darken);
+  --bs-btn-hover-border-color: var(--primary-color-darken);
+  --bs-btn-focus-shadow-rgb: var(--primary-color);
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: var(--primary-color-darken);
+  --bs-btn-active-border-color: var(--primary-color-darken);
 }

@@ -22,7 +22,7 @@ export function ExploreDataset() {
         return <Row>
             <Sidebar/>
             <Col sm={8}>
-                {state.dataset && state.dataset.biomarkers.map(b => <Row key={b}>
+                {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b => <Row key={b}>
                     <Col>
                         <LinePlot biomarker={b}
                                   facetVariables={facetVariables.map(v => v.name)}
@@ -36,7 +36,7 @@ export function ExploreDataset() {
     return <Row>
         <Sidebar/>
         <Col sm={8}>
-            {state.dataset && state.dataset.biomarkers.map(b => <Row key={b}>
+            {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b => <Row key={b}>
                 {facetLevels.map((l, i) => <LinePlot biomarker={b}
                                                      key={b + i}
                                                      facetVariables={facetVariables.map(v => v.name)}

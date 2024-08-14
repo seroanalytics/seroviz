@@ -16,7 +16,7 @@ export default function Sidebar() {
 
     const selectedCovariates = state.selectedCovariates.map(v => v.name);
 
-    const availableCovariates = state.dataset?.variables
+    const availableCovariates = state.datasetMetadata?.variables
         .filter(v => selectedCovariates.indexOf(v.name) === -1) ?? [];
 
     return <Col xs="3" className="pt-3 border-1 border-end border-secondary">
@@ -25,13 +25,13 @@ export default function Sidebar() {
                 <Form.Group className="mb-3">
                     <Form.Label htmlFor="data">Dataset</Form.Label>
                     <Form.Select id="data" onChange={onSelectData} value={state.selectedDataset}>
-                        {state.datasets.map(d =>
+                        {state.datasetNames.map(d =>
                             <option key={d} value={d}>{d}</option>)}
                     </Form.Select>
                 </Form.Group>
                 <Row className={"mb-3"}>
                     <Col>
-                        Detected biomarkers <br/> <span className={"text-secondary"}>{state.dataset?.biomarkers.join(", ")}</span>
+                        Detected biomarkers <br/> <span className={"text-secondary"}>{state.datasetMetadata?.biomarkers.join(", ")}</span>
                     </Col>
                 </Row>
                 <Form.Group className="mb-3">

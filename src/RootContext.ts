@@ -7,8 +7,8 @@ export interface AppContext {
 }
 
 export const initialState: AppState = {
-    datasets: [],
-    dataset: null,
+    datasetNames: [],
+    datasetMetadata: null,
     selectedDataset: "",
     selectedCovariates: [],
     uploadError: null,
@@ -18,9 +18,11 @@ export const initialState: AppState = {
 
 export enum ActionType {
     ERROR_ADDED = "ERROR_ADDED",
+    ERROR_DISMISSED = "ERROR_DISMISSED",
     UPLOAD_ERROR_ADDED = "UPLOAD_ERROR_ADDED",
-    DATASETS_FETCHED = "DATASETS_FETCHED",
-    DATA_FETCHED = "DATA_FETCHED",
+    UPLOAD_ERROR_DISMISSED = "UPLOAD_ERROR_DISMISSED",
+    DATASET_NAMES_FETCHED = "DATASET_NAMES_FETCHED",
+    DATASET_METADATA_FETCHED = "DATASET_METADATA_FETCHED",
     DATASET_SELECTED = "DATASET_SELECTED",
     SELECT_COVARIATE = "SELECT_COVARIATE",
     UNSELECT_COVARIATE = "UNSELECT_COVARIATE"
@@ -31,19 +33,23 @@ export interface RootAction {
     payload: any
 }
 
-export const rootReducer = (state: AppState, action: RootAction) => {
+export const rootReducer = (state: AppState, action: RootAction): AppState => {
     console.log(action.type);
     switch (action.type) {
         case ActionType.ERROR_ADDED:
             return {...state, genericError: action.payload}
+        case ActionType.ERROR_DISMISSED:
+            return {...state, genericError: null}
         case ActionType.UPLOAD_ERROR_ADDED:
             return {...state, uploadError: action.payload}
-        case ActionType.DATASETS_FETCHED:
-            return {...state, datasets: action.payload}
+        case ActionType.UPLOAD_ERROR_DISMISSED:
+            return {...state, uploadError: null}
+        case ActionType.DATASET_NAMES_FETCHED:
+            return {...state, datasetNames: action.payload}
         case ActionType.DATASET_SELECTED:
             return {...state, selectedDataset: action.payload}
-        case ActionType.DATA_FETCHED:
-            return {...state, dataset: action.payload}
+        case ActionType.DATASET_METADATA_FETCHED:
+            return {...state, datasetMetadata: action.payload}
         case ActionType.SELECT_COVARIATE:
             return {...state, selectedCovariates: [...state.selectedCovariates, action.payload]}
         case ActionType.UNSELECT_COVARIATE:

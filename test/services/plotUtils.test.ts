@@ -1,5 +1,5 @@
-import {calculateFacets} from "../src/services/plotUtils";
-import {Variable} from "../src/types";
+import {calculateFacets} from "../../src/services/plotUtils";
+import {Variable} from "../../src/types";
 
 describe("plotUtils", () => {
     it("Can calculate facets", () => {

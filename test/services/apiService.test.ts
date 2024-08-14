@@ -1,6 +1,6 @@
-import {mockAppState, mockAxios, mockError, mockFailure, mockSuccess} from "./mocks";
-import {api} from "../src/services/apiService";
-import {ActionType} from "../src/RootContext";
+import {mockAppState, mockAxios, mockError, mockFailure, mockSuccess} from "../mocks";
+import {api} from "../../src/services/apiService";
+import {ActionType, RootAction} from "../../src/RootContext";
 
 const rootState = mockAppState();
 
@@ -47,8 +47,8 @@ describe("ApiService", () => {
             .toBe("No error handler registered for request /unusual/.");
 
         expect(dispatch.mock.calls.length).toBe(1);
-        expect(dispatch.mock.calls[0][0]).toBe("AddError");
-        expect(dispatch.mock.calls[0][1]).toStrictEqual(mockError("some error message"));
+        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.ERROR_ADDED);
+        expect(dispatch.mock.calls[0][0].payload).toStrictEqual(mockError("some error message"));
     });
 
     it("if no first error message, dispatches a default error message to errors module by default", async () => {
@@ -70,22 +70,21 @@ describe("ApiService", () => {
             .toBe("No error handler registered for request /unusual/.");
 
         expect(dispatch.mock.calls.length).toBe(1);
-        expect(dispatch.mock.calls[0][0]).toBe(ActionType.ERROR_ADDED);
-        expect(dispatch.mock.calls[0][1]).toStrictEqual({
+        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.ERROR_ADDED);
+        expect(dispatch.mock.calls[0][0].payload).toStrictEqual({
             error: "MALFORMED_RESPONSE",
-            detail: "API response failed but did not contain any error information. Please contact support.",
+            detail: "API response failed but did not contain any error information. If error persists, please contact support.",
         });
     });
 
     it("dispatches the first error with the specified type if well formatted", async () => {
-
         mockAxios.onGet(`/baseline/`)
             .reply(500, mockFailure("some error message"));
 
         let dispatchedType: any = false;
         let dispatchedPayload: any = false;
 
-        const dispatch = (type: string, payload: any) => {
+        const dispatch = ({type, payload}: RootAction) => {
             dispatchedType = type;
             dispatchedPayload = payload;
         };
@@ -94,19 +93,18 @@ describe("ApiService", () => {
             .withError(ActionType.UPLOAD_ERROR_ADDED)
             .get("/baseline/");
 
-        expect(dispatchedType).toBe("UploadErrorAdded");
+        expect(dispatchedType).toBe(ActionType.UPLOAD_ERROR_ADDED);
         expect(dispatchedPayload).toStrictEqual(mockError("some error message"));
     });
 
-    it("dispatches the error type if the error detail is missing", async () => {
-
+    it("dispatches the first error with specified type if the error detail is missing", async () => {
         mockAxios.onGet(`/baseline/`)
             .reply(500, mockFailure(null as any));
 
         let dispatchedType: any = false;
         let dispatchedPayload: any = false;
 
-        const dispatch = (type: string, payload: any) => {
+        const dispatch = ({type, payload}: RootAction) => {
             dispatchedType = type;
             dispatchedPayload = payload;
         };
@@ -115,7 +113,7 @@ describe("ApiService", () => {
             .withError(ActionType.UPLOAD_ERROR_ADDED)
             .get("/baseline/");
 
-        expect(dispatchedType).toBe("UploadErrorAdded");
+        expect(dispatchedType).toBe(ActionType.UPLOAD_ERROR_ADDED);
         expect(dispatchedPayload).toStrictEqual({error: "OTHER_ERROR", detail: null});
     });
 
@@ -126,16 +124,16 @@ describe("ApiService", () => {
 
         let dispatchedType: any = false;
         let dispatchedPayload: any = false;
-        const dispatch = (type: string, payload: any) => {
+        const dispatch = ({type, payload}: RootAction) => {
             dispatchedType = type;
             dispatchedPayload = payload;
         };
 
         await api(rootState.language, dispatch as any)
-            .withSuccess(ActionType.DATA_FETCHED)
+            .withSuccess(ActionType.DATASET_METADATA_FETCHED)
             .get("/baseline/");
 
-        expect(dispatchedType).toBe(ActionType.DATA_FETCHED);
+        expect(dispatchedType).toBe(ActionType.DATASET_METADATA_FETCHED);
         expect(dispatchedPayload).toBe(true);
     });
 
@@ -222,7 +220,7 @@ describe("ApiService", () => {
             .reply(200, mockSuccess("TEST"));
 
         const dispatch = jest.fn();
-        const response =    await api(rootState.language, dispatch as any)
+        const response = await api(rootState.language, dispatch as any)
             .withSuccess(ActionType.DATASET_SELECTED)
             .postAndReturn("/baseline/", {});
 
@@ -235,10 +233,10 @@ describe("ApiService", () => {
             .get("/baseline/");
 
         expect(dispatch.mock.calls.length).toBe(1);
-        expect(dispatch.mock.calls[0][0]).toBe(ActionType.ERROR_ADDED);
-        expect(dispatch.mock.calls[0][1]).toStrictEqual({
+        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.ERROR_ADDED);
+        expect(dispatch.mock.calls[0][0].payload).toStrictEqual({
             error: "MALFORMED_RESPONSE",
-            detail: "Could not parse API response. Please contact support."
+            detail: "Could not parse API response. If error persists, please contact support."
         });
     }
 });
