@@ -44,6 +44,15 @@ export function mockVariable(variable: Partial<Variable> = {}): Variable {
     }
 }
 
+export function mockSelectedCovariate(variable: Partial<SelectedCovariate> = {}): SelectedCovariate {
+    return {
+        name: "sex",
+        levels: ["F", "M"],
+        display: "trace",
+        ...variable
+    }
+}
+
 export function mockCovariate(variable: Partial<SelectedCovariate> = {}): SelectedCovariate {
     return {
         name: "c1",

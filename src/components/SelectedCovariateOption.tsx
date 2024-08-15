@@ -17,7 +17,8 @@ export default function SelectedCovariateOption({covariate}: { covariate: Select
 
     return <Form.Group className={"border p-2 mb-2 bg-light"}>
         <Row style={{justifyContent: "flex-end"}}>
-            <Button variant={"close"} onClick={remove} className={"mx-2"}></Button>
+            <Button variant={"close"} role={"close"} onClick={remove}
+                    className={"mx-2"}></Button>
         </Row>
         <Row>
             <Form.Label column sm="6">

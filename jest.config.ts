@@ -4,6 +4,12 @@ export default {
     transform: { '^.+\\.ts?$': 'ts-jest' },
     clearMocks: true,
     collectCoverage: true,
+    collectCoverageFrom: [
+        "src/**/*"
+    ],
     coverageDirectory: "coverage",
-    testEnvironment: "jsdom"
+    testEnvironment: "jsdom",
+    coveragePathIgnorePatterns : [
+        "mocks.ts", "reportWebVitals", "index.tsx"
+    ]
 }
