@@ -25,3 +25,8 @@ Runs unit tests using jest.
 ### `npm run build`
 
 Builds the app for production to the `build` folder.
+
+### `npm run generate-types`
+
+Auto-generates typescript types based on the [serovizr](https://github.com/seroanalytics/serovizr)
+API JSON schema specifications. Generated types are saved into `src/generated.d.ts`.
