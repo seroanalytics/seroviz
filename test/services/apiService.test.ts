@@ -18,17 +18,17 @@ describe("ApiService", () => {
     });
 
     it("console logs error", async () => {
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(500, mockFailure("some error message"));
 
         try {
             await api(rootState.language, jest.fn() as any)
-                .get("/baseline/")
+                .get("/datasets/")
         } catch (e) {
 
         }
         expect((console.warn as jest.Mock).mock.calls[0][0])
-            .toBe("No error handler registered for request /baseline/.");
+            .toBe("No error handler registered for request /datasets/.");
         expect((console.log as jest.Mock).mock.calls[0][0].errors[0].detail)
             .toBe("some error message");
     });
@@ -78,7 +78,7 @@ describe("ApiService", () => {
     });
 
     it("dispatches the first error with the specified type if well formatted", async () => {
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(500, mockFailure("some error message"));
 
         let dispatchedType: any = false;
@@ -91,14 +91,14 @@ describe("ApiService", () => {
 
         await api(rootState.language, dispatch as any)
             .withError(ActionType.UPLOAD_ERROR_ADDED)
-            .get("/baseline/");
+            .get("/datasets/");
 
         expect(dispatchedType).toBe(ActionType.UPLOAD_ERROR_ADDED);
         expect(dispatchedPayload).toStrictEqual(mockError("some error message"));
     });
 
     it("dispatches the first error with specified type if the error detail is missing", async () => {
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(500, mockFailure(null as any));
 
         let dispatchedType: any = false;
@@ -111,7 +111,7 @@ describe("ApiService", () => {
 
         await api(rootState.language, dispatch as any)
             .withError(ActionType.UPLOAD_ERROR_ADDED)
-            .get("/baseline/");
+            .get("/datasets/");
 
         expect(dispatchedType).toBe(ActionType.UPLOAD_ERROR_ADDED);
         expect(dispatchedPayload).toStrictEqual({error: "OTHER_ERROR", detail: null});
@@ -119,7 +119,7 @@ describe("ApiService", () => {
 
     it("dispatches the success response with the specified type", async () => {
 
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(200, mockSuccess(true));
 
         let dispatchedType: any = false;
@@ -131,7 +131,7 @@ describe("ApiService", () => {
 
         await api(rootState.language, dispatch as any)
             .withSuccess(ActionType.DATASET_METADATA_FETCHED)
-            .get("/baseline/");
+            .get("/datasets/");
 
         expect(dispatchedType).toBe(ActionType.DATASET_METADATA_FETCHED);
         expect(dispatchedPayload).toBe(true);
@@ -139,20 +139,20 @@ describe("ApiService", () => {
 
     it("returns the response object", async () => {
 
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(200, mockSuccess("TEST"));
 
         const dispatch = jest.fn();
         const response = await api(rootState.language, dispatch as any)
             .withSuccess(ActionType.DATASET_SELECTED)
-            .get("/baseline/");
+            .get("/datasets/");
 
         expect(response).toStrictEqual({data: "TEST", errors: null, status: "success"});
     });
 
     it("throws error if API response is null", async () => {
 
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(500);
 
         await expectCouldNotParseAPIResponseError();
@@ -160,7 +160,7 @@ describe("ApiService", () => {
 
     it("throws error if API response status is missing", async () => {
 
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(500, {data: {}, errors: []});
 
         await expectCouldNotParseAPIResponseError();
@@ -168,7 +168,7 @@ describe("ApiService", () => {
 
     it("throws error if API response errors are missing", async () => {
 
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(500, {data: {}, status: "failure"});
 
         await expectCouldNotParseAPIResponseError();
@@ -176,53 +176,53 @@ describe("ApiService", () => {
 
     it("does nothing on error if ignoreErrors is true", async () => {
 
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(500, mockFailure("some error message"));
 
         await api(rootState.language, jest.fn() as any)
             .withSuccess(ActionType.DATASET_SELECTED)
             .ignoreErrors()
-            .get("/baseline/");
+            .get("/datasets/");
 
         expect((console.warn as jest.Mock).mock.calls.length).toBe(0);
     });
 
     it("warns if error and success handlers are not set", async () => {
 
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(200, mockSuccess(true));
 
         await api(rootState.language, jest.fn() as any)
-            .get("/baseline/");
+            .get("/datasets/");
 
         const warnings = (console.warn as jest.Mock).mock.calls;
 
-        expect(warnings[0][0]).toBe("No error handler registered for request /baseline/.");
-        expect(warnings[1][0]).toBe("No success handler registered for request /baseline/.");
+        expect(warnings[0][0]).toBe("No error handler registered for request /datasets/.");
+        expect(warnings[1][0]).toBe("No success handler registered for request /datasets/.");
     });
 
     it("does not warn that success handler is not set if ignoreSuccess is true", async () => {
-        mockAxios.onGet(`/baseline/`)
+        mockAxios.onGet(`/datasets/`)
             .reply(200, mockSuccess(true));
 
         await api(rootState.language, jest.fn() as any)
             .ignoreSuccess()
-            .get("/baseline/");
+            .get("/datasets/");
 
         const warnings = (console.warn as jest.Mock).mock.calls;
         expect(warnings.length).toBe(1);
-        expect(warnings[0][0]).toBe("No error handler registered for request /baseline/.");
+        expect(warnings[0][0]).toBe("No error handler registered for request /datasets/.");
     });
 
     it("returns the response object from a POST", async () => {
 
-        mockAxios.onPost(`/baseline/`)
+        mockAxios.onPost(`/datasets/`)
             .reply(200, mockSuccess("TEST"));
 
         const dispatch = jest.fn();
         const response = await api(rootState.language, dispatch as any)
             .withSuccess(ActionType.DATASET_SELECTED)
-            .postAndReturn("/baseline/", {});
+            .postAndReturn("/datasets/", {});
 
         expect(response).toStrictEqual({data: "TEST", errors: null, status: "success"});
     });
@@ -230,7 +230,7 @@ describe("ApiService", () => {
     async function expectCouldNotParseAPIResponseError() {
         const dispatch = jest.fn();
         await api(rootState.language, dispatch as any)
-            .get("/baseline/");
+            .get("/datasets/");
 
         expect(dispatch.mock.calls.length).toBe(1);
         expect(dispatch.mock.calls[0][0].type).toBe(ActionType.ERROR_ADDED);

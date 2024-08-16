@@ -21,8 +21,9 @@ describe("<AppError />", () => {
         const state = mockAppState({genericError: mockError("custom message")});
         const dispatch = jest.fn();
        render(<RootContext.Provider value={state}>
-            <RootDispatchContext.Provider
-                value={dispatch}><AppError/></RootDispatchContext.Provider>
+            <RootDispatchContext.Provider value={dispatch}>
+                <AppError/>
+            </RootDispatchContext.Provider>
         </RootContext.Provider>);
        const alert = screen.getByRole("alert");
        expect(alert.lastChild?.textContent).toBe("custom message");

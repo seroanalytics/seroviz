@@ -1,10 +1,10 @@
 :root, [data-bs-theme=light] {
-  --primary-color: #008be6;
-  --primary-color-darken: #004d80;
-  --secondary-color: #FFA70A;
-  --bs-secondary-bg: #ffd384;
-  --bs-tertiary-bg: #FFEDCE;
-  --bs-tertiary-bg-rgb: 255, 237, 206;
+  --primary-color: #5200A4;
+  --primary-color-darken: #5200A4;
+  --secondary-color: #A347FF;
+  --bs-secondary-bg: #C7A7FF;
+  --bs-tertiary-bg: #C7A7FF;
+  --bs-tertiary-bg-rgb: 199, 167, 255;
   --bs-light-rgb: 248, 249, 250;
   --white: #ffffff;
 }

@@ -5,7 +5,7 @@ import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
 import CovariateOptions from "./CovariateOptions";
 import SelectedCovariateOption from "./SelectedCovariateOption";
 
-export default function Sidebar() {
+export default function SideBar() {
 
     const state = useContext(RootContext);
     const dispatch = useContext(RootDispatchContext);
@@ -31,7 +31,7 @@ export default function Sidebar() {
                 </Form.Group>
                 <Row className={"mb-3"}>
                     <Col>
-                        Detected biomarkers <br/> <span className={"text-secondary"}>{state.datasetMetadata?.biomarkers.join(", ")}</span>
+                        Detected biomarkers <br/><span className={"text-secondary"}>{state.datasetMetadata?.biomarkers.join(", ")}</span>
                     </Col>
                 </Row>
                 <Form.Group className="mb-3">

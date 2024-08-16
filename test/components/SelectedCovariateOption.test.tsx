@@ -1,6 +1,6 @@
 import React from "react";
 import {fireEvent, render, screen} from "@testing-library/react";
-import {mockSelectedCovariate, mockVariable} from "../mocks";
+import {mockSelectedCovariate} from "../mocks";
 import {ActionType, RootDispatchContext} from "../../src/RootContext";
 import SelectedCovariateOption
     from "../../src/components/SelectedCovariateOption";

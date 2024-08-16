@@ -14,8 +14,8 @@ describe("<CovariateOptions />", () => {
     test("should display form select with all available variables", () => {
         const dispatch = jest.fn();
         render(
-            <RootDispatchContext.Provider
-                value={dispatch}><CovariateOptions covariates={covariates}/>
+            <RootDispatchContext.Provider value={dispatch}>
+                <CovariateOptions covariates={covariates}/>
             </RootDispatchContext.Provider>);
         const select = screen.getAllByRole("listbox")[0] as HTMLSelectElement;
         const items = select.options;
@@ -46,8 +46,8 @@ describe("<CovariateOptions />", () => {
         const user = userEvent.setup();
 
         render(
-            <RootDispatchContext.Provider
-                value={dispatch}><CovariateOptions covariates={covariates}/>
+            <RootDispatchContext.Provider value={dispatch}>
+                <CovariateOptions covariates={covariates}/>
             </RootDispatchContext.Provider>);
         const selectVariable = screen.getAllByRole("listbox")[0] as HTMLSelectElement;
         let items = selectVariable.options;

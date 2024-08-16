@@ -11,5 +11,6 @@ export default {
     testEnvironment: "jsdom",
     coveragePathIgnorePatterns : [
         "mocks.ts", "reportWebVitals", "index.tsx"
-    ]
+    ],
+    setupFilesAfterEnv: ["./test/setupTests.ts"],
 }

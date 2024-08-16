@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import {RootContext} from "../RootContext";
 import {Col, Row} from "react-bootstrap";
-import Sidebar from "./SideBar";
+import SideBar from "./SideBar";
 import LinePlot from "./LinePlot";
 import {calculateFacets} from "../services/plotUtils";
 
@@ -20,7 +20,7 @@ export function ExploreDataset() {
 
     if (facetLevels.length === 0) {
         return <Row>
-            <Sidebar/>
+            <SideBar/>
             <Col sm={8}>
                 {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b => <Row key={b}>
                     <Col>
@@ -34,7 +34,7 @@ export function ExploreDataset() {
     }
 
     return <Row>
-        <Sidebar/>
+        <SideBar/>
         <Col sm={8}>
             {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b => <Row key={b}>
                 {facetLevels.map((l, i) => <LinePlot biomarker={b}
