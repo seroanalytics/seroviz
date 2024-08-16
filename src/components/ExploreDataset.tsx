@@ -15,20 +15,23 @@ export function ExploreDataset() {
     const allFacetLevels = facetVariables.map(f => f.levels);
     let facetLevels: string[][] = [];
     if (allFacetLevels.length > 0) {
-        facetLevels = calculateFacets(allFacetLevels.shift() as any, allFacetLevels.shift() as any, ...allFacetLevels as any);
+        facetLevels = calculateFacets(allFacetLevels.shift() as any,
+            allFacetLevels.shift() as any,
+            ...allFacetLevels as any);
     }
 
     if (facetLevels.length === 0) {
         return <Row>
             <SideBar/>
             <Col sm={8}>
-                {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b => <Row key={b}>
-                    <Col>
-                        <LinePlot biomarker={b}
-                                  facetVariables={facetVariables.map(v => v.name)}
-                                  facetLevels={[]}/>
-                    </Col>
-                </Row>)}
+                {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b =>
+                    <Row key={b}>
+                        <Col>
+                            <LinePlot biomarker={b}
+                                      facetVariables={facetVariables.map(v => v.name)}
+                                      facetLevels={[]}/>
+                        </Col>
+                    </Row>)}
             </Col>
         </Row>
     }
@@ -36,12 +39,13 @@ export function ExploreDataset() {
     return <Row>
         <SideBar/>
         <Col sm={8}>
-            {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b => <Row key={b}>
-                {facetLevels.map((l, i) => <LinePlot biomarker={b}
-                                                     key={b + i}
-                                                     facetVariables={facetVariables.map(v => v.name)}
-                                                     facetLevels={l}/>)}
-            </Row>)}
+            {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b =>
+                <Row key={b}>
+                    {facetLevels.map((l, i) => <LinePlot biomarker={b}
+                                                         key={b + i}
+                                                         facetVariables={facetVariables.map(v => v.name)}
+                                                         facetLevels={l}/>)}
+                </Row>)}
         </Col>
     </Row>
 }
