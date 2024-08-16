@@ -19,6 +19,11 @@ export function ChooseDataset() {
 
     }, [state.language, dispatch]);
 
+    useEffect(() => {
+        if (state.datasetNames.length > 0) {
+            selectDataset(state.datasetNames[0]);
+        }
+    }, [state.datasetNames]);
     const onSelectData = (event: any) => {
         selectDataset(event.target.value);
     }

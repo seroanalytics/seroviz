@@ -11,7 +11,7 @@ export default function TopNav({theme, setTheme}: Props) {
     return <Navbar expand="lg" className={"bg-light"}>
         <Container fluid>
             <img alt="SeroViz logo"
-                 src={theme === "light" ? "logo.png": "logolight.png"}
+                 src={theme === "dark" ? "logolight.png": "logo.png"}
                  width={120}
                  className={"me-3"}></img>
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>

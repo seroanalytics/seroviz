@@ -19,7 +19,8 @@ export default function SideBar() {
     const availableCovariates = state.datasetMetadata?.variables
         .filter(v => selectedCovariates.indexOf(v.name) === -1) ?? [];
 
-    return <Col xs="3" className="pt-3 border-1 border-end border-secondary">
+    return <Col xs="3" className="pt-3 border-1 border-end border-secondary"
+                data-testid="sidebar">
         <Form method="post">
             <fieldset>
                 <Form.Group className="mb-3">

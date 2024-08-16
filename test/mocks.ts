@@ -9,6 +9,7 @@ import {
     SelectedCovariate,
     Variable
 } from "../src/types";
+import {DataSeries} from "../src/generated";
 
 export function mockAppState(state: Partial<AppState> = {}): AppState {
     return {
@@ -60,6 +61,20 @@ export function mockCovariate(variable: Partial<SelectedCovariate> = {}): Select
         display: "trace",
         ...variable
     }
+}
+
+export function mockSeriesData(): DataSeries {
+    return [{
+        name: "d1",
+        model: {
+            x: [],
+            y: []
+        },
+        raw: {
+            x: [],
+            y: []
+        }
+    }]
 }
 
 export function mockSuccess<T>(data: T): ResponseSuccess<T> {

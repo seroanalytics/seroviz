@@ -4,7 +4,7 @@ import {
     RootContext,
     RootDispatchContext
 } from "../../src/RootContext";
-import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import {mockAppState, mockAxios, mockSuccess} from "../mocks";
 import {act} from "react";
 import {userEvent} from "@testing-library/user-event";

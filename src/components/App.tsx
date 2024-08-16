@@ -21,6 +21,7 @@ export default function App() {
         }
     }, [state.selectedDataset, state.language, dispatch]);
 
+    console.log(state.selectedDataset);
     return <RootContext.Provider value={state}>
         <RootDispatchContext.Provider value={dispatch}>
             <TopNav theme={theme as string} setTheme={setTheme as (newState: string) => void}></TopNav>
