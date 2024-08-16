@@ -1,4 +1,4 @@
-import {Container, Nav, Navbar, NavbarBrand} from "react-bootstrap";
+import {Container, Nav, Navbar} from "react-bootstrap";
 import ThemeSwitch from "./ThemeSwitch";
 import React from "react";
 
