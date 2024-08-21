@@ -1,14 +1,27 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Plot from 'react-plotly.js';
-import {api} from "../services/apiService";
-import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
+import {RootContext, RootDispatchContext} from "../RootContext";
 import {DataSeries} from "../generated";
+import {dataService} from "../services/dataService";
 
 interface Props {
     biomarker: string
     facetVariables: string[]
     facetLevels: string[]
 }
+
+const colors = [
+    '#1f77b4',  // muted blue
+    '#ff7f0e',  // safety orange
+    '#2ca02c',  // cooked asparagus green
+    '#d62728',  // brick red
+    '#9467bd',  // muted purple
+    '#8c564b',  // chestnut brown
+    '#e377c2',  // raspberry yogurt pink
+    '#7f7f7f',  // middle gray
+    '#bcbd22',  // curry yellow-green
+    '#17becf'   // blue-teal
+];
 
 export default function LinePlot({
                                      biomarker,
@@ -29,25 +42,21 @@ export default function LinePlot({
 
     const facetDefinition = facetDefinitions.join("+")
 
-    const traces = state.selectedCovariates
-        .filter(v => v.display === "trace")
-        .map(v => v.name).join("+")
-
     useEffect(() => {
-        api(state.language, dispatch)
-            .ignoreSuccess()
-            .withError(ActionType.ERROR_ADDED)
-            .get<DataSeries>("/dataset/" + state.selectedDataset + "/" + biomarker + "/?facet=" + facetDefinition + "&trace=" + encodeURIComponent(traces))
+        dataService(state.language, dispatch)
+            .getDataSeries(state.selectedDataset,
+                biomarker, facetDefinition, state.selectedCovariates)
             .then(data => {
                 if (data && data.data) {
                     setSeries(data.data)
                 }
             });
-    }, [state.language, biomarker, dispatch, facetDefinition, state.selectedDataset, traces]);
+    }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, state.selectedCovariates]);
 
     let series: any[] = [];
+
     if (seriesData) {
-        series = seriesData.flatMap((series) => ([{
+        series = seriesData.flatMap((series, index) => ([{
             x: series.model.x,
             y: series.model.y,
             name: series.name,
@@ -55,6 +64,8 @@ export default function LinePlot({
             type: "scatter",
             mode: "line",
             line: {shape: 'spline', width: 2},
+            showlegend: seriesData.length > 1,
+            marker: {color: colors[index]}
         },
             {
                 x: series.raw.x,
@@ -62,7 +73,9 @@ export default function LinePlot({
                 name: series.name,
                 legendgroup: series.name,
                 type: "scatter",
-                mode: "markers"
+                mode: "markers",
+                showlegend: false,
+                marker: {color: colors[index], opacity: 0.5}
             }]))
     }
 
@@ -70,8 +83,13 @@ export default function LinePlot({
         data={series}
         layout={{
             title: biomarker + " " + facetDefinition,
-            legend: {xanchor: 'center', x: 0.5, orientation: 'h'},
-            paper_bgcolor: "rgba(255,255,255, 0)"
+            legend: {xanchor: 'center', orientation: 'v'},
+            paper_bgcolor: "rgba(255,255,255, 0)",
+            xaxis: {
+                title: {
+                    text: state.datasetMetadata?.xcol
+                }
+            }
         }}
         useResizeHandler={true}
         style={{minWidth: "400px", width: "100%", height: "500"}}

@@ -1,4 +1,9 @@
-export type GenericResponse<T> = ResponseSuccess<T> | ResponseFailure
+import {
+    DatasetMetadata,
+    DatasetNames, ErrorDetail,
+    ResponseFailure,
+    Variable
+} from "./generated";
 
 export interface ResponseSuccess<T> {
     status: "success";
@@ -6,16 +11,7 @@ export interface ResponseSuccess<T> {
     errors: null;
 }
 
-export interface ResponseFailure {
-    status: "failure";
-    data: null;
-    errors: PorcelainError[]
-}
-
-export interface PorcelainError {
-    error: string
-    detail: string | null
-}
+export type GenericResponse<T> = ResponseSuccess<T> | ResponseFailure
 
 type PlotDisplay = "facet" | "trace"
 
@@ -27,23 +23,12 @@ export interface SelectedCovariate extends Variable {
     display: PlotDisplay
 }
 
-export interface Variable {
-    name: string
-    levels: string[]
-}
-
-export interface DatasetMetadata {
-    variables: Variable[]
-    biomarkers: string[]
-    xAxisVariable: string
-}
-
 export interface AppState {
-    datasetNames: string[]
+    datasetNames: DatasetNames
     datasetMetadata: DatasetMetadata | null
     selectedDataset: string
     selectedCovariates: SelectedCovariate[]
-    uploadError: PorcelainError | null
-    genericError: PorcelainError | null
+    uploadError: ErrorDetail | null
+    genericError: ErrorDetail | null
     language: string
 }

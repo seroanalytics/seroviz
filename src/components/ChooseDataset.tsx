@@ -3,7 +3,7 @@ import {Button, Col, Row} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
 import {api} from "../services/apiService";
-import {DatasetMetadata} from "../types";
+import {DataService} from "../services/dataService";
 
 export function ChooseDataset() {
 
@@ -12,10 +12,8 @@ export function ChooseDataset() {
     const apiService = api(state.language, dispatch);
 
     useEffect(() => {
-        api(state.language, dispatch)
-            .withSuccess(ActionType.DATASET_NAMES_FETCHED)
-            .withError(ActionType.ERROR_ADDED)
-            .get<string[]>("/datasets/");
+        (new DataService(api(state.language, dispatch)))
+            .getDatasetNames();
 
     }, [state.language, dispatch]);
 
@@ -50,24 +48,21 @@ export function ChooseDataset() {
     const uploadNewFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.currentTarget.files?.length) {
             const file = event.currentTarget.files[0];
-
             setIsUploading(true);
 
             const formData = new FormData();
             formData.append('file', file);
+            formData.append('xcol', "day");
 
-            const result = await apiService
-                .withError(ActionType.UPLOAD_ERROR_ADDED)
-                .postAndReturn<any>("/dataset/", formData);
+            const dataService = new DataService(apiService);
+
+            const result = await dataService.uploadDataset(formData);
 
             setIsUploading(false);
             selectFile("");
 
             if (result) {
-                await apiService
-                    .withSuccess(ActionType.DATASET_NAMES_FETCHED)
-                    .withError(ActionType.ERROR_ADDED)
-                    .get<DatasetMetadata[]>("/datasets/");
+                await dataService.getDatasetNames();
 
                 dispatch({
                     type: ActionType.DATASET_SELECTED,

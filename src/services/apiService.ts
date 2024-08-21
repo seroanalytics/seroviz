@@ -1,10 +1,11 @@
 import axios, {AxiosError, AxiosResponse} from "axios";
-import {GenericResponse, PorcelainError, ResponseFailure} from "../types";
+import {GenericResponse} from "../types";
 import {ActionType, RootAction} from "../RootContext";
+import {ErrorDetail, ResponseFailure} from "../generated";
 
 declare let appUrl: string;
 
-function isPorcelainError(object: any): object is PorcelainError {
+function isPorcelainError(object: any): object is ErrorDetail {
     return typeof object.error == "string"
         && (object.detail === undefined || object.detail === null || typeof object.detail == "string")
 }
@@ -111,7 +112,7 @@ export class APIService implements API<ActionType> {
         this._handleDispatchError(e.response && e.response.data)
     };
 
-    private _dispatchError = (error: PorcelainError) => {
+    private _dispatchError = (error: ErrorDetail) => {
         this._dispatch({type: ActionType.ERROR_ADDED, payload: error});
     };
 

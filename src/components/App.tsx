@@ -3,10 +3,15 @@ import {Container} from "react-bootstrap";
 import TopNav from "./TopNav";
 import {ChooseDataset} from "./ChooseDataset";
 import usePersistedState from "../hooks/usePersistedState";
-import {ActionType, initialState, RootContext, RootDispatchContext, rootReducer} from "../RootContext";
+import {
+    initialState,
+    RootContext,
+    RootDispatchContext,
+    rootReducer
+} from "../RootContext";
 import {ExploreDataset} from "./ExploreDataset";
-import {api} from "../services/apiService";
 import AppError from "./AppError";
+import {dataService} from "../services/dataService";
 
 export default function App() {
     const [theme, setTheme] = usePersistedState<string>("theme", "dark");
@@ -14,17 +19,15 @@ export default function App() {
 
     useEffect(() => {
         if (state.selectedDataset) {
-            api(state.language, dispatch)
-                .withSuccess(ActionType.DATASET_METADATA_FETCHED)
-                .withError(ActionType.ERROR_ADDED)
-                .get<string[]>("/dataset/" + state.selectedDataset)
+            dataService(state.language, dispatch)
+                .getDatasetMetadata(state.selectedDataset);
         }
     }, [state.selectedDataset, state.language, dispatch]);
 
-    console.log(state.selectedDataset);
     return <RootContext.Provider value={state}>
         <RootDispatchContext.Provider value={dispatch}>
-            <TopNav theme={theme as string} setTheme={setTheme as (newState: string) => void}></TopNav>
+            <TopNav theme={theme as string}
+                    setTheme={setTheme as (newState: string) => void}></TopNav>
             <AppError/>
             <Container fluid>
                 {!state.selectedDataset && <ChooseDataset/>}

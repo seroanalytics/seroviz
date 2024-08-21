@@ -1,7 +1,7 @@
 import {Button, Col, Form, Row} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
 import {ActionType, RootDispatchContext} from "../RootContext";
-import {Variable} from "../types";
+import {Variable} from "../generated";
 
 interface Props {
     covariates: Variable[]
