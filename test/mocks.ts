@@ -2,14 +2,16 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import {
     AppState,
-    DatasetMetadata,
-    PorcelainError,
-    ResponseFailure,
     ResponseSuccess,
-    SelectedCovariate,
-    Variable
+    SelectedCovariate
 } from "../src/types";
-import {DataSeries} from "../src/generated";
+import {
+    DataSeries,
+    DatasetMetadata,
+    ErrorDetail,
+    ResponseFailure,
+    Variable
+} from "../src/generated";
 
 export function mockAppState(state: Partial<AppState> = {}): AppState {
     return {
@@ -31,7 +33,7 @@ export function mockDatasetNames(datasets: string[] = ["d1", "d2"]): string[] {
 export function mockDatasetMetadata(datasetMetadata: Partial<DatasetMetadata> = {}): DatasetMetadata {
     return {
         variables: [mockVariable()],
-        xAxisVariable: "day",
+        xcol: "day",
         biomarkers: ["ab"],
         ...datasetMetadata
     }
@@ -93,7 +95,7 @@ export const mockFailure = (errorMessage: string): ResponseFailure => {
     }
 };
 
-export const mockError = (errorMessage: string): PorcelainError => {
+export const mockError = (errorMessage: string): ErrorDetail => {
     return {error: "OTHER_ERROR", detail: errorMessage};
 };
 
