@@ -12,6 +12,6 @@ export default {
     coveragePathIgnorePatterns : [
         "mocks.ts", "reportWebVitals", "index.tsx"
     ],
-    setupFilesAfterEnv: ["./test/setupTests.ts"],
-    testRegex: ".*(\\.test)\\.[jt]sx?$"
+    setupFilesAfterEnv: ["./test/setupTests.ts","./test/setupIntegrationTests.ts"],
+    testRegex: ".*(\\.itest)\\.[jt]sx?$"
 }

@@ -3,7 +3,7 @@ import {GenericResponse} from "../types";
 import {ActionType, RootAction} from "../RootContext";
 import {ErrorDetail, ResponseFailure} from "../generated";
 
-declare let appUrl: string;
+declare let apiUrl: string;
 
 function isPorcelainError(object: any): object is ErrorDetail {
     return typeof object.error == "string"
@@ -38,8 +38,8 @@ export class APIService implements API<ActionType> {
         this._headers = {"Accept-Language": lang};
     }
 
-    // appUrl will be set as a jest global during testing
-    private readonly _baseUrl = typeof appUrl !== "undefined" ? appUrl : "";
+    // apiUrl will be set as a jest global during testing
+    private readonly _baseUrl = typeof apiUrl !== "undefined" ? apiUrl : "";
 
     private _buildFullUrl = (url: string) => {
         return this._baseUrl + url

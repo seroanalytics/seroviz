@@ -49,10 +49,19 @@ export class DataService {
             .filter(v => v.display === "trace")
             .map(v => v.name).join("+")
 
+        let queryString = "?"
+        if (facetDefinition) {
+            queryString += `filter=${encodeURIComponent(facetDefinition)}&`
+        }
+
+        if (traces.length > 0) {
+            queryString += `disaggregate=${encodeURIComponent(traces)}`
+        }
+
         return await this._api
             .ignoreSuccess()
             .withError(ActionType.ERROR_ADDED)
-            .get<DataSeries>("/dataset/" + selectedDataset + "/trace/" + biomarker + "/?filter=" + encodeURIComponent(facetDefinition) + "&disaggregate=" + encodeURIComponent(traces))
+            .get<DataSeries>("/dataset/" + selectedDataset + "/trace/" + biomarker + "/" + queryString)
     }
 }
 

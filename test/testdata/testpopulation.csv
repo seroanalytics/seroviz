@@ -1,0 +1,17 @@
+day,biomarker,value,sex,age
+1,ab_units,3.5,F,0-5
+2,ab_units,3.6,F,0-5
+3,ab_units,3.7,M,0-5
+4,ab_units,3.8,M,0-5
+1,ab_units,2.5,F,5+
+2,ab_units,2.6,F,5+
+3,ab_units,2.7,M,5+
+4,ab_units,2.8,M,5+
+1,ab_units,1.5,F,0-5
+2,ab_units,1.6,F,0-5
+3,ab_units,1.7,M,0-5
+4,ab_units,1.8,M,0-5
+1,ab_units,4.5,F,5+
+2,ab_units,4.6,F,5+
+3,ab_units,4.7,M,5+
+4,ab_units,4.8,M,5+

@@ -27,6 +27,12 @@ jobs:
       - name: 🔎 Test
         run: npm run test
 
+      - name: ⎔ Run dependencies
+        run: ./scripts/run-dependencies.sh
+
+      - name: 🔎 Integration test
+        run: npm run itest
+
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
