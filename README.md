@@ -14,12 +14,22 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+For the app to work, the
+[serovizr API](https://github.com/seroanalytics/serovizr) must be running on port 8888; this can
+be started using `scripts/run-dev-dependencies.sh`.
+
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
 ### `npm test`
 
 Runs unit tests using jest.
+
+### `npm run itest`
+
+Runs integration tests using jest. This requires the 
+[serovizr API](https://github.com/seroanalytics/serovizr) to be running; this can 
+be started using `scripts/run-dev-dependencies.sh`.
 
 ### `npm run build`
 
