@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -ex
+
+NETWORK=seroviz_nw
+
+docker network create $NETWORK
+
+docker run -d -p 8888:8888 --network=$NETWORK --name serovizr seroanalytics/serovizr:main
+docker run -d -p 80:80 -p 443:443 --network=$NETWORK --name seroviz seroanalytics/seroviz:main localhost
+docker exec seroviz self-signed-certificate /run/proxy

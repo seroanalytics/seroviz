@@ -9,7 +9,8 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-(global as any).apiUrl = "http://localhost:8888"
+(global as any).apiUrl = process.env.REACT_APP_API_URL;
+
 root.render(
   <React.StrictMode>
     <App />

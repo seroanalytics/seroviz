@@ -5,9 +5,9 @@
 
 Client-side React application for visualising serological data.
 
-## Scripts
+## Development
 
-In the project directory, you can run:
+Install dependencies with `npm install`. Then the following scripts are available.
 
 ### `npm start`
 
@@ -39,3 +39,12 @@ Builds the app for production to the `build` folder.
 
 Auto-generates typescript types based on the [serovizr](https://github.com/seroanalytics/serovizr)
 API JSON schema specifications. Generated types are saved into `src/generated.d.ts`.
+
+## Deployment
+
+The app is deployed using a Dockerised `nginx` server which also proxies the `serovizr` API.
+See the [proxy/README.md](proxy/README.md) for details.
+
+To build this Docker image run `.scripts/build`. To push an image to DockerHub 
+run `./scripts/push`. And to start a copy of the app locally with a self-signed SSL certificate
+run `./scripts/run`.

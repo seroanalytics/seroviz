@@ -51,10 +51,30 @@ describe("<ChooseDataset/>", () => {
             </RootDispatchContext.Provider>
         </RootContext.Provider>));
 
+        expect(screen.getAllByLabelText("Choose dataset").length).toBe(1);
         const select = screen.getByRole("combobox") as HTMLSelectElement;
         expect(select.options.length).toBe(2);
         expect(select.options[0].value).toBe("d1");
         expect(select.options[1].value).toBe("d2");
+    });
+
+    test("it does not render select if no dataset names to choose from", () => {
+        mockAxios.onGet(`/datasets/`)
+            .reply(200, mockSuccess([]));
+
+        let state = mockAppState({
+            datasetNames: []
+        });
+        const dispatch = jest.fn();
+
+        act(() => render(<RootContext.Provider value={state}>
+            <RootDispatchContext.Provider
+                value={dispatch}><ChooseDataset/>
+            </RootDispatchContext.Provider>
+        </RootContext.Provider>));
+
+        expect(screen.queryByLabelText("Choose dataset")).toBe(null);
+        expect(screen.queryByText("Go")).toBe(null);
     });
 
     test("user can select dataset", async() => {

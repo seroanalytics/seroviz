@@ -11,7 +11,10 @@ export default function SideBar() {
     const dispatch = useContext(RootDispatchContext);
 
     const onSelectData = (event: any) => {
-        dispatch({type: ActionType.DATASET_SELECTED, payload: event.target.value})
+        dispatch({
+            type: ActionType.DATASET_SELECTED,
+            payload: event.target.value
+        })
     }
 
     const selectedCovariates = state.selectedCovariates.map(v => v.name);
@@ -25,22 +28,29 @@ export default function SideBar() {
             <fieldset>
                 <Form.Group className="mb-3">
                     <Form.Label htmlFor="data">Dataset</Form.Label>
-                    <Form.Select id="data" onChange={onSelectData} value={state.selectedDataset}>
+                    <Form.Select id="data" onChange={onSelectData}
+                                 value={state.selectedDataset}>
                         {state.datasetNames.map(d =>
                             <option key={d} value={d}>{d}</option>)}
                     </Form.Select>
                 </Form.Group>
                 <Row className={"mb-3"}>
                     <Col>
-                        Detected biomarkers <br/><span className={"text-secondary"}>{state.datasetMetadata?.biomarkers.join(", ")}</span>
+                        Detected biomarkers <br/><span
+                        className={"text-secondary"}>{state.datasetMetadata?.biomarkers.join(", ")}</span>
                     </Col>
                 </Row>
+                {availableCovariates.length > 0 &&
+                    <Form.Group className="mb-3">
+                        <Form.Label>Disaggregate by</Form.Label>
+                        <CovariateOptions covariates={availableCovariates}/>
+                    </Form.Group>
+                }
                 <Form.Group className="mb-3">
-                    <Form.Label>Disaggregate by</Form.Label>
-                    {availableCovariates.length > 0 && <CovariateOptions covariates={availableCovariates}/>}
-                    {state.selectedCovariates.map(v => <SelectedCovariateOption
-                        key={v.name}
-                        covariate={v}/>)}
+                    {state.selectedCovariates.map(v =>
+                        <SelectedCovariateOption
+                            key={v.name}
+                            covariate={v}/>)}
                 </Form.Group>
             </fieldset>
         </Form>

@@ -1,11 +1,6 @@
 import {createContext, Dispatch} from "react";
 import {AppState} from "./types";
 
-export interface AppContext {
-    state: AppState
-    dispatch: () => void
-}
-
 export const initialState: AppState = {
     datasetNames: [],
     datasetMetadata: null,

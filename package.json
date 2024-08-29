@@ -20,8 +20,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env.local react-scripts start",
+    "build": "env-cmd -f .env.production react-scripts build",
     "test": "jest",
     "itest": "jest --config=jest.integration.config.ts",
     "lint": "npx eslint ./src ",
@@ -52,6 +52,7 @@
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
     "axios-mock-adapter": "^2.0.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^8.57.0",
     "form-data": "^4.0.0",
     "jest-canvas-mock": "^2.5.2",

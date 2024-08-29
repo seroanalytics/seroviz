@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -ex
+
+HERE=$(dirname $0)
+. $HERE/common
+
+npm run build
+
+docker build --pull \
+       --tag $TAG_SHA \
+       .

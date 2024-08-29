@@ -19,6 +19,13 @@ export class DataService {
         this._api = api;
     }
 
+    async refreshSession(): Promise<void | GenericResponse<string>> {
+        return await this._api
+            .ignoreSuccess()
+            .ignoreErrors()
+            .get<string>("/")
+    }
+
     async getDatasetNames(): Promise<void | GenericResponse<DatasetNames>> {
         return await this._api
             .withSuccess(ActionType.DATASET_NAMES_FETCHED)
@@ -30,11 +37,12 @@ export class DataService {
         return await this._api
             .withSuccess(ActionType.DATASET_METADATA_FETCHED)
             .withError(ActionType.ERROR_ADDED)
-            .get<DatasetMetadata>("/dataset/" + selectedDataset)
+            .get<DatasetMetadata>("/dataset/" + selectedDataset + "/")
     }
 
     async uploadDataset(formData: FormData) {
         return await this._api
+            .ignoreSuccess()
             .withError(ActionType.UPLOAD_ERROR_ADDED)
             .postAndReturn<UploadResult>("/dataset/", formData);
     }
