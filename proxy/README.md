@@ -17,6 +17,9 @@ docker run seroviz-proxy seroanalytics.org
 The server will not start until the files `/run/proxy/certificate.pem` and `/run/proxy/key.pem` exist - 
 you can get these into the container however you like; the proxy will poll for them and start within a second of them appearing.
 
+The production SSl key and certificate are stored on the [Vault cloud platform](https://www.hashicorp.com/products/vault). You will
+need an account and to be added to the `seroanalytics` project to access these secrets. 
+
 ## Self-signed certificate
 
 For testing it is useful to use a self-signed certificate. These are not in any way secure.
@@ -39,7 +42,7 @@ self-signed-certificate GB London LSHTM seroanalytics seroanalytics.org
 ## dhparams (Diffie-Hellman key exchange parameters)
 
 We require a `dhparams.pem` file (see [here](https://security.stackexchange.com/questions/94390/whats-the-purpose-of-dh-parameters)) for details. 
-The file in this directory is built into the Docker image, but should be overwritten when deploying the app, by copying your own into the container at `/run/proxy/dhparams.pem` before
+The file in this directory is built into the Docker image, but can be overwritten when deploying the app, by copying your own into the container at `/run/proxy/dhparams.pem` before
 getting the certificates in place.
 
 To regenerate the file in this directory, run

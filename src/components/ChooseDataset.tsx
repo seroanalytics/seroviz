@@ -99,9 +99,11 @@ export function ChooseDataset() {
                                 className={"text-center text-uppercase"}>or</h5>
                         ]
                     }
-                    <Form.Group controlId="formFileSm" className={"mb3"}>
-                        <Form.Label>Upload new dataset</Form.Label>
-                        <Form.Control type="file" disabled={isUploading}
+                    <Form.Group className={"mb3"}>
+                        <Form.Label htmlFor={"upload-file"}>Upload new dataset</Form.Label>
+                        <Form.Control type="file" name="upload-file"
+                                      id={"upload-file"}
+                                      disabled={isUploading}
                                       className={state.uploadError ? " is-invalid" : ""}
                                       value={selectedFile}
                                       onChange={uploadNewFile}

@@ -77,7 +77,7 @@ describe("<ChooseDataset/>", () => {
         expect(screen.queryByText("Go")).toBe(null);
     });
 
-    test("user can select dataset", async() => {
+    test("user can select dataset", async () => {
         mockAxios.onGet(`/datasets/`)
             .reply(200, mockSuccess(["d1", "d2"]));
 
@@ -105,7 +105,7 @@ describe("<ChooseDataset/>", () => {
         });
     });
 
-    test("user can toggle advanced options", async() => {
+    test("user can toggle advanced options", async () => {
         mockAxios.onGet(`/datasets/`)
             .reply(200, mockSuccess(["d1", "d2"]));
 
@@ -130,9 +130,12 @@ describe("<ChooseDataset/>", () => {
         expect(screen.getByTestId("advanced-options")).toHaveClass("d-none");
     });
 
-    test("user can upload new file", async() => {
+    test("user can upload new file", async () => {
         mockAxios.onGet(`/datasets/`)
             .reply(200, mockSuccess(["d1", "d2"]));
+
+        mockAxios.onPost(`/dataset/`)
+            .reply(200, mockSuccess("hello"));
 
         let state = mockAppState({
             datasetNames: ["d1", "d2"]
@@ -146,12 +149,15 @@ describe("<ChooseDataset/>", () => {
             </RootDispatchContext.Provider>
         </RootContext.Provider>));
 
-        expect(screen.getByTestId("advanced-options")).toHaveClass("d-none");
-        const toggle = screen.getByText("Advanced options");
-        await user.click(toggle);
-        expect(screen.getByTestId("advanced-options")).toHaveClass("d-block");
+        const fileInput = screen.getByLabelText("Upload new dataset");
+        const testFile = new File(['hello'], 'hello.csv', {type: 'text/csv'});
+        await user.upload(fileInput, testFile);
 
-        await user.click(toggle);
-        expect(screen.getByTestId("advanced-options")).toHaveClass("d-none");
+        expect(dispatch.mock.calls.length).toBe(4);
+        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
+        expect(dispatch.mock.calls[1][0].type).toBe(ActionType.UPLOAD_ERROR_DISMISSED);
+        expect(dispatch.mock.calls[2][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
+        expect(dispatch.mock.calls[3][0].type).toBe(ActionType.DATASET_SELECTED);
+        expect(dispatch.mock.calls[3][0].payload).toBe("hello");
     });
 });
