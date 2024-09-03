@@ -52,6 +52,8 @@ API_TAG=seroanalytics/serovizr:main
 docker pull $TAG
 docker pull $API_TAG
 
+cleanupDocker
+
 docker network create $NETWORK
 
 docker run -d -p 8888:8888 --network=$NETWORK --name serovizr $API_TAG
