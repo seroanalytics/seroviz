@@ -1,12 +1,43 @@
 #!/usr/bin/env bash
-set -ex
+set -e
+
+trap cleanup ERR
+trap cleanup EXIT
+function cleanup() {
+  hcp auth logout
+}
+
+if [[ ! -v "CLIENT_ID" ]]; then
+    echo Please provide production client id from Vault.
+    echo -e To read this from Vault on another machine, run:
+    echo ""
+    echo -e "\t hcp vs secrets open production_id --app=seroviz"
+    echo ""
+    read -r CLIENT_ID
+fi
+
+if [[ ! -v "CLIENT_SECRET" ]]; then
+    echo Please provide production client secret from Vault
+    echo -e To read this from Vault on another machine, run:
+    echo ""
+    echo -e "\t hcp vs secrets open production_secret --app=seroviz"
+    echo ""
+    read -r CLIENT_SECRET
+fi
+
+hcp auth login --client-id="$CLIENT_ID" --client-secret="$CLIENT_SECRET"
 
 NETWORK=seroviz_nw
+TAG=seroanalytics/seroviz:main
+API_TAG=seroanalytics/serovizr:main
+
+docker pull $TAG
+docker pull $API_TAG
 
 docker network create $NETWORK
 
-docker run -d -p 8888:8888 --network=$NETWORK --name serovizr seroanalytics/serovizr:main
-docker run -d -p 80:80 -p 443:443 --network=$NETWORK --name seroviz seroanalytics/seroviz:main seroviz.seroanalytics.org
+docker run -d -p 8888:8888 --network=$NETWORK --name serovizr $API_TAG
+docker run -d -p 80:80 -p 443:443 --network=$NETWORK --name seroviz $TAG seroviz.seroanalytics.org
 
 TEMP_KEY=$(mktemp -q)
 hcp vs secrets open ssl_key --app seroviz --out-file=$TEMP_KEY
