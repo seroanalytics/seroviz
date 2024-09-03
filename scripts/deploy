@@ -13,12 +13,17 @@ function cleanupDocker() {
   docker network rm $NETWORK > /dev/null 2>&1 || true
 }
 
+function logout() {
+   hcp auth logout
+}
+
 trap cleanup ERR
-trap cleanup EXIT
 function cleanup() {
-  hcp auth logout
+  logout
   cleanupDocker
 }
+
+trap logout EXIT
 
 if [[ ! -v "CLIENT_ID" ]]; then
     echo Please provide production client id from Vault.
