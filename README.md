@@ -64,15 +64,15 @@ Installation instructions [here](https://developer.hashicorp.com/hcp/docs/cli/in
 The app is deployed onto an EC2 instance called `seroviz`. You will need to ask Alex for AWS console access, 
 and to add your IP to the inbound security rules for ssh access.
 
-Then
+Then:
 1. Retrieve `hcp` service principal credentials by running *on your own machine* (after `hcp auth login`):
     ```shell
     hcp vs secrets open production_id --app=seroviz
     hcp vs secrets open production_secret --app=seroviz
     ```
 1. ssh onto the server
-1. navigate to the `seroviz` directory
-1. run:
+1. Navigate to the `seroviz` directory
+1. Run:
     ```shell
     ./scripts/clear-docker.sh
     ./scripts/deploy
