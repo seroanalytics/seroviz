@@ -8,9 +8,9 @@ API_TAG=seroanalytics/serovizr:main
 function cleanupDocker() {
   docker kill seroviz > /dev/null 2>&1 || true
   docker kill serovizr > /dev/null 2>&1 || true
+  docker rm seroviz > /dev/null 2>&1 || true
   docker rm serovizr > /dev/null 2>&1 || true
-  docker rm serovizr > /dev/null 2>&1 || true
-   docker network rm $NETWORK  > /dev/null 2>&1 || true
+  docker network rm $NETWORK > /dev/null 2>&1 || true
 }
 
 trap cleanup ERR
