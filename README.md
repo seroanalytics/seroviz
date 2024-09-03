@@ -1,3 +1,5 @@
+![logo192](https://github.com/user-attachments/assets/a988b290-0a61-47bf-aea9-cf3c17183b9a)
+
 [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
 [![🔨 Build](https://github.com/seroanalytics/seroviz/actions/workflows/build.yml/badge.svg)](https://github.com/seroanalytics/seroviz/actions/workflows/build.yml)
 [![🔎 Test](https://github.com/seroanalytics/seroviz/actions/workflows/test.yml/badge.svg)](https://github.com/seroanalytics/seroviz/actions/workflows/test.yml)
@@ -80,3 +82,6 @@ cd seroviz
 ## Domain name
 The domain name `seroanalytics.org` is registered with NameCheap.
 Contact `alex.hill@gmail.com` if you need to add or change a DNS record.
+
+## Acknowledgements
+Logo created with BioRender.com
