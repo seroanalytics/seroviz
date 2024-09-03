@@ -20,8 +20,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "env-cmd -f .env.local react-scripts start",
-    "build": "env-cmd -f .env.production react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "jest",
     "itest": "jest --config=jest.integration.config.ts",
     "lint": "npx eslint ./src ",

@@ -8,4 +8,5 @@ npm run build
 
 docker build --pull \
        --tag $TAG_SHA \
+       --no-cache \
        .
