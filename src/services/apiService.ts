@@ -36,6 +36,7 @@ export class APIService implements API<ActionType> {
     constructor(lang: string, dispatch: (action: any) => void) {
         this._dispatch = dispatch;
         this._headers = {"Accept-Language": lang};
+        axios.defaults.withCredentials = true;
     }
 
     // apiUrl will be set as a jest global during testing

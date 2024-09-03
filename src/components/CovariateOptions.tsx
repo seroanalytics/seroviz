@@ -62,8 +62,8 @@ export default function CovariateOptions({covariates}: Props) {
                              name="displayType"
                              value={selectedDisplayOption}
                              onChange={onChangeDisplayOption}>
-                    <option role="listitem" value="trace">Trace</option>
-                    <option role="listitem" value="facet">Facet</option>
+                    <option role="listitem" value="trace">trace</option>
+                    <option role="listitem" value="facet">facet</option>
                 </Form.Select>
             </Col>
         </Row>

@@ -24,6 +24,13 @@ export default function App() {
         }
     }, [state.selectedDataset, state.language, dispatch]);
 
+    useEffect(() => {
+        setInterval(() => {
+            dataService("en", () => {})
+                .refreshSession()
+        }, 60*1000);
+    }, []);
+
     return <RootContext.Provider value={state}>
         <RootDispatchContext.Provider value={dispatch}>
             <TopNav theme={theme as string}

@@ -28,7 +28,7 @@ describe("<SideBar />", () => {
                 mockSelectedCovariate({name: "a"})
             ]
         });
-        render(<RootContext.Provider value={state}>
+        const {container} = render(<RootContext.Provider value={state}>
             <SideBar></SideBar>
         </RootContext.Provider>);
 
@@ -37,6 +37,21 @@ describe("<SideBar />", () => {
         expect(items.length).toBe(2);
         expect(items[0].value).toBe("b");
         expect(items[1].value).toBe("c");
+        expect(container.textContent).toContain("Disaggregate by");
+    });
+
+    test("it does not render disaggregation section if no available covariates", () => {
+        const state = mockAppState({
+            datasetMetadata: mockDatasetMetadata({
+                variables: []
+            }),
+            selectedCovariates: []
+        });
+        const {container} = render(<RootContext.Provider value={state}>
+            <SideBar></SideBar>
+        </RootContext.Provider>);
+
+        expect(container.textContent).not.toContain("Disaggregate by");
     });
 
     test("it renders detected biomarkers", () => {

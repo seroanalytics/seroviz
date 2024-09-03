@@ -18,6 +18,13 @@ describe("DataService", () => {
         expect(dispatch.mock.calls.length).toBe(0);
     });
 
+    test("it can fetch root", async () => {
+        const dispatch = jest.fn();
+        const sut = dataService("en", dispatch);
+        const res = await sut.refreshSession() as GenericResponse<string>;
+        expect(res.data).toEqual("Welcome to serovizr");
+    });
+
     test("it can fetch dataset names", async () => {
         const dispatch = jest.fn();
         const sut = dataService("en", dispatch);

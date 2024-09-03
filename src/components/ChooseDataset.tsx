@@ -22,6 +22,7 @@ export function ChooseDataset() {
             selectDataset(state.datasetNames[0]);
         }
     }, [state.datasetNames]);
+
     const onSelectData = (event: any) => {
         selectDataset(event.target.value);
     }
@@ -47,6 +48,10 @@ export function ChooseDataset() {
 
     const uploadNewFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.currentTarget.files?.length) {
+            dispatch({
+                type: ActionType.UPLOAD_ERROR_DISMISSED,
+                payload: null
+            });
             const file = event.currentTarget.files[0];
             setIsUploading(true);
 
@@ -63,10 +68,9 @@ export function ChooseDataset() {
 
             if (result) {
                 await dataService.getDatasetNames();
-
                 dispatch({
                     type: ActionType.DATASET_SELECTED,
-                    payload: selectedDataset
+                    payload: result.data
                 });
             }
         }
@@ -76,20 +80,30 @@ export function ChooseDataset() {
         <Col xs={12} sm={{span: 6, offset: 3}}>
             <Form>
                 <fieldset>
-                    <Form.Group>
-                        <Form.Label htmlFor="data">Choose dataset</Form.Label>
-                        <Form.Select id="data" onChange={onSelectData}
-                                     value={selectedDataset}>
-                            {state.datasetNames.map((d: string) =>
-                                <option key={d} value={d}>{d}</option>)}
-                        </Form.Select>
-                    </Form.Group>
-                    <Button variant="success" className={"w-100 mt-2 mb-3"}
-                            type="submit" onClick={go}>Go</Button>
-                    <h5 className={"text-center text-uppercase"}>or</h5>
-                    <Form.Group controlId="formFileSm" className={"mb3"}>
-                        <Form.Label>Upload new dataset</Form.Label>
-                        <Form.Control type="file" disabled={isUploading}
+                    {state.datasetNames.length > 0 &&
+                        [
+                            <Form.Group key="choose-dataset">
+                                <Form.Label htmlFor="data">Choose
+                                    dataset</Form.Label>
+                                <Form.Select id="data" onChange={onSelectData}
+                                             value={selectedDataset}>
+                                    {state.datasetNames.map((d: string) =>
+                                        <option key={d} value={d}>{d}</option>)}
+                                </Form.Select>
+                            </Form.Group>,
+                            <Button key="go-btn" variant="success"
+                                    className={"w-100 mt-2 mb-3"}
+                                    type="submit" onClick={go}>Go
+                            </Button>,
+                            <h5 key="or-text"
+                                className={"text-center text-uppercase"}>or</h5>
+                        ]
+                    }
+                    <Form.Group className={"mb3"}>
+                        <Form.Label htmlFor={"upload-file"}>Upload new dataset</Form.Label>
+                        <Form.Control type="file" name="upload-file"
+                                      id={"upload-file"}
+                                      disabled={isUploading}
                                       className={state.uploadError ? " is-invalid" : ""}
                                       value={selectedFile}
                                       onChange={uploadNewFile}
@@ -98,7 +112,11 @@ export function ChooseDataset() {
                             {state.uploadError && state.uploadError.detail}
                         </div>
                         <Form.Text muted>File must be in CSV format. Required
-                            columns: biomarker, value, day</Form.Text>
+                            columns: biomarker, value, day. Files you upload are
+                            only accessible to you and
+                            will persist for one hour or until you close your
+                            browser,
+                            whichever is longer.</Form.Text>
                         <div className={"d-block mt-2"}>
                             <button className="btn btn-link p-0"
                                     onClick={toggleShowOptions}>Advanced options
