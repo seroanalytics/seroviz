@@ -1,10 +1,23 @@
 #!/usr/bin/env bash
 set -e
 
+NETWORK=seroviz_nw
+TAG=seroanalytics/seroviz:main
+API_TAG=seroanalytics/serovizr:main
+
+function cleanupDocker() {
+  docker kill seroviz > /dev/null 2>&1 || true
+  docker kill serovizr > /dev/null 2>&1 || true
+  docker rm serovizr > /dev/null 2>&1 || true
+  docker rm serovizr > /dev/null 2>&1 || true
+   docker network rm $NETWORK  > /dev/null 2>&1 || true
+}
+
 trap cleanup ERR
 trap cleanup EXIT
 function cleanup() {
   hcp auth logout
+  cleanupDocker
 }
 
 if [[ ! -v "CLIENT_ID" ]]; then
