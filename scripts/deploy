@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -ex
+
+NETWORK=seroviz_nw
+
+docker network create $NETWORK
+
+docker run -d -p 8888:8888 --network=$NETWORK --name serovizr seroanalytics/serovizr:main
+docker run -d -p 80:80 -p 443:443 --network=$NETWORK --name seroviz seroanalytics/seroviz:main seroviz.seroanalytics.org
+
+TEMP_KEY=$(mktemp -q)
+hcp vs secrets open ssl_key --app seroviz --out-file=$TEMP_KEY
+docker cp $TEMP_KEY seroviz:/run/proxy/key.pem
+
+TEMP_INT_1=$(mktemp -q)
+hcp vs secrets open ssl_intermediate_1 --app seroviz --out-file=$TEMP_INT_1
+TEMP_INT_2=$(mktemp -q)
+hcp vs secrets open ssl_intermediate_2 --app seroviz --out-file=$TEMP_INT_2
+TEMP_INT_3=$(mktemp -q)
+hcp vs secrets open ssl_intermediate_3 --app seroviz --out-file=$TEMP_INT_3
+TEMP_INT_CERT=$(mktemp -q)
+hcp vs secrets open ssl_cert --app seroviz --out-file=$TEMP_INT_CERT
+
+TEMP_BUNDLE=$(mktemp -q)
+cat $TEMP_INT_CERT $TEMP_INT_1 $TEMP_INT_2 $TEMP_INT_3 >> $TEMP_BUNDLE
+docker cp $TEMP_BUNDLE seroviz:/run/proxy/certificate.pem
