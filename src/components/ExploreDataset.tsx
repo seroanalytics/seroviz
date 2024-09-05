@@ -9,7 +9,8 @@ export function ExploreDataset() {
 
     const state = useContext(RootContext);
 
-    const facetVariables = state.selectedCovariates
+    const facetVariables = state.datasetSettings[state.selectedDataset]
+        .covariateSettings
         .filter(v => v.display === "facet");
 
     const allFacetLevels = facetVariables.map(f => f.levels);

@@ -7,7 +7,7 @@ import {
     UploadResult
 } from "../generated";
 import {
-    GenericResponse, SelectedCovariate,
+    GenericResponse, CovariateSettings,
 } from "../types";
 import {Dispatch} from "react";
 
@@ -50,7 +50,7 @@ export class DataService {
     async getDataSeries(selectedDataset: string,
                         biomarker: string,
                         facetDefinition: string,
-                        selectedCovariates: SelectedCovariate[]) {
+                        selectedCovariates: CovariateSettings[]) {
 
 
         const traces = selectedCovariates

@@ -2,7 +2,7 @@ import {render, screen} from "@testing-library/react";
 import SideBar from "../../src/components/SideBar";
 import {
     mockAppState,
-    mockDatasetMetadata,
+    mockDatasetMetadata, mockDatasetSettings,
     mockSelectedCovariate,
     mockVariable
 } from "../mocks";
@@ -24,9 +24,14 @@ describe("<SideBar />", () => {
                     mockVariable({name: "c"}),
                 ]
             }),
-            selectedCovariates: [
-                mockSelectedCovariate({name: "a"})
-            ]
+            selectedDataset: "d1",
+            datasetSettings: {
+                "d1": mockDatasetSettings({
+                    covariateSettings: [
+                        mockSelectedCovariate({name: "a"})
+                    ]
+                })
+            }
         });
         const {container} = render(<RootContext.Provider value={state}>
             <SideBar></SideBar>
@@ -45,7 +50,8 @@ describe("<SideBar />", () => {
             datasetMetadata: mockDatasetMetadata({
                 variables: []
             }),
-            selectedCovariates: []
+            selectedDataset: "d1",
+            datasetSettings: {"d1": mockDatasetSettings()}
         });
         const {container} = render(<RootContext.Provider value={state}>
             <SideBar></SideBar>
@@ -58,7 +64,9 @@ describe("<SideBar />", () => {
         const state = mockAppState({
             datasetMetadata: mockDatasetMetadata({
                 biomarkers: ["ab", "ba"]
-            })
+            }),
+            selectedDataset: "d1",
+            datasetSettings: {"d1": mockDatasetSettings()}
         });
         const {container} = render(<RootContext.Provider value={state}>
             <SideBar></SideBar>
@@ -70,7 +78,8 @@ describe("<SideBar />", () => {
     test("user can change dataset", async () => {
         const state = mockAppState({
             datasetNames: ["d1", "d2"],
-            selectedDataset: "d1"
+            selectedDataset: "d1",
+            datasetSettings: {"d1": mockDatasetSettings()}
         });
         const dispatch = jest.fn();
         render(

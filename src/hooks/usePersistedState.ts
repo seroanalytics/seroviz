@@ -9,6 +9,7 @@ export default function usePersistedState<T>(key: string, defaultValue: T) {
     }, [key]);
 
     const setWithLocalStorage = (nextState: T) => {
+        localStorage.setItem(key, nextState as string);
         setState(nextState);
     };
 

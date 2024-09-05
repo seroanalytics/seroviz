@@ -3,21 +3,24 @@ import {Col, Row} from "react-bootstrap";
 import React, {useContext} from "react";
 import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
 import CovariateOptions from "./CovariateOptions";
-import SelectedCovariateOption from "./SelectedCovariateOption";
+import SelectedCovariate from "./SelectedCovariate";
+import ChooseDataset from "./ChooseDataset";
 
 export default function SideBar() {
 
     const state = useContext(RootContext);
     const dispatch = useContext(RootDispatchContext);
 
-    const onSelectData = (event: any) => {
+    const selectDataset = (name: string) => {
         dispatch({
             type: ActionType.DATASET_SELECTED,
-            payload: event.target.value
+            payload: name
         })
     }
 
-    const selectedCovariates = state.selectedCovariates.map(v => v.name);
+    const selectedCovariates = state.datasetSettings[state.selectedDataset]
+        .covariateSettings
+        .map(v => v.name);
 
     const availableCovariates = state.datasetMetadata?.variables
         .filter(v => selectedCovariates.indexOf(v.name) === -1) ?? [];
@@ -26,15 +29,9 @@ export default function SideBar() {
                 data-testid="sidebar">
         <Form method="post">
             <fieldset>
-                <Form.Group className="mb-3">
-                    <Form.Label htmlFor="data">Dataset</Form.Label>
-                    <Form.Select id="data" onChange={onSelectData}
-                                 value={state.selectedDataset}>
-                        {state.datasetNames.map(d =>
-                            <option key={d} value={d}>{d}</option>)}
-                    </Form.Select>
-                </Form.Group>
-                <Row className={"mb-3"}>
+                <ChooseDataset selectedDataset={state.selectedDataset}
+                               selectDataset={selectDataset}/>
+                <Row className={"mb-3 mt-3"}>
                     <Col>
                         Detected biomarkers <br/><span
                         className={"text-secondary"}>{state.datasetMetadata?.biomarkers.join(", ")}</span>
@@ -47,10 +44,12 @@ export default function SideBar() {
                     </Form.Group>
                 }
                 <Form.Group className="mb-3">
-                    {state.selectedCovariates.map(v =>
-                        <SelectedCovariateOption
-                            key={v.name}
-                            covariate={v}/>)}
+                    {state.datasetSettings[state.selectedDataset]
+                        .covariateSettings
+                        .map(v =>
+                            <SelectedCovariate
+                                key={v.name}
+                                covariate={v}/>)}
                 </Form.Group>
             </fieldset>
         </Form>

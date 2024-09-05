@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 import {
     AppState,
     ResponseSuccess,
-    SelectedCovariate
+    CovariateSettings, DatasetSettings
 } from "../src/types";
 import {
     DataSeries,
@@ -18,7 +18,7 @@ export function mockAppState(state: Partial<AppState> = {}): AppState {
         datasetNames: [],
         datasetMetadata: null,
         selectedDataset: "",
-        selectedCovariates: [],
+        datasetSettings: {},
         uploadError: null,
         genericError: null,
         language: "en",
@@ -39,6 +39,14 @@ export function mockDatasetMetadata(datasetMetadata: Partial<DatasetMetadata> = 
     }
 }
 
+export function mockDatasetSettings(settings: Partial<DatasetSettings> = {}): DatasetSettings {
+    return {
+        covariateSettings: [],
+        scale: "natural",
+        ...settings
+    }
+}
+
 export function mockVariable(variable: Partial<Variable> = {}): Variable {
     return {
         name: "sex",
@@ -47,7 +55,7 @@ export function mockVariable(variable: Partial<Variable> = {}): Variable {
     }
 }
 
-export function mockSelectedCovariate(variable: Partial<SelectedCovariate> = {}): SelectedCovariate {
+export function mockSelectedCovariate(variable: Partial<CovariateSettings> = {}): CovariateSettings {
     return {
         name: "sex",
         levels: ["F", "M"],
@@ -56,7 +64,7 @@ export function mockSelectedCovariate(variable: Partial<SelectedCovariate> = {})
     }
 }
 
-export function mockCovariate(variable: Partial<SelectedCovariate> = {}): SelectedCovariate {
+export function mockCovariate(variable: Partial<CovariateSettings> = {}): CovariateSettings {
     return {
         name: "c1",
         levels: ["1", "2"],

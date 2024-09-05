@@ -2,10 +2,10 @@ import React from "react";
 import {fireEvent, render, screen} from "@testing-library/react";
 import {mockSelectedCovariate} from "../mocks";
 import {ActionType, RootDispatchContext} from "../../src/RootContext";
-import SelectedCovariateOption
-    from "../../src/components/SelectedCovariateOption";
+import SelectedCovariate
+    from "../../src/components/SelectedCovariate";
 
-describe("<SelectedCovariateOption />", () => {
+describe("<SelectedCovariate />", () => {
 
     const covariate = mockSelectedCovariate({
         name: "age",
@@ -17,7 +17,7 @@ describe("<SelectedCovariateOption />", () => {
         const dispatch = jest.fn();
         const {container} = render(
             <RootDispatchContext.Provider value={dispatch}>
-                <SelectedCovariateOption covariate={covariate} key={"1"}/>
+                <SelectedCovariate covariate={covariate} key={"1"}/>
             </RootDispatchContext.Provider>);
         expect(container.textContent).toContain("age");
         expect(container.textContent).toContain("trace");
@@ -27,8 +27,8 @@ describe("<SelectedCovariateOption />", () => {
         const dispatch = jest.fn();
         render(
             <RootDispatchContext.Provider
-                value={dispatch}><SelectedCovariateOption covariate={covariate}
-                                                          key={"1"}/>
+                value={dispatch}><SelectedCovariate covariate={covariate}
+                                                    key={"1"}/>
             </RootDispatchContext.Provider>);
         const closeButton = screen.getByRole("close");
 
