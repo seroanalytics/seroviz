@@ -6,7 +6,6 @@ import {
 } from "../../src/RootContext";
 import {render, screen, waitFor} from "@testing-library/react";
 import {mockAppState, mockAxios, mockSuccess} from "../mocks";
-import {act} from "react";
 import {userEvent} from "@testing-library/user-event";
 
 describe("<ChooseOrUploadDataset/>", () => {
@@ -22,11 +21,11 @@ describe("<ChooseOrUploadDataset/>", () => {
         let state = mockAppState();
         const dispatch = jest.fn();
 
-        act(() => render(<RootContext.Provider value={state}>
+        render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
                 value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
-        </RootContext.Provider>));
+        </RootContext.Provider>);
 
         await waitFor(() => expect(dispatch.mock.calls.length).toBe(1));
 
@@ -45,11 +44,11 @@ describe("<ChooseOrUploadDataset/>", () => {
         });
         const dispatch = jest.fn();
 
-        act(() => render(<RootContext.Provider value={state}>
+        render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
                 value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
-        </RootContext.Provider>));
+        </RootContext.Provider>);
 
         expect(screen.getAllByLabelText("Choose dataset").length).toBe(1);
         const select = screen.getByRole("combobox") as HTMLSelectElement;
@@ -67,11 +66,11 @@ describe("<ChooseOrUploadDataset/>", () => {
         });
         const dispatch = jest.fn();
 
-        act(() => render(<RootContext.Provider value={state}>
+        render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
                 value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
-        </RootContext.Provider>));
+        </RootContext.Provider>);
 
         expect(screen.queryByLabelText("Choose dataset")).toBe(null);
         expect(screen.queryByText("Go")).toBe(null);
@@ -87,11 +86,11 @@ describe("<ChooseOrUploadDataset/>", () => {
         const dispatch = jest.fn();
         const user = userEvent.setup();
 
-        act(() => render(<RootContext.Provider value={state}>
+        render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
                 value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
-        </RootContext.Provider>));
+        </RootContext.Provider>);
 
         const select = screen.getByRole("combobox") as HTMLSelectElement;
 
@@ -115,11 +114,11 @@ describe("<ChooseOrUploadDataset/>", () => {
         const dispatch = jest.fn();
         const user = userEvent.setup();
 
-        act(() => render(<RootContext.Provider value={state}>
+        render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
                 value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
-        </RootContext.Provider>));
+        </RootContext.Provider>);
 
         expect(screen.getByTestId("advanced-options")).toHaveClass("d-none");
         const toggle = screen.getByText("Advanced options");
@@ -143,11 +142,11 @@ describe("<ChooseOrUploadDataset/>", () => {
         const dispatch = jest.fn();
         const user = userEvent.setup();
 
-        act(() => render(<RootContext.Provider value={state}>
+        render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
                 value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
-        </RootContext.Provider>));
+        </RootContext.Provider>);
 
         const fileInput = screen.getByLabelText("Upload new dataset");
         const testFile = new File(['hello'], 'hello.csv', {type: 'text/csv'});

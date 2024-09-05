@@ -42,16 +42,19 @@ export default function LinePlot({
 
     const facetDefinition = facetDefinitions.join("+")
 
+    const settings = state.datasetSettings[state.selectedDataset].covariateSettings;
     useEffect(() => {
-        dataService(state.language, dispatch)
-            .getDataSeries(state.selectedDataset,
-                biomarker, facetDefinition, state.datasetSettings[state.selectedDataset].covariateSettings)
-            .then(data => {
-                if (data && data.data) {
-                    setSeries(data.data)
-                }
-            });
-    }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, state.datasetSettings]);
+        const fetchData = async () => {
+            const result = await dataService(state.language, dispatch)
+                .getDataSeries(state.selectedDataset,
+                    biomarker, facetDefinition, settings);
+
+            if (result && result.data) {
+                setSeries(result.data)
+            }
+        }
+        fetchData();
+    }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, settings]);
 
     let series: any[] = [];
 
@@ -78,6 +81,8 @@ export default function LinePlot({
                 marker: {color: colors[index], opacity: 0.5}
             }]))
     }
+
+    console.log("rendering")
 
     return <Plot
         data={series}
