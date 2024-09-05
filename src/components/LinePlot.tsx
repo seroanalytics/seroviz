@@ -45,13 +45,13 @@ export default function LinePlot({
     useEffect(() => {
         dataService(state.language, dispatch)
             .getDataSeries(state.selectedDataset,
-                biomarker, facetDefinition, state.selectedCovariates)
+                biomarker, facetDefinition, state.datasetSettings[state.selectedDataset].covariateSettings)
             .then(data => {
                 if (data && data.data) {
                     setSeries(data.data)
                 }
             });
-    }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, state.selectedCovariates]);
+    }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, state.datasetSettings]);
 
     let series: any[] = [];
 

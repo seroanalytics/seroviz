@@ -5,7 +5,7 @@ export const initialState: AppState = {
     datasetNames: [],
     datasetMetadata: null,
     selectedDataset: "",
-    selectedCovariates: [],
+    datasetSettings: {},
     uploadError: null,
     genericError: null,
     language: "en"
@@ -26,30 +26,6 @@ export enum ActionType {
 export interface RootAction {
     type: ActionType
     payload: any
-}
-
-export const rootReducer = (state: AppState, action: RootAction): AppState => {
-    console.log(action.type);
-    switch (action.type) {
-        case ActionType.ERROR_ADDED:
-            return {...state, genericError: action.payload}
-        case ActionType.ERROR_DISMISSED:
-            return {...state, genericError: null}
-        case ActionType.UPLOAD_ERROR_ADDED:
-            return {...state, uploadError: action.payload}
-        case ActionType.UPLOAD_ERROR_DISMISSED:
-            return {...state, uploadError: null}
-        case ActionType.DATASET_NAMES_FETCHED:
-            return {...state, datasetNames: action.payload}
-        case ActionType.DATASET_SELECTED:
-            return {...state, selectedDataset: action.payload}
-        case ActionType.DATASET_METADATA_FETCHED:
-            return {...state, datasetMetadata: action.payload}
-        case ActionType.SELECT_COVARIATE:
-            return {...state, selectedCovariates: [...state.selectedCovariates, action.payload]}
-        case ActionType.UNSELECT_COVARIATE:
-            return {...state, selectedCovariates: state.selectedCovariates.filter(v => v.name !== action.payload)}
-    }
 }
 
 export const RootContext = createContext<AppState>(initialState);

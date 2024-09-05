@@ -1,17 +1,17 @@
 import React, {useEffect, useReducer} from 'react';
 import {Container} from "react-bootstrap";
 import TopNav from "./TopNav";
-import {ChooseDataset} from "./ChooseDataset";
+import {ChooseOrUploadDataset} from "./ChooseOrUploadDataset";
 import usePersistedState from "../hooks/usePersistedState";
 import {
     initialState,
     RootContext,
-    RootDispatchContext,
-    rootReducer
+    RootDispatchContext
 } from "../RootContext";
 import {ExploreDataset} from "./ExploreDataset";
 import AppError from "./AppError";
 import {dataService} from "../services/dataService";
+import {rootReducer} from "../reducers/rootReducer";
 
 export default function App() {
     const [theme, setTheme] = usePersistedState<string>("theme", "dark");
@@ -37,7 +37,7 @@ export default function App() {
                     setTheme={setTheme as (newState: string) => void}></TopNav>
             <AppError/>
             <Container fluid>
-                {!state.selectedDataset && <ChooseDataset/>}
+                {!state.selectedDataset && <ChooseOrUploadDataset/>}
                 {state.selectedDataset && <ExploreDataset/>}
             </Container>
         </RootDispatchContext.Provider>

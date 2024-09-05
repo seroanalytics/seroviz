@@ -1,7 +1,10 @@
 import {
     mockAppState,
     mockAxios,
-    mockDatasetMetadata, mockSelectedCovariate, mockSeriesData,
+    mockDatasetMetadata,
+    mockDatasetSettings,
+    mockSelectedCovariate,
+    mockSeriesData,
     mockSuccess
 } from "../mocks";
 import {render, screen} from "@testing-library/react";
@@ -28,6 +31,8 @@ describe("<ExploreDataset/>", () => {
                 .reply(200, mockSuccess(mockSeriesData()));
 
             const state = mockAppState({
+                selectedDataset: "d1",
+                datasetSettings: {"d1": mockDatasetSettings()},
                 datasetMetadata: mockDatasetMetadata({
                     biomarkers: ["ab", "ba"]
                 })
@@ -52,17 +57,22 @@ describe("<ExploreDataset/>", () => {
                     datasetMetadata: mockDatasetMetadata({
                         biomarkers: ["ab", "ba"]
                     }),
-                    selectedCovariates: [
-                        mockSelectedCovariate({
-                            display: "facet",
-                            name: "age",
-                            levels: ["0-5", "5+"]
-                        }),
-                        mockSelectedCovariate({
-                            name: "sex",
-                            display: "trace"
+                    selectedDataset: "d1",
+                    datasetSettings: {
+                        "d1": mockDatasetSettings({
+                            covariateSettings: [
+                                mockSelectedCovariate({
+                                    display: "facet",
+                                    name: "age",
+                                    levels: ["0-5", "5+"]
+                                }),
+                                mockSelectedCovariate({
+                                    name: "sex",
+                                    display: "trace"
+                                })
+                            ]
                         })
-                    ]
+                    }
                 });
                 await act(() => render(<RootContext.Provider value={state}>
                     <ExploreDataset/>

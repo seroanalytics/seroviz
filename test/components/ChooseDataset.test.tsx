@@ -1,4 +1,4 @@
-import {ChooseDataset} from "../../src/components/ChooseDataset";
+import {ChooseOrUploadDataset} from "../../src/components/ChooseOrUploadDataset";
 import {
     ActionType,
     RootContext,
@@ -9,7 +9,7 @@ import {mockAppState, mockAxios, mockSuccess} from "../mocks";
 import {act} from "react";
 import {userEvent} from "@testing-library/user-event";
 
-describe("<ChooseDataset/>", () => {
+describe("<ChooseOrUploadDataset/>", () => {
 
     beforeEach(() => {
         mockAxios.reset();
@@ -24,7 +24,7 @@ describe("<ChooseDataset/>", () => {
 
         act(() => render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseDataset/>
+                value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>));
 
@@ -47,7 +47,7 @@ describe("<ChooseDataset/>", () => {
 
         act(() => render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseDataset/>
+                value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>));
 
@@ -69,7 +69,7 @@ describe("<ChooseDataset/>", () => {
 
         act(() => render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseDataset/>
+                value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>));
 
@@ -89,7 +89,7 @@ describe("<ChooseDataset/>", () => {
 
         act(() => render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseDataset/>
+                value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>));
 
@@ -117,7 +117,7 @@ describe("<ChooseDataset/>", () => {
 
         act(() => render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseDataset/>
+                value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>));
 
@@ -145,7 +145,7 @@ describe("<ChooseDataset/>", () => {
 
         act(() => render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseDataset/>
+                value={dispatch}><ChooseOrUploadDataset/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>));
 

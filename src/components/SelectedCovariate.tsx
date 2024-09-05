@@ -1,10 +1,10 @@
 import {Button, Col, Form, Row} from "react-bootstrap";
 import React, {useContext} from "react";
 import {ActionType, RootDispatchContext} from "../RootContext";
-import {SelectedCovariate} from "../types";
+import {CovariateSettings} from "../types";
 
 
-export default function SelectedCovariateOption({covariate}: { covariate: SelectedCovariate, key: string }) {
+export default function SelectedCovariate({covariate}: { covariate: CovariateSettings, key: string }) {
 
     const dispatch = useContext(RootDispatchContext);
 

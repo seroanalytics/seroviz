@@ -19,15 +19,20 @@ export interface Dict<T> {
     [index: string]: T
 }
 
-export interface SelectedCovariate extends Variable {
+export interface CovariateSettings extends Variable {
     display: PlotDisplay
+}
+
+export interface DatasetSettings {
+    covariateSettings: CovariateSettings[]
+    scale: "log" | "natural" | "log2"
 }
 
 export interface AppState {
     datasetNames: DatasetNames
     datasetMetadata: DatasetMetadata | null
     selectedDataset: string
-    selectedCovariates: SelectedCovariate[]
+    datasetSettings: Dict<DatasetSettings>
     uploadError: ErrorDetail | null
     genericError: ErrorDetail | null
     language: string
