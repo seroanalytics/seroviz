@@ -6,9 +6,15 @@ export const rootReducer = (state: AppState, action: RootAction): AppState => {
     console.log(action.type);
     switch (action.type) {
         case ActionType.ERROR_ADDED:
-            return {...state, genericError: action.payload}
+            return {
+                ...state,
+                genericErrors: [...state.genericErrors, action.payload]
+            }
         case ActionType.ERROR_DISMISSED:
-            return {...state, genericError: null}
+            return {
+                ...state,
+                genericErrors: state.genericErrors.filter(e => e.detail !== action.payload.detail || e.error !== action.payload.error)
+            }
         case ActionType.UPLOAD_ERROR_ADDED:
             return {...state, uploadError: action.payload}
         case ActionType.UPLOAD_ERROR_DISMISSED:

@@ -7,7 +7,7 @@ export const initialState: AppState = {
     selectedDataset: "",
     datasetSettings: {},
     uploadError: null,
-    genericError: null,
+    genericErrors: [],
     language: "en"
 }
 

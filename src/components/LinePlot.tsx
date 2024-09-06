@@ -53,6 +53,10 @@ export default function LinePlot({
             if (result && result.data) {
                 setSeries(result.data)
             }
+
+            else {
+                setSeries(null)
+            }
         }
         fetchData();
     }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, covariateSettings, scale]);
@@ -81,6 +85,8 @@ export default function LinePlot({
                 showlegend: false,
                 marker: {color: colors[index], opacity: 0.5}
             }]))
+    } else {
+        series = []
     }
 
     return <Plot
