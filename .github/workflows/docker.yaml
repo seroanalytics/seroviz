@@ -21,6 +21,12 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
 
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+
+      - name: 📥 Install deps
+        run: npm install --frozen-lockfile
+
       - name: 🔨 Build image
         run: ./scripts/build
 
