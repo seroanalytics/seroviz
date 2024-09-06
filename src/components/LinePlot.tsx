@@ -3,6 +3,7 @@ import Plot from 'react-plotly.js';
 import {RootContext, RootDispatchContext} from "../RootContext";
 import {DataSeries} from "../generated";
 import {dataService} from "../services/dataService";
+import {toFilename} from "../services/plotUtils";
 
 interface Props {
     biomarker: string
@@ -52,9 +53,7 @@ export default function LinePlot({
 
             if (result && result.data) {
                 setSeries(result.data)
-            }
-
-            else {
+            } else {
                 setSeries(null)
             }
         }
@@ -89,18 +88,28 @@ export default function LinePlot({
         series = []
     }
 
+    let title = biomarker;
+    if (facetDefinition) {
+        title += " " + facetDefinition
+    }
+
     return <Plot
         data={series}
         layout={{
-            title: biomarker + " " + facetDefinition,
+            title: title,
             legend: {xanchor: 'center', orientation: 'v'},
-            paper_bgcolor: "rgba(255,255,255, 0)",
             xaxis: {
                 title: {
                     text: state.datasetMetadata?.xcol
                 }
+            },
+            yaxis: {
+                title: {
+                    text: scale === "natural" ? "value" : `${scale} value`
+                }
             }
         }}
+        config={{toImageButtonOptions: {filename: toFilename(title)}}}
         useResizeHandler={true}
         style={{minWidth: "400px", width: "100%", height: "500"}}
     />

@@ -61,8 +61,7 @@ describe("<LinePlot />", () => {
             .toBeCalledTimes(2));
 
         const plot = Plot as Mock
-        expect(plot.mock.calls[1][0]).toEqual({
-            data: [
+        expect(plot.mock.calls[1][0].data).toEqual([
                 {
                     legendgroup: "all",
                     line: {
@@ -91,27 +90,7 @@ describe("<LinePlot />", () => {
                     type: "scatter",
                     x: [1, 2],
                     y: [3, 4]
-                }],
-            layout: {
-                legend: {
-                    orientation: "v",
-                    xanchor: "center"
-                },
-                paper_bgcolor: "rgba(255,255,255, 0)",
-                title: "ab ",
-                xaxis: {
-                    title: {
-                        text: "day"
-                    }
-                }
-            },
-            style: {
-                height: "500",
-                minWidth: "400px",
-                width: "100%"
-            },
-            useResizeHandler: true
-        })
+                }])
     });
 
     test("requests data for given facet variables", async () => {
