@@ -42,6 +42,6 @@ describe("<App />", () => {
         await userEvent.click(go);
 
         const biomarkers = await screen.findByText("Detected biomarkers");
-        expect(biomarkers.nextSibling?.textContent).toBe("ab");
+        expect(biomarkers.parentNode?.textContent).toBe("Detected biomarkers ab");
     });
 });
