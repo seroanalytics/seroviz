@@ -26,16 +26,18 @@ export default function App() {
 
     useEffect(() => {
         setInterval(() => {
-            dataService("en", () => {})
+            dataService("en", () => {
+            })
                 .refreshSession()
-        }, 60*1000);
+        }, 60 * 1000);
     }, []);
 
     return <RootContext.Provider value={state}>
         <RootDispatchContext.Provider value={dispatch}>
             <TopNav theme={theme as string}
                     setTheme={setTheme as (newState: string) => void}></TopNav>
-            <AppError/>
+            {state.genericErrors.map((e, index) => <AppError error={e}
+                                                              key={"error" + index}/>)}
             <Container fluid>
                 {!state.selectedDataset && <ChooseOrUploadDataset/>}
                 {state.selectedDataset && <ExploreDataset/>}

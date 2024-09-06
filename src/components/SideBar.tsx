@@ -28,7 +28,7 @@ export default function SideBar() {
 
     return <Col xs="3" className="pt-3 border-1 border-end border-secondary"
                 data-testid="sidebar">
-        <Form method="post">
+        <Form>
             <fieldset>
                 <ChooseDataset selectedDataset={state.selectedDataset}
                                selectDataset={selectDataset}/>

@@ -20,7 +20,7 @@ export function mockAppState(state: Partial<AppState> = {}): AppState {
         selectedDataset: "",
         datasetSettings: {},
         uploadError: null,
-        genericError: null,
+        genericErrors: [],
         language: "en",
         ...state
     }
@@ -103,8 +103,8 @@ export const mockFailure = (errorMessage: string): ResponseFailure => {
     }
 };
 
-export const mockError = (errorMessage: string): ErrorDetail => {
-    return {error: "OTHER_ERROR", detail: errorMessage};
+export const mockError = (detail: string, error: string =  "OTHER_ERROR"): ErrorDetail => {
+    return {error: error, detail: detail};
 };
 
 export const mockAxios = new MockAdapter(axios);

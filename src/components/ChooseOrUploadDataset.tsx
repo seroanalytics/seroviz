@@ -106,9 +106,8 @@ export function ChooseOrUploadDataset() {
                         <Form.Text muted>File must be in CSV format. Required
                             columns: biomarker, value, day. Files you upload are
                             only accessible to you and
-                            will persist for one hour or until you close your
-                            browser,
-                            whichever is longer.</Form.Text>
+                            will be deleted when you close your
+                            browser.</Form.Text>
                         <div className={"d-block mt-2"}>
                             <button className="btn btn-link p-0"
                                     onClick={toggleShowOptions}>Advanced options

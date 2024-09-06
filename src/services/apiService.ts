@@ -56,9 +56,9 @@ export class APIService implements API<ActionType> {
         return failure.errors[0];
     };
 
-    static createError(detail: string) {
+    static createError(detail: string| null, error: string = "MALFORMED_RESPONSE") {
         return {
-            error: "MALFORMED_RESPONSE",
+            error: error,
             detail: detail
         }
     }
@@ -106,11 +106,14 @@ export class APIService implements API<ActionType> {
 
     private _handleError = (e: AxiosError) => {
         console.log(e.response && (e.response.data || e));
-        if (this._ignoreErrors) {
-            return
+
+        if (!this._ignoreErrors) {
+            this._handleDispatchError(e.response && e.response.data)
         }
 
-        this._handleDispatchError(e.response && e.response.data)
+        if (e.response && e.response.status === 404) {
+            this._dispatchError(APIService.createError("Your session may have expired.", "SESSION_EXPIRED"));
+        }
     };
 
     private _dispatchError = (error: ErrorDetail) => {

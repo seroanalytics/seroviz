@@ -34,6 +34,6 @@ export interface AppState {
     selectedDataset: string
     datasetSettings: Dict<DatasetSettings>
     uploadError: ErrorDetail | null
-    genericError: ErrorDetail | null
+    genericErrors: ErrorDetail[]
     language: string
 }

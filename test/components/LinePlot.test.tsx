@@ -1,7 +1,7 @@
 import {
     mockAppState,
     mockAxios, mockDatasetMetadata,
-    mockDatasetSettings,
+    mockDatasetSettings, mockFailure,
     mockSuccess
 } from "../mocks";
 import {render, waitFor} from "@testing-library/react";
@@ -183,4 +183,66 @@ describe("<LinePlot />", () => {
                     y: [3, 4]
                 }])
     });
+
+    test("clears plot data if request to API fails", async () => {
+        mockAxios.onGet("/dataset/d1/trace/ab/?scale=natural")
+            .reply(200, mockSuccess<DataSeries>([{
+                name: "all",
+                model: {
+                    x: [1.1, 2.2],
+                    y: [3.3, 4.4]
+                },
+                raw: {
+                    x: [1, 2],
+                    y: [3, 4]
+                }
+            }]));
+
+        mockAxios.onGet("/dataset/d1/trace/ab/?filter=sex%3AF&scale=natural")
+            .reply(404, mockFailure("bad"));
+
+        const dispatch = jest.fn();
+        const state = mockAppState({
+            selectedDataset: "d1",
+            datasetMetadata: mockDatasetMetadata(),
+            datasetSettings: {
+                "d1": mockDatasetSettings()
+            }
+        });
+        const {rerender} = render(<RootContext.Provider value={state}>
+                <RootDispatchContext.Provider value={dispatch}>
+                    <LinePlot biomarker={"ab"}
+                              facetLevels={[]}
+                              facetVariables={[]}/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>);
+
+        await waitFor(() => expect(mockAxios.history.get.length)
+            .toBe(1));
+
+        await waitFor(() => expect((Plot as Mock))
+            .toBeCalledTimes(2));
+
+        let plot = Plot as Mock
+        expect(plot.mock.calls[1][0].data.length).toBeGreaterThan(0);
+
+        rerender(<RootContext.Provider value={state}>
+            <RootDispatchContext.Provider value={dispatch}>
+                <LinePlot biomarker={"ab"}
+                          facetLevels={["F"]}
+                          facetVariables={["sex"]}/>
+            </RootDispatchContext.Provider>
+        </RootContext.Provider>);
+
+        await waitFor(() => expect(mockAxios.history.get.length)
+            .toBe(2));
+
+        await waitFor(() => expect((Plot as Mock))
+            .toBeCalledTimes(4));
+
+        plot = Plot as Mock
+        expect(plot.mock.calls[2][0].data.length).toBe(2);
+        expect(plot.mock.calls[3][0].data.length).toBe(0);
+    });
+
 });

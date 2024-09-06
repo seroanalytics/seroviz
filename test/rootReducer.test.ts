@@ -17,14 +17,21 @@ describe("rootReducer", () => {
                 type: ActionType.ERROR_ADDED,
                 payload: mockError("custom message")
             });
-        expect(newState.genericError).toEqual(mockError("custom message"));
+        expect(newState.genericErrors).toEqual([mockError("custom message")]);
     });
 
     it("should dismiss generic error on ERROR_DISMISSED", () => {
-        const state = mockAppState({genericError: mockError("custom message")});
+        const state = mockAppState({
+            genericErrors: [
+                mockError("custom message"),
+                mockError("another message")]
+        });
         const newState = rootReducer(state,
-            {type: ActionType.ERROR_DISMISSED, payload: null});
-        expect(newState.genericError).toBe(null);
+            {
+                type: ActionType.ERROR_DISMISSED,
+                payload: mockError("custom message")
+            });
+        expect(newState.genericErrors).toEqual([mockError("another message")]);
     });
 
     it("should add upload error on UPLOAD_ERROR_ADDED", () => {
