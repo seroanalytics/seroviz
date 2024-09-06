@@ -41,6 +41,7 @@ describe("<App />", () => {
         const go = await screen.findByText("Go");
         await userEvent.click(go);
 
-        await screen.findByText("Detected biomarkers");
+        const biomarkers = await screen.findByText("Detected biomarkers");
+        expect(biomarkers.nextSibling?.textContent).toBe("ab");
     });
 });

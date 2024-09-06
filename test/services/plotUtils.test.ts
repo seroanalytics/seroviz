@@ -1,7 +1,8 @@
-import {calculateFacets} from "../../src/services/plotUtils";
+import {calculateFacets, toFilename} from "../../src/services/plotUtils";
 import {Variable} from "../../src/generated";
 
 describe("plotUtils", () => {
+
     it("Can calculate facets", () => {
         const facetVariables: Variable[] = [
             {
@@ -25,5 +26,13 @@ describe("plotUtils", () => {
         expect(result[5]).toEqual(["M", "1", "ba"])
         expect(result[6]).toEqual(["M", "2", "ab"])
         expect(result[7]).toEqual(["M", "2", "ba"])
+    })
+
+    it("can generate snake case filename", () => {
+        expect(toFilename("ab_units sex:F")).toBe("ab_units_sex_f")
+        expect(toFilename("ab_units  sex:F")).toBe("ab_units_sex_f")
+        expect(toFilename("ab_units  ")).toBe("ab_units")
+        expect(toFilename("ab_units")).toBe("ab_units")
+        expect(toFilename("ABunits")).toBe("abunits")
     })
 });
