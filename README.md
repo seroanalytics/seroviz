@@ -110,7 +110,7 @@ Then:
 
 ## Domain name
 The domain name `seroanalytics.org` is registered with NameCheap.
-Contact `alex.hill@gmail.com` if you need to add or change a DNS record.
+Contact Alex if you need to add or change a DNS record.
 
 ## Acknowledgements
 Logo created with BioRender.com
