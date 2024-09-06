@@ -7,5 +7,7 @@ HERE=$(dirname $0)
 npm run build
 
 docker build --pull \
-       --tag $TAG_SHA \
+       --tag $DOCKER_COMMIT_TAG \
        .
+
+docker tag $DOCKER_COMMIT_TAG $DOCKER_BRANCH_TAG

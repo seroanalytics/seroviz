@@ -4,6 +4,8 @@
 [![🔨 Build](https://github.com/seroanalytics/seroviz/actions/workflows/build.yml/badge.svg)](https://github.com/seroanalytics/seroviz/actions/workflows/build.yml)
 [![🔎 Test](https://github.com/seroanalytics/seroviz/actions/workflows/test.yml/badge.svg)](https://github.com/seroanalytics/seroviz/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/seroanalytics/seroviz/graph/badge.svg?token=2DH6NUOXRe)](https://codecov.io/gh/seroanalytics/seroviz)
+![Docker Image Version](https://img.shields.io/docker/v/seroanalytics/seroviz?logo=docker)
+![GitHub License](https://img.shields.io/github/license/seroanalytics/seroviz)
 
 Client-side React application for visualising serological data.
 

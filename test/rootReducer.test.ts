@@ -101,4 +101,18 @@ describe("rootReducer", () => {
             {type: ActionType.UNSELECT_COVARIATE, payload: "c1"});
         expect(newState.datasetSettings["d1"].covariateSettings.length).toBe(0);
     });
+
+
+    it("should select scale on SELECT_SCALE", () => {
+        const state = mockAppState({
+            selectedDataset: "d1",
+            datasetSettings: {
+                "d1": mockDatasetSettings()
+            }
+        });
+        expect(state.datasetSettings["d1"].scale).toBe("natural");
+        const newState = rootReducer(state,
+            {type: ActionType.SELECT_SCALE, payload: "log"});
+        expect(newState.datasetSettings["d1"].scale).toBe("log");
+    });
 });

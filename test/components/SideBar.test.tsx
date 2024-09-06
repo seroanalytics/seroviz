@@ -89,7 +89,7 @@ describe("<SideBar />", () => {
                 </RootDispatchContext.Provider>
             </RootContext.Provider>);
 
-        const selectDataset = await screen.findByRole("combobox") as HTMLSelectElement;
+        const selectDataset = screen.getAllByRole("combobox")[0] as HTMLSelectElement;
         await userEvent.selectOptions(selectDataset, "d2");
 
         expect(dispatch.mock.calls[0][0]).toEqual({

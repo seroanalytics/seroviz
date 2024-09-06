@@ -5,6 +5,7 @@ import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
 import CovariateOptions from "./CovariateOptions";
 import SelectedCovariate from "./SelectedCovariate";
 import ChooseDataset from "./ChooseDataset";
+import ChooseScale from "./ChooseScale";
 
 export default function SideBar() {
 
@@ -37,6 +38,7 @@ export default function SideBar() {
                         className={"text-secondary"}>{state.datasetMetadata?.biomarkers.join(", ")}</span>
                     </Col>
                 </Row>
+                <ChooseScale />
                 {availableCovariates.length > 0 &&
                     <Form.Group className="mb-3">
                         <Form.Label>Disaggregate by</Form.Label>

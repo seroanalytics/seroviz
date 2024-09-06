@@ -50,10 +50,11 @@ export class DataService {
     async getDataSeries(selectedDataset: string,
                         biomarker: string,
                         facetDefinition: string,
-                        selectedCovariates: CovariateSettings[]) {
+                        covariateSettings: CovariateSettings[],
+                        scale: "log" | "natural" | "log2") {
 
 
-        const traces = selectedCovariates
+        const traces = covariateSettings
             .filter(v => v.display === "trace")
             .map(v => v.name).join("+")
 
@@ -63,8 +64,10 @@ export class DataService {
         }
 
         if (traces.length > 0) {
-            queryString += `disaggregate=${encodeURIComponent(traces)}`
+            queryString += `disaggregate=${encodeURIComponent(traces)}&`
         }
+
+        queryString += `scale=${scale}`
 
         return await this._api
             .ignoreSuccess()

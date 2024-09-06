@@ -59,7 +59,7 @@ describe("DataService", () => {
     test("it can fetch dataset metadata", async () => {
         const dispatch = jest.fn();
         const sut = dataService("en", dispatch);
-        const res = await sut.getDataSeries("testpopulation", "ab_units", "", []) as GenericResponse<DataSeries>;
+        const res = await sut.getDataSeries("testpopulation", "ab_units", "", [], "natural") as GenericResponse<DataSeries>;
         expect(res.data!![0].name).toBe("all");
         expect(res.data!![0].raw.x).toEqual([1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]);
         expect(dispatch.mock.calls.length).toBe(0);
@@ -68,7 +68,7 @@ describe("DataService", () => {
     test("it can fetch dataset metadata with facet definition", async () => {
         const dispatch = jest.fn();
         const sut = dataService("en", dispatch);
-        const res = await sut.getDataSeries("testpopulation", "ab_units", "sex:F", []) as GenericResponse<DataSeries>;
+        const res = await sut.getDataSeries("testpopulation", "ab_units", "sex:F", [], "natural") as GenericResponse<DataSeries>;
 
         expect(res.data!!.length).toBe(1);
         expect(res.data!![0].name).toBe("sex:F");
@@ -83,7 +83,7 @@ describe("DataService", () => {
             name: "age",
             display: "trace",
             levels: ["0-5"]
-        }]) as GenericResponse<DataSeries>;
+        }], "natural") as GenericResponse<DataSeries>;
 
         expect(res.data!!.length).toBe(2);
         expect(res.data!![0].name).toBe("0-5");

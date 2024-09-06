@@ -11,6 +11,8 @@ export const datasetReducer = (state: AppState, action: RootAction): AppState =>
             return selectCovariate(state, action)
         case ActionType.UNSELECT_COVARIATE:
             return unselectCovariate(state, action)
+        case ActionType.SELECT_SCALE:
+            return selectScale(state, action)
         default:
             return state
     }
@@ -34,7 +36,7 @@ const selectCovariate = (state: AppState, action: RootAction): AppState => {
     const newState = {...state}
     const settings = newState.datasetSettings[state.selectedDataset].covariateSettings
     if (settings.indexOf(action.payload) === -1) {
-        settings.push(action.payload)
+        newState.datasetSettings[state.selectedDataset].covariateSettings = [...settings, action.payload]
     }
     return newState
 }
@@ -43,5 +45,11 @@ const unselectCovariate = (state: AppState, action: RootAction) => {
     const newState = {...state}
     const settings = newState.datasetSettings[state.selectedDataset].covariateSettings
     newState.datasetSettings[state.selectedDataset].covariateSettings = settings.filter(v => v.name !== action.payload)
+    return newState
+}
+
+const selectScale = (state: AppState, action: RootAction): AppState => {
+    const newState = {...state}
+    newState.datasetSettings[state.selectedDataset].scale = action.payload
     return newState
 }
