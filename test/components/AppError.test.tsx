@@ -1,8 +1,8 @@
 import React from "react";
 import {fireEvent, render, screen} from "@testing-library/react";
 import AppError from "../../src/components/AppError";
-import {mockAppState, mockError} from "../mocks";
-import {ActionType, RootContext, RootDispatchContext} from "../../src/RootContext";
+import {mockError} from "../mocks";
+import {ActionType, RootDispatchContext} from "../../src/RootContext";
 
 describe("<AppError />", () => {
 
