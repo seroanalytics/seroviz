@@ -31,6 +31,7 @@ describe("plotUtils", () => {
     it("can generate snake case filename", () => {
         expect(toFilename("ab_units sex:F")).toBe("ab_units_sex_f")
         expect(toFilename("ab_units  sex:F")).toBe("ab_units_sex_f")
+        expect(toFilename("ab_units  sex:F+age:5+")).toBe("ab_units_sex_f_age_5")
         expect(toFilename("ab_units  ")).toBe("ab_units")
         expect(toFilename("ab_units")).toBe("ab_units")
         expect(toFilename("ABunits")).toBe("abunits")

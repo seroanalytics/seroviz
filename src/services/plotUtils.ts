@@ -7,5 +7,6 @@ export const calculateFacets = (first: string[], next: string[], ...rest: string
 
 export const toFilename = (title: string) => title
     .toLowerCase()
+    .replaceAll(/\W+/g, " ")
     .trim()
-    .replaceAll(/\W+/g, "_");
+    .replaceAll(/\s+/g, "_")
