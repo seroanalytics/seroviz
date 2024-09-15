@@ -32,7 +32,6 @@ export function ChooseOrUploadDataset() {
     const [selectedDataset, selectDataset] = useState(state.datasetNames.length > 0 ? state.datasetNames[0] : "");
     const [showOptions, setShowOptions] = useState(false);
     const [timeColumnHeader, setTimeColumnHeader] = useState("day");
-    const [timeColumnName, setTimeColumnName] = useState("Day of study");
     const [selectedFile, selectFile] = useState("");
     const [isUploading, setIsUploading] = useState(false);
 
@@ -41,7 +40,6 @@ export function ChooseOrUploadDataset() {
         setShowOptions(!showOptions);
     }
     const onSelectTimeColumnHeader = (e: any) => setTimeColumnHeader(e.target.value);
-    const onSelectTimeColumnName = (e: any) => setTimeColumnName(e.target.value);
 
     const uploadNewFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.currentTarget.files?.length) {
@@ -54,7 +52,7 @@ export function ChooseOrUploadDataset() {
 
             const formData = new FormData();
             formData.append('file', file);
-            formData.append('xcol', "day");
+            formData.append('xcol', timeColumnHeader);
 
             const dataService = new DataService(apiService);
 
@@ -137,15 +135,6 @@ export function ChooseOrUploadDataset() {
                                     <Form.Control type={"text"}
                                                   onChange={onSelectTimeColumnHeader}
                                                   value={timeColumnHeader}/>
-                                </Col>
-                            </Form.Group>
-                            <Form.Group className={"row mb-3"}>
-                                <Form.Label column sm={3}>Time column display
-                                    name</Form.Label>
-                                <Col sm={6}>
-                                    <Form.Control type={"text"}
-                                                  onChange={onSelectTimeColumnName}
-                                                  value={timeColumnName}/>
                                 </Col>
                             </Form.Group>
                         </div>
