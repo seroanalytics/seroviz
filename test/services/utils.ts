@@ -1,4 +1,4 @@
-import {calculateFacets, toFilename} from "../../src/services/plotUtils";
+import {calculateFacets, toFilename} from "../../src/services/utils";
 import {Variable} from "../../src/generated";
 
 describe("plotUtils", () => {

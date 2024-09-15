@@ -97,4 +97,21 @@ describe("<SideBar />", () => {
             payload: "d2"
         });
     });
+
+    test("user can change spline settings", async () => {
+        const state = mockAppState({
+            datasetNames: ["d1", "d2"],
+            selectedDataset: "d1",
+            datasetSettings: {"d1": mockDatasetSettings()}
+        });
+        const dispatch = jest.fn();
+        const {container} = render(
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider value={dispatch}>
+                    <SideBar></SideBar>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>);
+
+        expect(container.textContent).toContain("Spline options")
+    });
 });

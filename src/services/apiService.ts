@@ -120,6 +120,10 @@ export class APIService implements API<ActionType> {
         this._dispatch({type: ActionType.ERROR_ADDED, payload: error});
     };
 
+    private _clearErrors = () => {
+        this._dispatch({type: ActionType.CLEAR_ALL_ERRORS, payload: null});
+    };
+
     private _verifyHandlers(url: string) {
         if (this._onError == null && !this._ignoreErrors) {
             console.warn(`No error handler registered for request ${url}.`)
@@ -131,6 +135,7 @@ export class APIService implements API<ActionType> {
 
     async get<T>(url: string): Promise<void | GenericResponse<T>> {
         this._verifyHandlers(url);
+        this._clearErrors();
         const fullUrl = this._buildFullUrl(url);
         return this._handleAxiosResponse(axios.get(fullUrl, {headers: this._headers}));
     }
@@ -147,6 +152,7 @@ export class APIService implements API<ActionType> {
 
     async postAndReturn<T>(url: string, data?: any): Promise<void | GenericResponse<T>> {
         this._verifyHandlers(url);
+        this._clearErrors();
         const fullUrl = this._buildFullUrl(url);
 
         // this allows us to pass data of type FormData in both the browser and
@@ -159,6 +165,7 @@ export class APIService implements API<ActionType> {
     }
 
     async delete(url: string) {
+        this._clearErrors();
         const fullUrl = this._buildFullUrl(url);
         return this._handleAxiosResponse(axios.delete(fullUrl));
     }

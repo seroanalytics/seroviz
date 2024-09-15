@@ -1,9 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Plot from 'react-plotly.js';
 import {RootContext, RootDispatchContext} from "../RootContext";
 import {DataSeries} from "../generated";
 import {dataService} from "../services/dataService";
-import {toFilename} from "../services/plotUtils";
+import {toFilename} from "../services/utils";
+import {useDebouncedEffect} from "../hooks/useDebouncedEffect";
 
 interface Props {
     biomarker: string
@@ -45,11 +46,12 @@ export default function LinePlot({
 
     const covariateSettings = state.datasetSettings[state.selectedDataset].covariateSettings;
     const scale = state.datasetSettings[state.selectedDataset].scale;
-    useEffect(() => {
+    const splineSettings = state.datasetSettings[state.selectedDataset].splineSettings;
+    useDebouncedEffect(() => {
         const fetchData = async () => {
             const result = await dataService(state.language, dispatch)
                 .getDataSeries(state.selectedDataset,
-                    biomarker, facetDefinition, covariateSettings, scale);
+                    biomarker, facetDefinition, covariateSettings, scale, splineSettings);
 
             if (result && result.data) {
                 setSeries(result.data)
@@ -58,7 +60,7 @@ export default function LinePlot({
             }
         }
         fetchData();
-    }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, covariateSettings, scale]);
+    }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, covariateSettings, scale, splineSettings], 100);
 
     let series: any[] = [];
 

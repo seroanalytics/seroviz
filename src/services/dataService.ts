@@ -7,7 +7,7 @@ import {
     UploadResult
 } from "../generated";
 import {
-    GenericResponse, CovariateSettings,
+    GenericResponse, CovariateSettings, SplineSettings,
 } from "../types";
 import {Dispatch} from "react";
 
@@ -51,7 +51,8 @@ export class DataService {
                         biomarker: string,
                         facetDefinition: string,
                         covariateSettings: CovariateSettings[],
-                        scale: "log" | "natural" | "log2") {
+                        scale: "log" | "natural" | "log2",
+                        splineSettings: SplineSettings) {
 
 
         const traces = covariateSettings
@@ -67,7 +68,7 @@ export class DataService {
             queryString += `disaggregate=${encodeURIComponent(traces)}&`
         }
 
-        queryString += `scale=${scale}`
+        queryString += `scale=${scale}&method=${splineSettings.method}&span=${splineSettings.span}&k=${splineSettings.k}`
 
         return await this._api
             .ignoreSuccess()

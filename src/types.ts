@@ -23,9 +23,16 @@ export interface CovariateSettings extends Variable {
     display: PlotDisplay
 }
 
+export interface SplineSettings {
+    method: "gam" | "loess" | "auto"
+    k: number
+    span: number
+}
+
 export interface DatasetSettings {
     covariateSettings: CovariateSettings[]
     scale: "log" | "natural" | "log2"
+    splineSettings: SplineSettings
 }
 
 export interface AppState {

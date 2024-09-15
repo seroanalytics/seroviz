@@ -10,3 +10,7 @@ export const toFilename = (title: string) => title
     .replaceAll(/\W+/g, " ")
     .trim()
     .replaceAll(/\s+/g, "_")
+
+export const between = (x: number, min: number, max: number) => {
+    return Math.min(Math.max(x, min), max)
+}
