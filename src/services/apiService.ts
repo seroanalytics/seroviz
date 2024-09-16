@@ -25,7 +25,6 @@ export interface API<A> {
 
     postAndReturn<T>(url: string, data: any): Promise<void | GenericResponse<T>>
     get<T>(url: string): Promise<void | GenericResponse<T>>
-    delete(url: string): Promise<void | true>
 }
 
 export class APIService implements API<ActionType> {
@@ -162,12 +161,6 @@ export class APIService implements API<ActionType> {
             : this._headers;
 
         return this._handleAxiosResponse(axios.post(fullUrl, data, {headers}));
-    }
-
-    async delete(url: string) {
-        this._clearErrors();
-        const fullUrl = this._buildFullUrl(url);
-        return this._handleAxiosResponse(axios.delete(fullUrl));
     }
 
 }
