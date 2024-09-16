@@ -33,6 +33,29 @@ describe("ApiService", () => {
             .toBe("some error message");
     });
 
+    it("clears all before making a call", async () => {
+
+        mockAxios.onGet(`/`)
+            .reply(200, mockSuccess(true));
+
+        mockAxios.onPost(`/`)
+            .reply(200, mockSuccess(true));
+
+        const dispatch = jest.fn();
+
+        await api(rootState.language, dispatch as any)
+            .get("/");
+
+        expect(dispatch.mock.calls.length).toBe(1);
+        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
+
+        await api(rootState.language, dispatch as any)
+            .postAndReturn("/");
+
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
+    });
+
     it("dispatches the the first error message by default", async () => {
 
         mockAxios.onGet(`/unusual/`)
@@ -46,9 +69,9 @@ describe("ApiService", () => {
         expect((console.warn as jest.Mock).mock.calls[0][0])
             .toBe("No error handler registered for request /unusual/.");
 
-        expect(dispatch.mock.calls.length).toBe(1);
-        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.ERROR_ADDED);
-        expect(dispatch.mock.calls[0][0].payload).toStrictEqual(mockError("some error message"));
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(ActionType.ERROR_ADDED);
+        expect(dispatch.mock.calls[1][0].payload).toStrictEqual(mockError("some error message"));
     });
 
     it("dispatches an extra SESSION_EXPIRED error on 404", async () => {
@@ -61,11 +84,11 @@ describe("ApiService", () => {
         await api(rootState.language, dispatch as any)
             .get("/bad/");
 
-        expect(dispatch.mock.calls.length).toBe(2);
-        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.ERROR_ADDED);
-        expect(dispatch.mock.calls[0][0].payload).toStrictEqual(mockError("some error message"));
+        expect(dispatch.mock.calls.length).toBe(3);
         expect(dispatch.mock.calls[1][0].type).toBe(ActionType.ERROR_ADDED);
-        expect(dispatch.mock.calls[1][0].payload).toStrictEqual(mockError("Your session may have expired.", "SESSION_EXPIRED"))
+        expect(dispatch.mock.calls[1][0].payload).toStrictEqual(mockError("some error message"));
+        expect(dispatch.mock.calls[2][0].type).toBe(ActionType.ERROR_ADDED);
+        expect(dispatch.mock.calls[2][0].payload).toStrictEqual(mockError("Your session may have expired.", "SESSION_EXPIRED"))
     });
 
     it("if no first error message, dispatches a default error message to errors module by default", async () => {
@@ -86,9 +109,9 @@ describe("ApiService", () => {
         expect((console.warn as jest.Mock).mock.calls[0][0])
             .toBe("No error handler registered for request /unusual/.");
 
-        expect(dispatch.mock.calls.length).toBe(1);
-        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.ERROR_ADDED);
-        expect(dispatch.mock.calls[0][0].payload).toStrictEqual({
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(ActionType.ERROR_ADDED);
+        expect(dispatch.mock.calls[1][0].payload).toStrictEqual({
             error: "MALFORMED_RESPONSE",
             detail: "API response failed but did not contain any error information. If error persists, please contact support.",
         });
@@ -249,9 +272,9 @@ describe("ApiService", () => {
         await api(rootState.language, dispatch as any)
             .get("/datasets/");
 
-        expect(dispatch.mock.calls.length).toBe(1);
-        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.ERROR_ADDED);
-        expect(dispatch.mock.calls[0][0].payload).toStrictEqual({
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[1][0].type).toBe(ActionType.ERROR_ADDED);
+        expect(dispatch.mock.calls[1][0].payload).toStrictEqual({
             error: "MALFORMED_RESPONSE",
             detail: "Could not parse API response. If error persists, please contact support."
         });

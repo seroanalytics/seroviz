@@ -109,7 +109,6 @@ describe("rootReducer", () => {
         expect(newState.datasetSettings["d1"].covariateSettings.length).toBe(0);
     });
 
-
     it("should select scale on SELECT_SCALE", () => {
         const state = mockAppState({
             selectedDataset: "d1",
@@ -121,5 +120,32 @@ describe("rootReducer", () => {
         const newState = rootReducer(state,
             {type: ActionType.SELECT_SCALE, payload: "log"});
         expect(newState.datasetSettings["d1"].scale).toBe("log");
+    });
+
+    it("should clear all errors on CLEAR_ALL_ERRORS", () => {
+        const state = mockAppState({
+            genericErrors: [mockError("1"), mockError("2")]
+        });
+        const newState = rootReducer(state,
+            {type: ActionType.CLEAR_ALL_ERRORS, payload: null});
+        expect(newState.genericErrors.length).toBe(0);
+    });
+
+    it("should set spline options on SET_SPLINE_OPTIONS", () => {
+        const state = mockAppState({selectedDataset: "d1",
+            datasetSettings: {
+                "d1": mockDatasetSettings()
+            }});
+        let newState = rootReducer(state,
+            {type: ActionType.SET_SPLINE_OPTIONS, payload: { method: "gam"}});
+        expect(newState.datasetSettings["d1"].splineSettings.method).toBe("gam");
+
+        newState = rootReducer(state,
+            {type: ActionType.SET_SPLINE_OPTIONS, payload: { span: 0.1}});
+        expect(newState.datasetSettings["d1"].splineSettings.span).toBe(0.1);
+
+        newState = rootReducer(state,
+            {type: ActionType.SET_SPLINE_OPTIONS, payload: { k: 30}});
+        expect(newState.datasetSettings["d1"].splineSettings.k).toBe(30);
     });
 });

@@ -24,7 +24,7 @@ describe("<LinePlot />", () => {
     });
 
     test("requests data for given biomarker", async () => {
-        mockAxios.onGet(`/dataset/d1/trace/ab/?scale=natural`)
+        mockAxios.onGet(`/dataset/d1/trace/ab/?scale=natural&method=auto&span=0.75&k=10`)
             .reply(200, mockSuccess<DataSeries>([{
                 name: "all",
                 model: {
@@ -94,7 +94,7 @@ describe("<LinePlot />", () => {
     });
 
     test("requests data for given facet variables", async () => {
-        mockAxios.onGet(`/dataset/d1/trace/ab/?filter=age%3A0%2Bsex%3AF&scale=natural`)
+        mockAxios.onGet(`/dataset/d1/trace/ab/?filter=age%3A0%2Bsex%3AF&scale=natural&method=auto&span=0.75&k=10`)
             .reply(200, mockSuccess<DataSeries>([{
                 name: "all",
                 model: {
@@ -164,7 +164,7 @@ describe("<LinePlot />", () => {
     });
 
     test("clears plot data if request to API fails", async () => {
-        mockAxios.onGet("/dataset/d1/trace/ab/?scale=natural")
+        mockAxios.onGet("/dataset/d1/trace/ab/?scale=natural&method=auto&span=0.75&k=10")
             .reply(200, mockSuccess<DataSeries>([{
                 name: "all",
                 model: {
@@ -177,7 +177,7 @@ describe("<LinePlot />", () => {
                 }
             }]));
 
-        mockAxios.onGet("/dataset/d1/trace/ab/?filter=sex%3AF&scale=natural")
+        mockAxios.onGet("/dataset/d1/trace/ab/?filter=sex%3AF&scale=natural&method=auto&span=0.75&k=10")
             .reply(404, mockFailure("bad"));
 
         const dispatch = jest.fn();

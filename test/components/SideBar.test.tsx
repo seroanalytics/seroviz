@@ -37,7 +37,7 @@ describe("<SideBar />", () => {
             <SideBar></SideBar>
         </RootContext.Provider>);
 
-        const selectVariable = screen.getAllByRole("listbox")[0] as HTMLSelectElement;
+        const selectVariable = screen.getAllByRole("listbox")[1] as HTMLSelectElement;
         let items = selectVariable.options;
         expect(items.length).toBe(2);
         expect(items[0].value).toBe("b");
