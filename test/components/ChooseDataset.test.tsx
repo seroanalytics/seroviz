@@ -27,9 +27,9 @@ describe("<ChooseOrUploadDataset/>", () => {
             </RootDispatchContext.Provider>
         </RootContext.Provider>);
 
-        await waitFor(() => expect(dispatch.mock.calls.length).toBe(1));
+        await waitFor(() => expect(dispatch.mock.calls.length).toBe(2));
 
-        expect(dispatch.mock.calls[0][0]).toEqual({
+        expect(dispatch.mock.calls[1][0]).toEqual({
             type: ActionType.DATASET_NAMES_FETCHED,
             payload: ["d1", "d2"]
         });
@@ -98,7 +98,7 @@ describe("<ChooseOrUploadDataset/>", () => {
         const submit = screen.getByText("Go");
         await user.click(submit);
 
-        expect(dispatch.mock.calls[1][0]).toEqual({
+        expect(dispatch.mock.calls[2][0]).toEqual({
             type: ActionType.DATASET_SELECTED,
             payload: "d2"
         });
@@ -152,11 +152,14 @@ describe("<ChooseOrUploadDataset/>", () => {
         const testFile = new File(['hello'], 'hello.csv', {type: 'text/csv'});
         await user.upload(fileInput, testFile);
 
-        expect(dispatch.mock.calls.length).toBe(4);
-        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
-        expect(dispatch.mock.calls[1][0].type).toBe(ActionType.UPLOAD_ERROR_DISMISSED);
-        expect(dispatch.mock.calls[2][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
-        expect(dispatch.mock.calls[3][0].type).toBe(ActionType.DATASET_SELECTED);
-        expect(dispatch.mock.calls[3][0].payload).toBe("hello");
+        expect(dispatch.mock.calls.length).toBe(7);
+        expect(dispatch.mock.calls[0][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
+        expect(dispatch.mock.calls[1][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
+        expect(dispatch.mock.calls[2][0].type).toBe(ActionType.UPLOAD_ERROR_DISMISSED);
+        expect(dispatch.mock.calls[3][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
+        expect(dispatch.mock.calls[4][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
+        expect(dispatch.mock.calls[5][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
+        expect(dispatch.mock.calls[6][0].type).toBe(ActionType.DATASET_SELECTED);
+        expect(dispatch.mock.calls[6][0].payload).toBe("hello");
     });
 });

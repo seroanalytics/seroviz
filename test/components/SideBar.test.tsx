@@ -37,7 +37,7 @@ describe("<SideBar />", () => {
             <SideBar></SideBar>
         </RootContext.Provider>);
 
-        const selectVariable = screen.getAllByRole("listbox")[0] as HTMLSelectElement;
+        const selectVariable = screen.getAllByRole("listbox")[1] as HTMLSelectElement;
         let items = selectVariable.options;
         expect(items.length).toBe(2);
         expect(items[0].value).toBe("b");
@@ -96,5 +96,22 @@ describe("<SideBar />", () => {
             type: ActionType.DATASET_SELECTED,
             payload: "d2"
         });
+    });
+
+    test("user can change spline settings", async () => {
+        const state = mockAppState({
+            datasetNames: ["d1", "d2"],
+            selectedDataset: "d1",
+            datasetSettings: {"d1": mockDatasetSettings()}
+        });
+        const dispatch = jest.fn();
+        const {container} = render(
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider value={dispatch}>
+                    <SideBar></SideBar>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>);
+
+        expect(container.textContent).toContain("Spline options")
     });
 });

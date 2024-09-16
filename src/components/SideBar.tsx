@@ -6,6 +6,7 @@ import CovariateOptions from "./CovariateOptions";
 import SelectedCovariate from "./SelectedCovariate";
 import ChooseDataset from "./ChooseDataset";
 import ChooseScale from "./ChooseScale";
+import SplineOptions from "./SplineOptions";
 
 export default function SideBar() {
 
@@ -39,6 +40,10 @@ export default function SideBar() {
                     </Col>
                 </Row>
                 <ChooseScale />
+                <Form.Label>
+                    Spline options
+                </Form.Label>
+                <SplineOptions />
                 {availableCovariates.length > 0 &&
                     <Form.Group className="mb-3">
                         <Form.Label>Disaggregate by</Form.Label>

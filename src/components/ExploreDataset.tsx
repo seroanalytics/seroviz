@@ -3,7 +3,7 @@ import {RootContext} from "../RootContext";
 import {Col, Row} from "react-bootstrap";
 import SideBar from "./SideBar";
 import LinePlot from "./LinePlot";
-import {calculateFacets} from "../services/plotUtils";
+import {calculateFacets} from "../services/utils";
 
 export function ExploreDataset() {
 

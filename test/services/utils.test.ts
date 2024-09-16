@@ -1,4 +1,4 @@
-import {calculateFacets, toFilename} from "../../src/services/plotUtils";
+import {between, calculateFacets, toFilename} from "../../src/services/utils";
 import {Variable} from "../../src/generated";
 
 describe("plotUtils", () => {
@@ -35,5 +35,12 @@ describe("plotUtils", () => {
         expect(toFilename("ab_units  ")).toBe("ab_units")
         expect(toFilename("ab_units")).toBe("ab_units")
         expect(toFilename("ABunits")).toBe("abunits")
+    })
+
+
+    it("can bound number by min and max", () => {
+        expect(between(1.1, 0, 1)).toBe(1);
+        expect(between(-0.1, 0, 1)).toBe(0);
+        expect(between(0.1, 0, 1)).toBe(0.1);
     })
 });

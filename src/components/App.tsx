@@ -24,6 +24,7 @@ export default function App() {
         }
     }, [state.selectedDataset, state.language, dispatch]);
 
+
     useEffect(() => {
         setInterval(() => {
             dataService("en", () => {

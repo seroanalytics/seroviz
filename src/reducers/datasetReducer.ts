@@ -1,4 +1,4 @@
-import {AppState, DatasetSettings} from "../types";
+import {AppState, DatasetSettings, SplineSettings} from "../types";
 import {ActionType, RootAction} from "../RootContext";
 
 export const datasetReducer = (state: AppState, action: RootAction): AppState => {
@@ -13,14 +13,23 @@ export const datasetReducer = (state: AppState, action: RootAction): AppState =>
             return unselectCovariate(state, action)
         case ActionType.SELECT_SCALE:
             return selectScale(state, action)
+        case ActionType.SET_SPLINE_OPTIONS:
+            return setSpline(state, action)
         default:
             return state
     }
 }
 
+const splineSettings = (): SplineSettings => ({
+    method: "auto",
+    span: 0.75,
+    k: 10
+})
+
 const datasetSettings = (): DatasetSettings => ({
     covariateSettings: [],
-    scale: "natural"
+    scale: "natural",
+    splineSettings: splineSettings()
 })
 
 const selectDataset = (state: AppState, action: RootAction): AppState => {
@@ -51,5 +60,12 @@ const unselectCovariate = (state: AppState, action: RootAction) => {
 const selectScale = (state: AppState, action: RootAction): AppState => {
     const newState = {...state}
     newState.datasetSettings[state.selectedDataset].scale = action.payload
+    return newState
+}
+
+const setSpline = (state: AppState, action: RootAction): AppState => {
+    const newState = {...state}
+    const settings = newState.datasetSettings[state.selectedDataset].splineSettings;
+    newState.datasetSettings[state.selectedDataset].splineSettings = {...settings, ...action.payload}
     return newState
 }

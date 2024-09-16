@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 import {
     AppState,
     ResponseSuccess,
-    CovariateSettings, DatasetSettings
+    CovariateSettings, DatasetSettings, SplineSettings
 } from "../src/types";
 import {
     DataSeries,
@@ -39,10 +39,20 @@ export function mockDatasetMetadata(datasetMetadata: Partial<DatasetMetadata> = 
     }
 }
 
+export function mockSplineSettings(settings: Partial<SplineSettings> = {}): SplineSettings {
+    return {
+        method: "auto",
+        span: 0.75,
+        k: 10,
+        ...settings
+    }
+}
+
 export function mockDatasetSettings(settings: Partial<DatasetSettings> = {}): DatasetSettings {
     return {
         covariateSettings: [],
         scale: "natural",
+        splineSettings: mockSplineSettings(),
         ...settings
     }
 }
