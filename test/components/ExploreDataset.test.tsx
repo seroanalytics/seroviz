@@ -7,10 +7,9 @@ import {
     mockSeriesData,
     mockSuccess
 } from "../mocks";
-import {render, screen} from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import {RootContext} from "../../src/RootContext";
 import {ExploreDataset} from "../../src/components/ExploreDataset";
-import {act} from "react";
 
 // mock the react-plotly.js library
 jest.mock("react-plotly.js", () => ({
@@ -37,10 +36,11 @@ describe("<ExploreDataset/>", () => {
                     biomarkers: ["ab", "ba"]
                 })
             });
-            await act(() => render(<RootContext.Provider value={state}>
+            render(<RootContext.Provider value={state}>
                 <ExploreDataset/>
-            </RootContext.Provider>));
+            </RootContext.Provider>);
 
+            await waitFor(() =>  expect(screen.getAllByText("PLOT").length).toBe(2));
             expect(screen.getAllByTestId("sidebar").length).toBe(1);
             expect(screen.getAllByText("PLOT").length).toBe(2);
         });
@@ -74,12 +74,13 @@ describe("<ExploreDataset/>", () => {
                         })
                     }
                 });
-                await act(() => render(<RootContext.Provider value={state}>
+                render(<RootContext.Provider value={state}>
                     <ExploreDataset/>
-                </RootContext.Provider>));
+                </RootContext.Provider>);
 
+                await waitFor(() =>  expect(screen.getAllByText("PLOT").length).toBe(4));
                 expect(screen.getAllByTestId("sidebar").length).toBe(1);
-                expect(screen.getAllByText("PLOTPLOT").length).toBe(2);
+                expect(screen.getAllByText("PLOT").length).toBe(4);
             });
     });
 });

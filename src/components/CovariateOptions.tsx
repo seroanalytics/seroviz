@@ -31,7 +31,7 @@ export default function CovariateOptions({covariates}: Props) {
             type: ActionType.SELECT_COVARIATE,
             payload: {
                 name: selectedVariable.name,
-                levels: selectedVariable.levels,
+                levels: selectedVariable.levels.filter(l => l === 0 || l),
                 display: selectedDisplayOption
             }
         })

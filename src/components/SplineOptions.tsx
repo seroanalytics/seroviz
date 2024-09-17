@@ -32,7 +32,7 @@ export default function SplineOptions() {
 
     const settings = state.datasetSettings[state.selectedDataset].splineSettings;
 
-    return <Form.Group>
+    return <Form.Group className={"mb-2 border p-2"}>
         <Row className={"mt-2"}>
             <Form.Label column sm="6" htmlFor="method">
                 Method:

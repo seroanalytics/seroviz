@@ -4,7 +4,7 @@ import {
     mockDatasetSettings, mockFailure,
     mockSuccess
 } from "../mocks";
-import {render, waitFor} from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import {
     RootContext,
     RootDispatchContext
@@ -15,7 +15,11 @@ import {DataSeries} from "../../src/generated";
 import Plot from "react-plotly.js";
 import Mock = jest.Mock;
 
-jest.mock("react-plotly.js", () => jest.fn());
+// mock the react-plotly.js library
+jest.mock("react-plotly.js", () => ({
+    __esModule: true,
+    default: jest.fn(() => "PLOT"),
+}));
 
 describe("<LinePlot />", () => {
 
@@ -34,7 +38,8 @@ describe("<LinePlot />", () => {
                 raw: {
                     x: [1, 2],
                     y: [3, 4]
-                }
+                },
+                warnings: null
             }]));
 
         const dispatch = jest.fn();
@@ -58,10 +63,10 @@ describe("<LinePlot />", () => {
             .toBe(1));
 
         await waitFor(() => expect((Plot as Mock))
-            .toBeCalledTimes(2));
+            .toBeCalledTimes(1));
 
         const plot = Plot as Mock
-        expect(plot.mock.calls[1][0].data).toEqual([
+        expect(plot.mock.calls[0][0].data).toEqual([
                 {
                     legendgroup: "all",
                     line: {
@@ -93,6 +98,49 @@ describe("<LinePlot />", () => {
                 }])
     });
 
+    test("displays warnings", async () => {
+        mockAxios.onGet(`/dataset/d1/trace/ab/?scale=natural&method=auto&span=0.75&k=10`)
+            .reply(200, mockSuccess<DataSeries>([{
+                name: "all",
+                model: {
+                    x: [1.1, 2.2],
+                    y: [3.3, 4.4]
+                },
+                raw: {
+                    x: [1, 2],
+                    y: [3, 4]
+                },
+                warnings: ["test warning"]
+            }]));
+
+        const dispatch = jest.fn();
+        const state = mockAppState({
+            selectedDataset: "d1",
+            datasetMetadata: mockDatasetMetadata(),
+            datasetSettings: {
+                "d1": mockDatasetSettings()
+            }
+        });
+        render(
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider value={dispatch}>
+                    <LinePlot biomarker={"ab"}
+                              facetLevels={[]}
+                              facetVariables={[]}/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>);
+
+        await waitFor(() => expect(mockAxios.history.get.length)
+            .toBe(1));
+
+        await waitFor(() => expect((Plot as Mock))
+            .toBeCalledTimes(1));
+
+        expect(screen.getByRole("alert")).toHaveClass("alert-warning");
+        expect(screen.getByRole("alert").textContent)
+            .toBe("Some traces generated warningsall:test warning")
+    });
+
     test("requests data for given facet variables", async () => {
         mockAxios.onGet(`/dataset/d1/trace/ab/?filter=age%3A0%2Bsex%3AF&scale=natural&method=auto&span=0.75&k=10`)
             .reply(200, mockSuccess<DataSeries>([{
@@ -104,7 +152,8 @@ describe("<LinePlot />", () => {
                 raw: {
                     x: [1, 2],
                     y: [3, 4]
-                }
+                },
+                warnings: null
             }]));
 
         const dispatch = jest.fn();
@@ -128,10 +177,10 @@ describe("<LinePlot />", () => {
             .toBe(1));
 
         await waitFor(() => expect((Plot as Mock))
-            .toBeCalledTimes(2));
+            .toBeCalledTimes(1));
 
         const plot = Plot as Mock
-        expect(plot.mock.calls[1][0].data).toEqual([
+        expect(plot.mock.calls[0][0].data).toEqual([
                 {
                     legendgroup: "all",
                     line: {
@@ -163,7 +212,7 @@ describe("<LinePlot />", () => {
                 }])
     });
 
-    test("clears plot data if request to API fails", async () => {
+    test("clears plot and renders error if request to API fails", async () => {
         mockAxios.onGet("/dataset/d1/trace/ab/?scale=natural&method=auto&span=0.75&k=10")
             .reply(200, mockSuccess<DataSeries>([{
                 name: "all",
@@ -174,11 +223,9 @@ describe("<LinePlot />", () => {
                 raw: {
                     x: [1, 2],
                     y: [3, 4]
-                }
+                },
+                warnings: null
             }]));
-
-        mockAxios.onGet("/dataset/d1/trace/ab/?filter=sex%3AF&scale=natural&method=auto&span=0.75&k=10")
-            .reply(404, mockFailure("bad"));
 
         const dispatch = jest.fn();
         const state = mockAppState({
@@ -199,11 +246,10 @@ describe("<LinePlot />", () => {
         await waitFor(() => expect(mockAxios.history.get.length)
             .toBe(1));
 
-        await waitFor(() => expect((Plot as Mock))
-            .toBeCalledTimes(2));
+        expect(screen.getAllByText("PLOT").length).toBe(1);
 
-        let plot = Plot as Mock
-        expect(plot.mock.calls[1][0].data.length).toBeGreaterThan(0);
+        mockAxios.onGet("/dataset/d1/trace/ab/?filter=sex%3AF&scale=natural&method=auto&span=0.75&k=10")
+            .reply(404, mockFailure("bad"));
 
         rerender(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider value={dispatch}>
@@ -216,12 +262,9 @@ describe("<LinePlot />", () => {
         await waitFor(() => expect(mockAxios.history.get.length)
             .toBe(2));
 
-        await waitFor(() => expect((Plot as Mock))
-            .toBeCalledTimes(4));
-
-        plot = Plot as Mock
-        expect(plot.mock.calls[2][0].data.length).toBe(2);
-        expect(plot.mock.calls[3][0].data.length).toBe(0);
+        expect(screen.queryAllByText("PLOT").length).toBe(0);
+        expect(screen.getByRole("alert").textContent)
+            .toBe("Facet for sex:F could not be generated due to the following error:bad ");
     });
 
 });

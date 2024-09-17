@@ -5,16 +5,16 @@
   * and run ./generate_types.sh to regenerate this file.
 */
 export type DataSeries = {
-  name?: string;
+  name: string;
   model: {
-    x: number[];
+    x: (number | string)[];
     y: (number | null)[];
-  };
+  } | null;
   raw: {
-    x: number[];
+    x: (number | string)[];
     y: (number | null)[];
   };
-  [k: string]: unknown;
+  warnings: string[] | null;
 }[];
 export interface DatasetMetadata {
   variables: VariableSchema[];
@@ -23,7 +23,7 @@ export interface DatasetMetadata {
 }
 export interface VariableSchema {
   name: string;
-  levels: string[];
+  levels: (string | number | null)[];
 }
 export type DatasetNames = string[];
 export interface ErrorDetail {
@@ -50,6 +50,6 @@ export interface ResponseSuccess {
 export type UploadResult = string;
 export interface Variable {
   name: string;
-  levels: string[];
+  levels: (string | number | null)[];
 }
 export type Version = string;
