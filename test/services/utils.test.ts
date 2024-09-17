@@ -16,7 +16,7 @@ describe("plotUtils", () => {
             }
         ]
 
-        const result = calculateFacets(facetVariables[0].levels, facetVariables[1].levels, facetVariables[2].levels);
+        const result = calculateFacets(facetVariables[0].levels as any, facetVariables[1].levels as any, facetVariables[2].levels as any);
         expect(result.length).toBe(8);
         expect(result[0]).toEqual(["F", "1", "ab"])
         expect(result[1]).toEqual(["F", "1", "ba"])

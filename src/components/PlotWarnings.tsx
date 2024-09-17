@@ -8,7 +8,7 @@ interface Props {
 
 export default function PlotWarnings({warnings}: Props) {
     const keys = Object.keys(warnings);
-    if (keys.length == 0) {
+    if (keys.length === 0) {
         return null;
     }
     return <Alert variant={"warning"}

@@ -76,7 +76,7 @@ export default function LinePlot({
     if (seriesData) {
         series = seriesData.flatMap((series, index) => {
             const name = series.name || "unknown";
-            if (series.warnings) {
+            if (series.warnings && series.warnings.length > 0) {
                 warnings[name] = series.warnings;
             }
             return [{

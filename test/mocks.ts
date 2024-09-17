@@ -87,13 +87,14 @@ export function mockSeriesData(): DataSeries {
     return [{
         name: "d1",
         model: {
-            x: [],
-            y: []
+            x: [1, 2],
+            y: [1, 2]
         },
         raw: {
-            x: [],
-            y: []
-        }
+            x: [1, 2],
+            y: [1, 2]
+        },
+        warnings: []
     }]
 }
 
