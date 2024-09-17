@@ -127,10 +127,10 @@ export function ChooseOrUploadDataset() {
                                     different value,
                                     e.g. time since last exposure, you can
                                     specify
-                                    that here.
+                                    that here. Numeric and date type values are
+                                    supported.
                                 </Form.Text>
-                                <Form.Label column sm={3}>Time column
-                                    header</Form.Label>
+                                <Form.Label column sm={3}>Time column</Form.Label>
                                 <Col sm={6}>
                                     <Form.Control type={"text"}
                                                   onChange={onSelectTimeColumnHeader}

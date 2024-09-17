@@ -1,37 +1,47 @@
 :root, [data-bs-theme=light] {
-  --primary-color: #6a478f;
-  --primary-color-darken: #4f356b;
-  --secondary-color: #a35000;
-  --bs-secondary-bg: #b3b1da;
-  --bs-tertiary-bg: #b3b1da;
-  --bs-tertiary-bg-rgb: 79, 53, 107;
-  --bs-light-rgb: 248, 249, 250;
-  --white: #ffffff;
+    --primary-color: #6a478f;
+    --primary-color-darken: #4f356b;
+    --secondary-color: #a35000;
+    --bs-secondary-bg: #b3b1da;
+    --bs-tertiary-bg: #b3b1da;
+    --bs-tertiary-bg-rgb: 79, 53, 107;
+    --bs-light-rgb: 248, 249, 250;
+    --white: #ffffff;
+}
+
+#root {
+    flex: 1;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 [data-bs-theme=dark] {
-  --bs-light-rgb: 33,37,41;
+    --bs-light-rgb: 33, 37, 41;
 }
 
 [data-bs-theme="dark"] .plot-container {
-  filter: invert(75%) hue-rotate(180deg);
+    filter: invert(75%) hue-rotate(180deg);
 }
 
 .btn-primary, .btn-success {
-  background-color: var(--primary-color);
+    background-color: var(--primary-color);
 }
 
 .btn-success {
-  --bs-btn-font-weight: 600;
-  --bs-btn-color: var(--bs-white);
-  --bs-btn-bg: var(--primary-color);
-  --bs-btn-border-color: var(--primary-color);
-  --bs-btn-border-radius: .5rem;
-  --bs-btn-hover-color: var(--bs-white);
-  --bs-btn-hover-bg: var(--primary-color-darken);
-  --bs-btn-hover-border-color: var(--primary-color-darken);
-  --bs-btn-focus-shadow-rgb: var(--primary-color);
-  --bs-btn-active-color: var(--bs-btn-hover-color);
-  --bs-btn-active-bg: var(--primary-color-darken);
-  --bs-btn-active-border-color: var(--primary-color-darken);
+    --bs-btn-font-weight: 600;
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: var(--primary-color);
+    --bs-btn-border-color: var(--primary-color);
+    --bs-btn-border-radius: .5rem;
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: var(--primary-color-darken);
+    --bs-btn-hover-border-color: var(--primary-color-darken);
+    --bs-btn-focus-shadow-rgb: var(--primary-color);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: var(--primary-color-darken);
+    --bs-btn-active-border-color: var(--primary-color-darken);
 }
