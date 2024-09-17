@@ -72,7 +72,7 @@ export class DataService {
 
         return await this._api
             .ignoreSuccess()
-            .withError(ActionType.ERROR_ADDED)
+            .ignoreErrors()
             .get<DataSeries>("/dataset/" + selectedDataset + "/trace/" + biomarker + "/" + queryString)
     }
 }

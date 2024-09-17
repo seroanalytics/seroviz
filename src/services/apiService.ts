@@ -113,6 +113,17 @@ export class APIService implements API<ActionType> {
         if (e.response && e.response.status === 404) {
             this._dispatchError(APIService.createError("Your session may have expired.", "SESSION_EXPIRED"));
         }
+
+        const error = (e.response && e.response.data);
+
+        if (isPorcelainResponse(error)) {
+            return error
+        } else {
+            return {
+                status: "failure",
+                errors: [APIService.createError("Could not parse API response. If error persists, please contact support.")]
+            }
+        }
     };
 
     private _dispatchError = (error: ErrorDetail) => {
