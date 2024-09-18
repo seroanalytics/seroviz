@@ -73,7 +73,7 @@ export class DataService {
         return await this._api
             .ignoreSuccess()
             .ignoreErrors()
-            .get<DataSeries>("/dataset/" + selectedDataset + "/trace/" + biomarker + "/" + queryString)
+            .get<DataSeries>("/dataset/" + selectedDataset + "/trace/" + encodeURIComponent(biomarker) + "/" + queryString)
     }
 }
 
