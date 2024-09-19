@@ -105,7 +105,7 @@ export function ChooseOrUploadDataset() {
                             columns: biomarker, value, day. Files you upload are
                             only accessible to you and
                             will be deleted when you close your
-                            browser.</Form.Text>s
+                            browser.</Form.Text>
                         <div className={"d-block mt-2"}>
                             <button className="btn btn-link p-0"
                                     onClick={toggleShowOptions}>Advanced options

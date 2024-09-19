@@ -61,14 +61,16 @@ export default function IndividualOptions() {
         <Form.Group className="mb-3">
             <Form.Label htmlFor="idcol">Id column</Form.Label>
             <Form.Select id="idcol" value={settings.pid}
+                         role="listbox"
                          onChange={onSelectIdCol}>
                 <option value="">--Select--</option>
-                {variables.map(v => <option value={v}>{v}</option>)}
+                {variables.map(v => <option key={v} value={v}>{v}</option>)}
             </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3">
             <Form.Label htmlFor="color">Color</Form.Label>
             <Form.Select id="color" value={settings.color}
+                         role="listbox"
                          onChange={onSelectColor}>
                 <option value="">None</option>
                 {variables.filter(v => v !== settings.pid).map(v => <option
@@ -78,6 +80,7 @@ export default function IndividualOptions() {
         <Form.Group className="mb-3">
             <Form.Label htmlFor="linetype">Linetype</Form.Label>
             <Form.Select id="linetype" value={settings.linetype}
+                         role="listbox"
                          onChange={onSelectLinetype}>
                 <option value="">None</option>
                 {variables.filter(v => v !== settings.pid).map(v => <option
@@ -89,6 +92,7 @@ export default function IndividualOptions() {
             <Row>
                 <Col sm={6}>
                     <Form.Select id="filter" value={filterBy}
+                                 role="listbox"
                                  onChange={onSelectFilter}>
                         <option value="">None</option>
                         {variables.map(v => <option value={v} key={v}>{v}</option>)}
@@ -97,6 +101,7 @@ export default function IndividualOptions() {
                 <Col sm={6}>
                     {filterLevels.length > 0 &&
                         <Form.Select id="filterLevel" value={filterLevel}
+                                     role="listbox"
                                      onChange={onSelectFilterLevel}>
                             <option value="">--Select--</option>
                             {filterLevels.map(l => <option

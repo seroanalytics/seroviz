@@ -2,11 +2,8 @@ import Form from 'react-bootstrap/Form';
 import {Col, Row} from "react-bootstrap";
 import React, {useContext} from "react";
 import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
-import CovariateOptions from "./CovariateOptions";
-import SelectedCovariate from "./SelectedCovariate";
 import ChooseDataset from "./ChooseDataset";
 import ChooseScale from "./ChooseScale";
-import SplineOptions from "./SplineOptions";
 import ChoosePlot from "./ChoosePlot";
 import PopulationOptions from "./PopulationOptions";
 import IndividualOptions from "./IndividualOptions";
@@ -29,13 +26,6 @@ export default function SideBar() {
             payload: name
         })
     }
-
-    const selectedCovariates = state.datasetSettings[state.selectedDataset]
-        .covariateSettings
-        .map(v => v.name);
-
-    const availableCovariates = state.datasetMetadata?.variables
-        .filter(v => selectedCovariates.indexOf(v.name) === -1) ?? [];
 
     return <Col xs="3" className="pt-3 border-1 border-end border-secondary"
                 data-testid="sidebar">
