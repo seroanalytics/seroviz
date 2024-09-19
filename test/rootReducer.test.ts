@@ -78,7 +78,6 @@ describe("rootReducer", () => {
         expect(newState.selectedDataset).toBe("d1");
         expect(newState.datasetSettings["d1"].covariateSettings).toEqual([]);
         expect(newState.datasetSettings["d1"].scale).toEqual("natural");
-
     });
 
     it("should add covariate on SELECT_COVARIATE", () => {
@@ -183,5 +182,13 @@ describe("rootReducer", () => {
             filter: "sex:F",
             linetype: "sex"
         })
+    });
+
+    it("should select plot on PLOT_SELECTED", () => {
+        const state = mockAppState();
+        expect(state.selectedPlot).toBe("population");
+        const newState = rootReducer(state,
+            {type: ActionType.PLOT_SELECTED, payload: "individual"});
+        expect(newState.selectedPlot).toBe("individual");
     });
 });

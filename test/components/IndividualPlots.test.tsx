@@ -62,4 +62,8 @@ describe("<IndividualPlots/>", () => {
             .toBe(1));
         expect(mockAxios.history.get.length).toBe(1);
     });
+
+    // TODO test warnings
+    // TODO test behaviour when a data series has a single point
+    // TODO test errors
 });

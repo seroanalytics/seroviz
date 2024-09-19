@@ -29,7 +29,7 @@ export function PopulationPlots() {
                     <Row key={b}>
                         <Col>
                             <LinePlot biomarker={b}
-                                      facetVariables={facetVariables.map(v => v.name)}
+                                      facetVariables={[]}
                                       facetLevels={[]}/>
                         </Col>
                     </Row>)}
