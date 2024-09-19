@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react";
 import {RootContext, RootDispatchContext} from "../RootContext";
-import {Col, Row} from "react-bootstrap";
+import {Alert, Col, Row} from "react-bootstrap";
 import SideBar from "./SideBar";
 import Plot from "react-plotly.js";
 import {useDebouncedEffect} from "../hooks/useDebouncedEffect";
@@ -11,6 +11,7 @@ export function IndividualPlots() {
     const dispatch = useContext(RootDispatchContext);
 
     const [data, setData] = useState<any[]>([]);
+    const [warnings, setWarnings] = useState<string[] | string>("");
     const [layout, setLayout] = useState<any>(null);
 
     const scale = state.datasetSettings[state.selectedDataset].scale;
@@ -19,14 +20,15 @@ export function IndividualPlots() {
 
         const fetchData = async () => {
             setData([]);
+            setWarnings("");
             const result = await dataService(state.language, dispatch)
                 .getIndividualData(state.selectedDataset, scale, settings);
 
+            console.log(result?.data)
             if (result && result.data) {
                 setData(result.data.data)
                 setLayout(result.data.layout)
-            } else {
-                setData([])
+                setWarnings(result.data.warnings)
             }
         }
 
@@ -40,7 +42,8 @@ export function IndividualPlots() {
         <SideBar/>
         <Col sm={8}>
             <Row>
-                {settings.pid && data.length > 0 && <Plot data={data} layout={{...layout, autosize: true}}
+                {!!warnings && <Alert variant={"warning"}>{warnings}</Alert>}
+                {!!settings.pid && data.length > 0 && <Plot data={data} layout={{...layout, autosize: true}}
                       useResizeHandler={true}
                       style={{
                           minWidth: "400px",
@@ -48,7 +51,7 @@ export function IndividualPlots() {
                           height: "800px"
                       }}></Plot>
                 }
-                {!settings.pid && <p className={"mt-3"}>Please select the id column</p>}
+                {!settings.pid && <p className={"mt-3"}>Please select an id column</p>}
             </Row>
         </Col>
     </Row>

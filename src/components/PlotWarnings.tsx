@@ -11,7 +11,7 @@ export default function PlotWarnings({warnings}: Props) {
     if (keys.length === 0) {
         return null;
     }
-    return <Alert variant={"warning"}
+        return <Alert variant={"warning"}
                   className={"rounded-0 border-0 mb-1 ms-4"}>
         <p>Some traces generated warnings</p>
         {keys.map((k, i) => <div key={"w" + i}>{k}:

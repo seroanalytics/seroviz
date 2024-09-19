@@ -80,8 +80,7 @@ export class DataService {
                             scale: "log" | "natural" | "log2",
                             individualSettings: IndividualSettings) {
 
-        let queryString = `?pid=${encodeURIComponent(individualSettings.pid)}&`
-        queryString += `color=${encodeURIComponent(individualSettings.color)}&`
+        let queryString = `?color=${encodeURIComponent(individualSettings.color)}&`
         queryString += `linetype=${encodeURIComponent(individualSettings.linetype)}&`
         if (individualSettings.filter) {
             queryString += `filter=${encodeURIComponent(individualSettings.filter)}&`
@@ -92,7 +91,7 @@ export class DataService {
         return await this._api
             .ignoreSuccess()
             .ignoreErrors()
-            .get<any>("/dataset/" + selectedDataset + "/individual/" + queryString)
+            .get<any>("/dataset/" + selectedDataset + "/individual/" + individualSettings.pid + "/" + queryString)
     }
 }
 
