@@ -9,7 +9,7 @@ import {
 } from "../mocks";
 import {render, screen, waitFor} from "@testing-library/react";
 import {RootContext} from "../../src/RootContext";
-import {ExploreDataset} from "../../src/components/ExploreDataset";
+import {PopulationPlots} from "../../src/components/PopulationPlots";
 
 // mock the react-plotly.js library
 jest.mock("react-plotly.js", () => ({
@@ -17,7 +17,7 @@ jest.mock("react-plotly.js", () => ({
     default: jest.fn(() => "PLOT"),
 }));
 
-describe("<ExploreDataset/>", () => {
+describe("<PopulationPlots/>", () => {
 
     beforeEach(() => {
         mockAxios.reset();
@@ -37,7 +37,7 @@ describe("<ExploreDataset/>", () => {
                 })
             });
             render(<RootContext.Provider value={state}>
-                <ExploreDataset/>
+                <PopulationPlots/>
             </RootContext.Provider>);
 
             await waitFor(() =>  expect(screen.getAllByText("PLOT").length).toBe(2));
@@ -75,7 +75,7 @@ describe("<ExploreDataset/>", () => {
                     }
                 });
                 render(<RootContext.Provider value={state}>
-                    <ExploreDataset/>
+                    <PopulationPlots/>
                 </RootContext.Provider>);
 
                 await waitFor(() =>  expect(screen.getAllByText("PLOT").length).toBe(4));

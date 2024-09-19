@@ -8,10 +8,10 @@ import {
     RootContext,
     RootDispatchContext
 } from "../RootContext";
-import {ExploreDataset} from "./ExploreDataset";
 import AppError from "./AppError";
 import {dataService} from "../services/dataService";
 import {rootReducer} from "../reducers/rootReducer";
+import ExploreDataset from "./ExploreDataset";
 
 export default function App() {
     const [theme, setTheme] = usePersistedState<string>("theme", "dark");
@@ -41,7 +41,7 @@ export default function App() {
                                                               key={"error" + index}/>)}
             <Container fluid>
                 {!state.selectedDataset && <ChooseOrUploadDataset/>}
-                {state.selectedDataset && <ExploreDataset/>}
+                <ExploreDataset/>
             </Container>
         </RootDispatchContext.Provider>
     </RootContext.Provider>
