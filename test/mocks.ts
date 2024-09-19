@@ -8,7 +8,7 @@ import {
 import {
     DataSeries,
     DatasetMetadata,
-    ErrorDetail,
+    ErrorDetail, Plotly,
     ResponseFailure,
     Variable
 } from "../src/generated";
@@ -108,6 +108,14 @@ export function mockSeriesData(): DataSeries {
         },
         warnings: []
     }]
+}
+
+export function mockPlotlyData(): Plotly {
+    return {
+        data: [],
+        layout: {},
+        warnings: null
+    }
 }
 
 export function mockSuccess<T>(data: T): ResponseSuccess<T> {

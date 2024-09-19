@@ -3,7 +3,7 @@ import {ActionType, RootAction} from "../RootContext";
 import {
     DataSeries,
     DatasetMetadata,
-    DatasetNames,
+    DatasetNames, Plotly,
     UploadResult
 } from "../generated";
 import {
@@ -91,7 +91,7 @@ export class DataService {
         return await this._api
             .ignoreSuccess()
             .ignoreErrors()
-            .get<any>("/dataset/" + selectedDataset + "/individual/" + individualSettings.pid + "/" + queryString)
+            .get<Plotly>("/dataset/" + selectedDataset + "/individual/" + individualSettings.pid + "/" + queryString)
     }
 }
 

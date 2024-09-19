@@ -7,11 +7,11 @@
 export type DataSeries = {
   name: string;
   model: {
-    x: (number | string)[];
+    x: (number | string | null)[];
     y: (number | null)[];
   } | null;
   raw: {
-    x: (number | string)[];
+    x: (number | string | null)[];
     y: (number | null)[];
   };
   warnings: string[] | null;
@@ -30,6 +30,17 @@ export interface ErrorDetail {
   error: string;
   detail: string | null;
   [k: string]: unknown;
+}
+export interface Plotly {
+  data: {
+    x?: unknown[] | null | number;
+    y?: unknown[] | null | number;
+    [k: string]: unknown;
+  }[];
+  layout: {
+    [k: string]: unknown;
+  };
+  warnings: string | null | string[];
 }
 export interface ResponseFailure {
   status: "failure";

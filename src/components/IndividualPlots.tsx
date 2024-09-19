@@ -11,7 +11,7 @@ export function IndividualPlots() {
     const dispatch = useContext(RootDispatchContext);
 
     const [data, setData] = useState<any[]>([]);
-    const [warnings, setWarnings] = useState<string[] | string>("");
+    const [warnings, setWarnings] = useState<string[] | string | null>(null);
     const [layout, setLayout] = useState<any>(null);
 
     const scale = state.datasetSettings[state.selectedDataset].scale;
@@ -24,7 +24,6 @@ export function IndividualPlots() {
             const result = await dataService(state.language, dispatch)
                 .getIndividualData(state.selectedDataset, scale, settings);
 
-            console.log(result?.data)
             if (result && result.data) {
                 setData(result.data.data)
                 setLayout(result.data.layout)
