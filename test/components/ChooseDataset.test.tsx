@@ -100,6 +100,35 @@ describe("<ManageDatasets/>", () => {
         });
     });
 
+    test("user can delete dataset", async () => {
+        mockAxios.onGet(`/datasets/`)
+            .reply(200, mockSuccess(["d1", "d2"]));
+
+        mockAxios.onDelete(`/dataset/d1/`)
+            .reply(200, mockSuccess("d1"));
+
+        let state = mockAppState({
+            datasetNames: ["d1", "d2"]
+        });
+        const dispatch = jest.fn();
+        const user = userEvent.setup();
+
+        render(<RootContext.Provider value={state}>
+            <RootDispatchContext.Provider
+                value={dispatch}><ManageDatasets/>
+            </RootDispatchContext.Provider>
+        </RootContext.Provider>);
+
+        const links = screen.getAllByRole("button") as HTMLAnchorElement[];
+
+        await user.click(links[1]);
+
+        expect(dispatch.mock.calls[3][0]).toEqual({
+            type: ActionType.DATASET_DELETED,
+            payload: "d1"
+        });
+    });
+
     test("user can upload new file", async () => {
         mockAxios.onGet(`/datasets/`)
             .reply(200, mockSuccess(["d1", "d2"]));
