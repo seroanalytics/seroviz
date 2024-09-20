@@ -10,6 +10,8 @@ export const datasetReducer = (state: AppState, action: RootAction): AppState =>
     switch (action.type) {
         case ActionType.DATASET_SELECTED:
             return selectDataset(state, action)
+        case ActionType.DATASET_DELETED:
+            return deleteDataset(state, action)
         case ActionType.PLOT_SELECTED:
             return {...state, selectedPlot: action.payload}
         case ActionType.DATASET_METADATA_FETCHED:
@@ -55,6 +57,12 @@ const selectDataset = (state: AppState, action: RootAction): AppState => {
         newState.datasetSettings[action.payload] = datasetSettings()
     }
     newState.selectedDataset = action.payload
+    return newState
+}
+
+const deleteDataset = (state: AppState, action: RootAction): AppState => {
+    const newState = {...state}
+    newState.datasetNames = newState.datasetNames.filter(d => d !== action.payload)
     return newState
 }
 
