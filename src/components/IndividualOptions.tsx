@@ -21,6 +21,10 @@ export default function IndividualOptions() {
 
     const onSelectFilter = (event: any) => {
         setFilterBy(event.target.value);
+        dispatch({
+            type: ActionType.SET_INDIVIDUAL_OPTIONS,
+            payload: {filter: ""}
+        })
     }
 
     const onSelectFilterLevel = (event: any) => {

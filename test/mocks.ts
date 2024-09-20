@@ -110,11 +110,12 @@ export function mockSeriesData(): DataSeries {
     }]
 }
 
-export function mockPlotlyData(): Plotly {
+export function mockPlotlyData(data: Partial<Plotly> = {}): Plotly {
     return {
         data: [],
         layout: {},
-        warnings: null
+        warnings: null,
+        ...data
     }
 }
 

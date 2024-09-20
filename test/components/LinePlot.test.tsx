@@ -264,7 +264,7 @@ describe("<LinePlot />", () => {
 
         expect(screen.queryAllByText("PLOT").length).toBe(0);
         expect(screen.getByRole("alert").textContent)
-            .toBe("Facet for sex:F could not be generated due to the following error:bad ");
+            .toBe("Plot of sex:F could not be generated due to the following error:bad ");
     });
 
 });

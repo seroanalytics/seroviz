@@ -145,14 +145,14 @@ describe("<IndividualOptions />", () => {
             </RootContext.Provider>);
 
         expect(screen.getAllByRole("listbox").length).toBe(4);
-        const select = screen.getAllByRole("listbox")[3] as HTMLSelectElement;
-        expect(select.value).toBe("");
-        expect(select.item(1)!!.value).toBe("pid");
-        expect(select.item(2)!!.value).toBe("sex");
-        expect(select.item(3)!!.value).toBe("biomarker");
-        await userEvent.selectOptions(select, "sex");
+        const selectFilter = screen.getAllByRole("listbox")[3] as HTMLSelectElement;
+        expect(selectFilter.value).toBe("");
+        expect(selectFilter.item(1)!!.value).toBe("pid");
+        expect(selectFilter.item(2)!!.value).toBe("sex");
+        expect(selectFilter.item(3)!!.value).toBe("biomarker");
+        await userEvent.selectOptions(selectFilter, "sex");
 
-        expect(dispatch.mock.calls.length).toBe(0);
+        expect(dispatch.mock.calls.length).toBe(1);
         expect(screen.getAllByRole("listbox").length).toBe(5);
         const selectLevel = screen.getAllByRole("listbox")[4] as HTMLSelectElement;
         expect(selectLevel.value).toBe("");
@@ -160,9 +160,16 @@ describe("<IndividualOptions />", () => {
         expect(selectLevel.item(2)!!.value).toBe("F");
         await userEvent.selectOptions(selectLevel, "M");
 
-        expect(dispatch.mock.calls[0][0]).toEqual({
+        expect(dispatch.mock.calls[1][0]).toEqual({
             type: ActionType.SET_INDIVIDUAL_OPTIONS,
             payload: {filter: "sex:M"}
+        });
+
+        // should clear filter if the filter variable is changed
+        await userEvent.selectOptions(selectFilter, "pid");
+        expect(dispatch.mock.calls[2][0]).toEqual({
+            type: ActionType.SET_INDIVIDUAL_OPTIONS,
+            payload: {filter: ""}
         });
     });
 });
