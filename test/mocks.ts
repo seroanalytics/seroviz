@@ -3,12 +3,12 @@ import MockAdapter from "axios-mock-adapter";
 import {
     AppState,
     ResponseSuccess,
-    CovariateSettings, DatasetSettings, SplineSettings
+    CovariateSettings, DatasetSettings, SplineSettings, IndividualSettings
 } from "../src/types";
 import {
     DataSeries,
     DatasetMetadata,
-    ErrorDetail,
+    ErrorDetail, Plotly,
     ResponseFailure,
     Variable
 } from "../src/generated";
@@ -18,6 +18,7 @@ export function mockAppState(state: Partial<AppState> = {}): AppState {
         datasetNames: [],
         datasetMetadata: null,
         selectedDataset: "",
+        selectedPlot: "population",
         datasetSettings: {},
         uploadError: null,
         genericErrors: [],
@@ -48,11 +49,22 @@ export function mockSplineSettings(settings: Partial<SplineSettings> = {}): Spli
     }
 }
 
+export function mockIndividualSettings(settings: Partial<IndividualSettings> = {}): IndividualSettings {
+    return {
+        pid: "",
+        color: "",
+        linetype: "biomarker",
+        filter: "",
+        ...settings
+    }
+}
+
 export function mockDatasetSettings(settings: Partial<DatasetSettings> = {}): DatasetSettings {
     return {
         covariateSettings: [],
         scale: "natural",
         splineSettings: mockSplineSettings(),
+        individualSettings: mockIndividualSettings(),
         ...settings
     }
 }
@@ -96,6 +108,15 @@ export function mockSeriesData(): DataSeries {
         },
         warnings: []
     }]
+}
+
+export function mockPlotlyData(data: Partial<Plotly> = {}): Plotly {
+    return {
+        data: [],
+        layout: {},
+        warnings: null,
+        ...data
+    }
 }
 
 export function mockSuccess<T>(data: T): ResponseSuccess<T> {

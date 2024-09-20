@@ -29,10 +29,18 @@ export interface SplineSettings {
     span: number
 }
 
+export interface IndividualSettings {
+    pid: string
+    filter: string
+    color: string
+    linetype: string
+}
+
 export interface DatasetSettings {
     covariateSettings: CovariateSettings[]
     scale: "log" | "natural" | "log2"
     splineSettings: SplineSettings
+    individualSettings: IndividualSettings
 }
 
 export interface AppState {
@@ -40,6 +48,7 @@ export interface AppState {
     datasetMetadata: DatasetMetadata | null
     selectedDataset: string
     datasetSettings: Dict<DatasetSettings>
+    selectedPlot: "population" | "individual"
     uploadError: ErrorDetail | null
     genericErrors: ErrorDetail[]
     language: string

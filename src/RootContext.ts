@@ -5,6 +5,7 @@ export const initialState: AppState = {
     datasetNames: [],
     datasetMetadata: null,
     selectedDataset: "",
+    selectedPlot: "population",
     datasetSettings: {},
     uploadError: null,
     genericErrors: [],
@@ -20,10 +21,12 @@ export enum ActionType {
     DATASET_NAMES_FETCHED = "DATASET_NAMES_FETCHED",
     DATASET_METADATA_FETCHED = "DATASET_METADATA_FETCHED",
     DATASET_SELECTED = "DATASET_SELECTED",
+    PLOT_SELECTED = "PLOT_SELECTED",
     SELECT_COVARIATE = "SELECT_COVARIATE",
     UNSELECT_COVARIATE = "UNSELECT_COVARIATE",
     SELECT_SCALE = "SELECT_SCALE",
     SET_SPLINE_OPTIONS = "SET_SPLINE_OPTIONS",
+    SET_INDIVIDUAL_OPTIONS   = "SET_INDIVIDUAL_OPTIONS",
 }
 
 export interface RootAction {

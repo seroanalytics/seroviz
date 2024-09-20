@@ -1,10 +1,17 @@
-import {AppState, DatasetSettings, SplineSettings} from "../types";
+import {
+    AppState,
+    DatasetSettings,
+    IndividualSettings,
+    SplineSettings
+} from "../types";
 import {ActionType, RootAction} from "../RootContext";
 
 export const datasetReducer = (state: AppState, action: RootAction): AppState => {
     switch (action.type) {
         case ActionType.DATASET_SELECTED:
             return selectDataset(state, action)
+        case ActionType.PLOT_SELECTED:
+            return {...state, selectedPlot: action.payload}
         case ActionType.DATASET_METADATA_FETCHED:
             return {...state, datasetMetadata: action.payload}
         case ActionType.SELECT_COVARIATE:
@@ -15,6 +22,8 @@ export const datasetReducer = (state: AppState, action: RootAction): AppState =>
             return selectScale(state, action)
         case ActionType.SET_SPLINE_OPTIONS:
             return setSpline(state, action)
+        case ActionType.SET_INDIVIDUAL_OPTIONS:
+            return setIndividualOptions(state, action)
         default:
             return state
     }
@@ -26,10 +35,18 @@ const splineSettings = (): SplineSettings => ({
     k: 10
 })
 
+const individualSettings = (): IndividualSettings => ({
+    pid: "",
+    color: "",
+    linetype: "biomarker",
+    filter: ""
+})
+
 const datasetSettings = (): DatasetSettings => ({
     covariateSettings: [],
     scale: "natural",
-    splineSettings: splineSettings()
+    splineSettings: splineSettings(),
+    individualSettings: individualSettings()
 })
 
 const selectDataset = (state: AppState, action: RootAction): AppState => {
@@ -67,5 +84,12 @@ const setSpline = (state: AppState, action: RootAction): AppState => {
     const newState = {...state}
     const settings = newState.datasetSettings[state.selectedDataset].splineSettings;
     newState.datasetSettings[state.selectedDataset].splineSettings = {...settings, ...action.payload}
+    return newState
+}
+
+const setIndividualOptions = (state: AppState, action: RootAction): AppState => {
+    const newState = {...state}
+    const settings = newState.datasetSettings[state.selectedDataset].individualSettings;
+    newState.datasetSettings[state.selectedDataset].individualSettings = {...settings, ...action.payload}
     return newState
 }

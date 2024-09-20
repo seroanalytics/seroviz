@@ -78,7 +78,6 @@ describe("rootReducer", () => {
         expect(newState.selectedDataset).toBe("d1");
         expect(newState.datasetSettings["d1"].covariateSettings).toEqual([]);
         expect(newState.datasetSettings["d1"].scale).toEqual("natural");
-
     });
 
     it("should add covariate on SELECT_COVARIATE", () => {
@@ -132,20 +131,64 @@ describe("rootReducer", () => {
     });
 
     it("should set spline options on SET_SPLINE_OPTIONS", () => {
-        const state = mockAppState({selectedDataset: "d1",
+        const state = mockAppState({
+            selectedDataset: "d1",
             datasetSettings: {
                 "d1": mockDatasetSettings()
-            }});
+            }
+        });
         let newState = rootReducer(state,
-            {type: ActionType.SET_SPLINE_OPTIONS, payload: { method: "gam"}});
+            {type: ActionType.SET_SPLINE_OPTIONS, payload: {method: "gam"}});
         expect(newState.datasetSettings["d1"].splineSettings.method).toBe("gam");
 
         newState = rootReducer(state,
-            {type: ActionType.SET_SPLINE_OPTIONS, payload: { span: 0.1}});
+            {type: ActionType.SET_SPLINE_OPTIONS, payload: {span: 0.1}});
         expect(newState.datasetSettings["d1"].splineSettings.span).toBe(0.1);
 
         newState = rootReducer(state,
-            {type: ActionType.SET_SPLINE_OPTIONS, payload: { k: 30}});
+            {type: ActionType.SET_SPLINE_OPTIONS, payload: {k: 30}});
         expect(newState.datasetSettings["d1"].splineSettings.k).toBe(30);
+    });
+
+    it("should set individual options on SET_INDIVIDUAL_OPTIONS", () => {
+        const state = mockAppState({
+            selectedDataset: "d1",
+            datasetSettings: {
+                "d1": mockDatasetSettings()
+            }
+        });
+        let newState = rootReducer(state,
+            {type: ActionType.SET_INDIVIDUAL_OPTIONS, payload: {pid: "id"}});
+        expect(newState.datasetSettings["d1"].individualSettings.pid).toBe("id");
+
+        newState = rootReducer(state,
+            {
+                type: ActionType.SET_INDIVIDUAL_OPTIONS,
+                payload: {linetype: "sex"}
+            });
+        expect(newState.datasetSettings["d1"].individualSettings.linetype).toBe("sex");
+
+        newState = rootReducer(state,
+            {type: ActionType.SET_INDIVIDUAL_OPTIONS, payload: {color: "age"}});
+        expect(newState.datasetSettings["d1"].individualSettings.color).toBe("age");
+
+        newState = rootReducer(state,
+            {type: ActionType.SET_INDIVIDUAL_OPTIONS, payload: {filter: "sex:F"}});
+        expect(newState.datasetSettings["d1"].individualSettings.filter).toBe("sex:F");
+
+        expect(newState.datasetSettings["d1"].individualSettings).toEqual({
+            pid: "id",
+            color: "age",
+            filter: "sex:F",
+            linetype: "sex"
+        })
+    });
+
+    it("should select plot on PLOT_SELECTED", () => {
+        const state = mockAppState();
+        expect(state.selectedPlot).toBe("population");
+        const newState = rootReducer(state,
+            {type: ActionType.PLOT_SELECTED, payload: "individual"});
+        expect(newState.selectedPlot).toBe("individual");
     });
 });

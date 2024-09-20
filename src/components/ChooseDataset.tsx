@@ -15,7 +15,7 @@ export default function ChooseDataset({selectedDataset, selectDataset}: Props) {
         selectDataset(event.target.value);
     }
 
-    return <Form.Group key="choose-dataset">
+    return <Form.Group key="choose-dataset" className={"mb-3"}>
         <Form.Label htmlFor="data">Choose
             dataset</Form.Label>
         <Form.Select id="data" onChange={onSelectData}

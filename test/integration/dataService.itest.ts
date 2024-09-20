@@ -1,7 +1,12 @@
 import {dataService} from "../../src/services/dataService";
 import {ActionType} from "../../src/RootContext";
 import {GenericResponse} from "../../src/types";
-import {DataSeries, DatasetMetadata, DatasetNames} from "../../src/generated";
+import {
+    DataSeries,
+    DatasetMetadata,
+    DatasetNames,
+    Plotly
+} from "../../src/generated";
 import {getFormData} from "./helpers";
 
 const exec = require('child_process').exec;
@@ -104,6 +109,27 @@ describe("DataService", () => {
         expect(res.data!![0].raw.x).toEqual([1, 2, 1, 2]);
         expect(res.data!![1].name).toBe("5+");
         expect(res.data!![1].raw.x).toEqual([1, 2, 1, 2]);
+        expect(dispatch.mock.calls.length).toBe(1);
+    });
+
+
+    test("it can fetch individual plot data", async () => {
+        const dispatch = jest.fn();
+        const sut = dataService("en", dispatch);
+        const res = await sut.getIndividualData("testpopulation", "natural",
+            {
+                color: "age",
+                linetype: "biomarker",
+                pid: "day",
+                filter: "sex:M"
+            }) as GenericResponse<Plotly>;
+
+        expect(res.data!!.data.length).toBe(4);
+        expect(res.data!!.data.map(d => d.name)).toEqual([
+            "(0-5,ab_units)",
+            "(0-5,ab_units)",
+            "(5+,ab_units)",
+            "(5+,ab_units)"])
         expect(dispatch.mock.calls.length).toBe(1);
     });
 });
