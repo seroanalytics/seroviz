@@ -4,7 +4,6 @@ import React, {useContext, useState} from "react";
 import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
 import {DataService} from "../services/dataService";
 import {api} from "../services/apiService";
-import {CircleHelp, FileQuestion} from "lucide-react";
 
 export default function UploadDataset() {
     const state = useContext(RootContext);
@@ -53,6 +52,7 @@ export default function UploadDataset() {
     return <Form.Group className={"mb3"}>
         <h4>Upload new dataset</h4>
         <Form.Control type="file" name="upload-file"
+                      data-testid={"upload-file"}
                       id={"upload-file"}
                       disabled={isUploading}
                       className={state.uploadError ? " is-invalid" : ""}
