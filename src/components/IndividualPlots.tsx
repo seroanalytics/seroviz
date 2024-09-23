@@ -7,6 +7,7 @@ import {useDebouncedEffect} from "../hooks/useDebouncedEffect";
 import {dataService} from "../services/dataService";
 import {ErrorDetail} from "../generated";
 import PlotError from "./PlotError";
+import {toFilename} from "../services/utils";
 
 export function IndividualPlots() {
     const state = useContext(RootContext);
@@ -75,7 +76,8 @@ export function IndividualPlots() {
                                                                 minWidth: "400px",
                                                                 width: "100%",
                                                                 height: "800px"
-                                                            }}></Plot>
+                                                            }}
+                                                            config={{toImageButtonOptions: {filename: toFilename(title)}}} />
                 }
                 {!settings.pid &&
                     <p className={"mt-3"}>Please select an id column</p>}

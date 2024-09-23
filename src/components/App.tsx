@@ -1,7 +1,7 @@
 import React, {useEffect, useReducer} from 'react';
 import {Container} from "react-bootstrap";
 import TopNav from "./TopNav";
-import {ChooseOrUploadDataset} from "./ChooseOrUploadDataset";
+import {ManageDatasets} from "./ManageDatasets";
 import usePersistedState from "../hooks/usePersistedState";
 import {
     initialState,
@@ -40,7 +40,7 @@ export default function App() {
             {state.genericErrors.map((e, index) => <AppError error={e}
                                                               key={"error" + index}/>)}
             <Container fluid>
-                {!state.selectedDataset && <ChooseOrUploadDataset/>}
+                {!state.selectedDataset && <ManageDatasets/>}
                 <ExploreDataset/>
             </Container>
         </RootDispatchContext.Provider>

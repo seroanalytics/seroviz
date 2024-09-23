@@ -44,4 +44,6 @@ body {
     --bs-btn-active-color: var(--bs-btn-hover-color);
     --bs-btn-active-bg: var(--primary-color-darken);
     --bs-btn-active-border-color: var(--primary-color-darken);
+    --bs-btn-disabled-bg: var(--bs-secondary-bg);
+    --bs-btn-disabled-border-color: var(--bs-secondary-bg);
 }

@@ -3,11 +3,15 @@ import {ActionType, RootAction} from "../RootContext";
 import {
     DataSeries,
     DatasetMetadata,
-    DatasetNames, Plotly,
+    DatasetNames,
+    Plotly,
     UploadResult
 } from "../generated";
 import {
-    GenericResponse, CovariateSettings, SplineSettings, IndividualSettings,
+    CovariateSettings,
+    GenericResponse,
+    IndividualSettings,
+    SplineSettings,
 } from "../types";
 import {Dispatch} from "react";
 
@@ -92,6 +96,13 @@ export class DataService {
             .ignoreSuccess()
             .ignoreErrors()
             .get<Plotly>("/dataset/" + selectedDataset + "/individual/" + individualSettings.pid + "/" + queryString)
+    }
+
+    async deleteDataset(dataset: string) {
+        return await this._api
+            .withSuccess(ActionType.DATASET_DELETED)
+            .withError(ActionType.ERROR_ADDED)
+            .delete("/dataset/" + dataset + "/")
     }
 }
 
