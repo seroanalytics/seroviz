@@ -1,4 +1,4 @@
-![logo192](https://github.com/user-attachments/assets/a988b290-0a61-47bf-aea9-cf3c17183b9a)
+![serovizlogo250](https://github.com/user-attachments/assets/ea22b922-8d2d-4bc2-a80d-bee9729be63c)
 
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![🔨 Build](https://github.com/seroanalytics/seroviz/actions/workflows/build.yml/badge.svg)](https://github.com/seroanalytics/seroviz/actions/workflows/build.yml)
@@ -111,6 +111,3 @@ Then:
 ## Domain name
 The domain name `seroanalytics.org` is registered with NameCheap.
 Contact Alex if you need to add or change a DNS record.
-
-## Acknowledgements
-Logo created with BioRender.com
