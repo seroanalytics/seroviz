@@ -160,9 +160,43 @@ describe("<ManageDatasets/>", () => {
         const upload = screen.getAllByRole("button")[4];
         expect(upload.textContent).toBe("Upload");
         await user.click(upload);
-        expect(dispatch.mock.calls.length).toBe(6);
-        expect(dispatch.mock.calls[3][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
+        expect(dispatch.mock.calls.length).toBe(7);
+        expect(dispatch.mock.calls[3][0].type).toBe(ActionType.UPLOAD_ERROR_DISMISSED);
         expect(dispatch.mock.calls[4][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
-        expect(dispatch.mock.calls[5][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
+        expect(dispatch.mock.calls[5][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
+        expect(dispatch.mock.calls[6][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
+    });
+
+    test("dataset name must be null or alphanumeric", async () => {
+        mockAxios.onGet(`/datasets/`)
+            .reply(200, mockSuccess(["d1", "d2"]));
+
+        let state = mockAppState({
+            datasetNames: ["d1", "d2"]
+        });
+        const dispatch = jest.fn();
+        const user = userEvent.setup();
+
+        render(<RootContext.Provider value={state}>
+            <RootDispatchContext.Provider
+                value={dispatch}><ManageDatasets/>
+            </RootDispatchContext.Provider>
+        </RootContext.Provider>);
+
+        const datasetName = screen.getByTestId("dataset-name");
+        await user.type(datasetName, "bad name");
+
+        let upload = screen.getAllByRole("button")[4] as HTMLButtonElement;
+        expect(upload.disabled).toBe(true);
+
+        await user.clear(datasetName);
+
+        upload = screen.getAllByRole("button")[4] as HTMLButtonElement;
+        expect(upload.disabled).toBe(false);
+
+        await user.type(datasetName, "good_name");
+
+        upload = screen.getAllByRole("button")[4] as HTMLButtonElement;
+        expect(upload.disabled).toBe(false);
     });
 });

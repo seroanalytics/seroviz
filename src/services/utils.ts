@@ -14,3 +14,7 @@ export const toFilename = (title: string) => title
 export const between = (x: number, min: number, max: number) => {
     return Math.min(Math.max(x, min), max)
 }
+
+export const isAlphaNumeric = (name: string) => {
+    return name.length === 0 || new RegExp(/^[a-zA-Z0-9_]+$/).test(name);
+}
