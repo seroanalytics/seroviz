@@ -41,6 +41,8 @@ export interface Plotly {
     [k: string]: unknown;
   };
   warnings: string | null | string[];
+  numPages: number;
+  page: number;
 }
 export interface ResponseFailure {
   status: "failure";

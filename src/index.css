@@ -47,3 +47,12 @@ body {
     --bs-btn-disabled-bg: var(--bs-secondary-bg);
     --bs-btn-disabled-border-color: var(--bs-secondary-bg);
 }
+
+.pagination {
+    --bs-pagination-active-bg: var(--primary-color);
+    --bs-pagination-active-border-color: var(--primary-color-darken);
+    --bs-pagination-border-color: var(--primary-color-darken);
+    --bs-pagination-color: var(--primary-color);
+    --bs-pagination-focus-color: var(--primary-color);
+    --bs-pagination-hover-color: var(--primary-color);
+}

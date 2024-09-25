@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 
 const getApiUrl = () => {
     if (process.env.NODE_ENV === "development") {
-        return "http://localhost:8888";
+        return "http://localhost:8888/api";
     }
     return `https://${window.location.host}/api`;
 };

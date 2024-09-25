@@ -115,6 +115,8 @@ export function mockPlotlyData(data: Partial<Plotly> = {}): Plotly {
         data: [],
         layout: {},
         warnings: null,
+        page: 1,
+        numPages: 2,
         ...data
     }
 }
