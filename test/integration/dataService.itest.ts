@@ -121,7 +121,7 @@ describe("DataService", () => {
                 linetype: "biomarker",
                 pid: "day",
                 filter: "sex:M"
-            }) as GenericResponse<Plotly>;
+            }, 1) as GenericResponse<Plotly>;
 
         expect(res.data!!.data.length).toBe(4);
         expect(res.data!!.data.map(d => d.name)).toEqual([
