@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 set -ex
 
+HERE=$(dirname $0)
+. $HERE/common
+
 NETWORK=seroviz_nw
 
 docker network create $NETWORK
 
 docker run -d -p 8888:8888 --network=$NETWORK --name serovizr seroanalytics/serovizr:main
-docker run -d -p 80:80 -p 443:443 --network=$NETWORK --name seroviz seroanalytics/seroviz:main localhost
+docker run -d -p 80:80 -p 443:443 --network=$NETWORK --name seroviz $DOCKER_COMMIT_TAG localhost
 docker exec seroviz self-signed-certificate /run/proxy
