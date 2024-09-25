@@ -112,7 +112,6 @@ describe("DataService", () => {
         expect(dispatch.mock.calls.length).toBe(1);
     });
 
-
     test("it can fetch individual plot data", async () => {
         const dispatch = jest.fn();
         const sut = dataService("en", dispatch);

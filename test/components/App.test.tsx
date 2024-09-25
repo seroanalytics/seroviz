@@ -1,13 +1,11 @@
 import React from "react";
-import {render, screen, waitFor} from "@testing-library/react";
+import {render, screen} from "@testing-library/react";
 import {
-    mockAppState,
     mockAxios,
     mockDatasetMetadata,
-    mockError, mockFailure, mockSeriesData,
+    mockFailure, mockSeriesData,
     mockSuccess
 } from "../mocks";
-import {RootContext, RootDispatchContext} from "../../src/RootContext";
 import App from "../../src/components/App";
 import {userEvent} from "@testing-library/user-event";
 
@@ -38,8 +36,8 @@ describe("<App />", () => {
 
         render(<App/>);
 
-        const go = await screen.findByText("Go");
-        await userEvent.click(go);
+        const link = await screen.findByText("d1");
+        await userEvent.click(link);
 
         const biomarkers = await screen.findByText("Detected biomarkers");
         expect(biomarkers.parentNode?.textContent).toBe("Detected biomarkers ab");

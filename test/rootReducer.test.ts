@@ -191,4 +191,13 @@ describe("rootReducer", () => {
             {type: ActionType.PLOT_SELECTED, payload: "individual"});
         expect(newState.selectedPlot).toBe("individual");
     });
+
+    it("should delete dataset on DATASET_DELETED", () => {
+        const state = mockAppState({
+            datasetNames: ["d1", "d2"]
+        });
+        const newState = rootReducer(state,
+            {type: ActionType.DATASET_DELETED, payload: "d1"});
+        expect(newState.datasetNames).toEqual(["d2"]);
+    });
 });

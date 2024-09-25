@@ -1,4 +1,4 @@
-import {ChooseOrUploadDataset} from "../../src/components/ChooseOrUploadDataset";
+import {ManageDatasets} from "../../src/components/ManageDatasets";
 import {
     ActionType,
     RootContext,
@@ -8,7 +8,7 @@ import {render, screen, waitFor} from "@testing-library/react";
 import {mockAppState, mockAxios, mockSuccess} from "../mocks";
 import {userEvent} from "@testing-library/user-event";
 
-describe("<ChooseOrUploadDataset/>", () => {
+describe("<ManageDatasets/>", () => {
 
     beforeEach(() => {
         mockAxios.reset();
@@ -23,7 +23,7 @@ describe("<ChooseOrUploadDataset/>", () => {
 
         render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseOrUploadDataset/>
+                value={dispatch}><ManageDatasets/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>);
 
@@ -46,15 +46,13 @@ describe("<ChooseOrUploadDataset/>", () => {
 
         render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseOrUploadDataset/>
+                value={dispatch}><ManageDatasets/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>);
 
-        expect(screen.getAllByLabelText("Choose dataset").length).toBe(1);
-        const select = screen.getByRole("combobox") as HTMLSelectElement;
-        expect(select.options.length).toBe(2);
-        expect(select.options[0].value).toBe("d1");
-        expect(select.options[1].value).toBe("d2");
+        const links = screen.getAllByRole("button") as HTMLAnchorElement[];
+        expect(links[0].textContent).toBe("d1");
+        expect(links[2].textContent).toBe("d2");
     });
 
     test("it does not render select if no dataset names to choose from", () => {
@@ -68,12 +66,12 @@ describe("<ChooseOrUploadDataset/>", () => {
 
         render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseOrUploadDataset/>
+                value={dispatch}><ManageDatasets/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>);
 
-        expect(screen.queryByLabelText("Choose dataset")).toBe(null);
-        expect(screen.queryByText("Go")).toBe(null);
+        expect(screen.queryAllByRole("button").length).toBe(1);
+        expect(screen.getByRole("button").textContent).toBe("Upload");
     });
 
     test("user can select dataset", async () => {
@@ -88,15 +86,13 @@ describe("<ChooseOrUploadDataset/>", () => {
 
         render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseOrUploadDataset/>
+                value={dispatch}><ManageDatasets/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>);
 
-        const select = screen.getByRole("combobox") as HTMLSelectElement;
+        const links = screen.getAllByRole("button") as HTMLAnchorElement[];
 
-        await user.selectOptions(select, "d2");
-        const submit = screen.getByText("Go");
-        await user.click(submit);
+        await user.click(links[2]);
 
         expect(dispatch.mock.calls[2][0]).toEqual({
             type: ActionType.DATASET_SELECTED,
@@ -104,9 +100,12 @@ describe("<ChooseOrUploadDataset/>", () => {
         });
     });
 
-    test("user can toggle advanced options", async () => {
+    test("user can delete dataset", async () => {
         mockAxios.onGet(`/datasets/`)
             .reply(200, mockSuccess(["d1", "d2"]));
+
+        mockAxios.onDelete(`/dataset/d1/`)
+            .reply(200, mockSuccess("d1"));
 
         let state = mockAppState({
             datasetNames: ["d1", "d2"]
@@ -116,17 +115,18 @@ describe("<ChooseOrUploadDataset/>", () => {
 
         render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseOrUploadDataset/>
+                value={dispatch}><ManageDatasets/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>);
 
-        expect(screen.getByTestId("advanced-options")).toHaveClass("d-none");
-        const toggle = screen.getByText("Advanced options");
-        await user.click(toggle);
-        expect(screen.getByTestId("advanced-options")).toHaveClass("d-block");
+        const links = screen.getAllByRole("button") as HTMLAnchorElement[];
 
-        await user.click(toggle);
-        expect(screen.getByTestId("advanced-options")).toHaveClass("d-none");
+        await user.click(links[1]);
+
+        expect(dispatch.mock.calls[3][0]).toEqual({
+            type: ActionType.DATASET_DELETED,
+            payload: "d1"
+        });
     });
 
     test("user can upload new file", async () => {
@@ -144,22 +144,59 @@ describe("<ChooseOrUploadDataset/>", () => {
 
         render(<RootContext.Provider value={state}>
             <RootDispatchContext.Provider
-                value={dispatch}><ChooseOrUploadDataset/>
+                value={dispatch}><ManageDatasets/>
             </RootDispatchContext.Provider>
         </RootContext.Provider>);
 
-        const fileInput = screen.getByLabelText("Upload new dataset");
+        const fileInput = screen.getByTestId("upload-file");
         const testFile = new File(['hello'], 'hello.csv', {type: 'text/csv'});
         await user.upload(fileInput, testFile);
 
-        expect(dispatch.mock.calls.length).toBe(7);
+        expect(dispatch.mock.calls.length).toBe(3);
         expect(dispatch.mock.calls[0][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
         expect(dispatch.mock.calls[1][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
         expect(dispatch.mock.calls[2][0].type).toBe(ActionType.UPLOAD_ERROR_DISMISSED);
-        expect(dispatch.mock.calls[3][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
+
+        const upload = screen.getAllByRole("button")[4];
+        expect(upload.textContent).toBe("Upload");
+        await user.click(upload);
+        expect(dispatch.mock.calls.length).toBe(7);
+        expect(dispatch.mock.calls[3][0].type).toBe(ActionType.UPLOAD_ERROR_DISMISSED);
         expect(dispatch.mock.calls[4][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
-        expect(dispatch.mock.calls[5][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
-        expect(dispatch.mock.calls[6][0].type).toBe(ActionType.DATASET_SELECTED);
-        expect(dispatch.mock.calls[6][0].payload).toBe("hello");
+        expect(dispatch.mock.calls[5][0].type).toBe(ActionType.CLEAR_ALL_ERRORS);
+        expect(dispatch.mock.calls[6][0].type).toBe(ActionType.DATASET_NAMES_FETCHED);
+    });
+
+    test("dataset name must be null or alphanumeric", async () => {
+        mockAxios.onGet(`/datasets/`)
+            .reply(200, mockSuccess(["d1", "d2"]));
+
+        let state = mockAppState({
+            datasetNames: ["d1", "d2"]
+        });
+        const dispatch = jest.fn();
+        const user = userEvent.setup();
+
+        render(<RootContext.Provider value={state}>
+            <RootDispatchContext.Provider
+                value={dispatch}><ManageDatasets/>
+            </RootDispatchContext.Provider>
+        </RootContext.Provider>);
+
+        const datasetName = screen.getByTestId("dataset-name");
+        await user.type(datasetName, "bad name");
+
+        let upload = screen.getAllByRole("button")[4] as HTMLButtonElement;
+        expect(upload.disabled).toBe(true);
+
+        await user.clear(datasetName);
+
+        upload = screen.getAllByRole("button")[4] as HTMLButtonElement;
+        expect(upload.disabled).toBe(false);
+
+        await user.type(datasetName, "good_name");
+
+        upload = screen.getAllByRole("button")[4] as HTMLButtonElement;
+        expect(upload.disabled).toBe(false);
     });
 });
