@@ -82,10 +82,12 @@ export class DataService {
 
     async getIndividualData(selectedDataset: string,
                             scale: "log" | "natural" | "log2",
-                            individualSettings: IndividualSettings) {
+                            individualSettings: IndividualSettings,
+                            page: number) {
 
         let queryString = `?color=${encodeURIComponent(individualSettings.color)}&`
         queryString += `linetype=${encodeURIComponent(individualSettings.linetype)}&`
+        queryString += `page=${page}&`
         if (individualSettings.filter) {
             queryString += `filter=${encodeURIComponent(individualSettings.filter)}&`
         }

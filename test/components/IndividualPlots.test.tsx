@@ -7,6 +7,7 @@ import {
 import {render, waitFor, screen} from "@testing-library/react";
 import {RootContext} from "../../src/RootContext";
 import {IndividualPlots} from "../../src/components/IndividualPlots";
+import {userEvent} from "@testing-library/user-event";
 
 describe("<IndividualPlots/>", () => {
 
@@ -204,5 +205,73 @@ describe("<IndividualPlots/>", () => {
         await waitFor(() => expect(mockAxios.history.get.length)
             .toBe(1));
 
+        const alert = screen.getByRole("alert");
+        expect(alert).toHaveClass("alert-warning");
+        expect(alert.textContent)
+            .toBe("Plot generated some warnings:1 trace contained single data points and was omitted.");
+    });
+
+    test("can select page", async () => {
+        mockAxios.onGet()
+            .reply(200, mockSuccess(mockPlotlyData({
+                data: [
+                    {
+                        x: [1, 2],
+                        y: [3, 4]
+                    }
+                ],
+                numPages: 3,
+                page: 1
+            })));
+
+        const state = mockAppState({
+            selectedPlot: "individual",
+            selectedDataset: "d1",
+            datasetSettings: {
+                "d1": mockDatasetSettings({
+                    individualSettings: mockIndividualSettings({
+                        pid: "pid"
+                    })
+                })
+            },
+            datasetMetadata: mockDatasetMetadata({
+                biomarkers: ["ab", "ba"]
+            })
+        });
+        render(<RootContext.Provider value={state}>
+            <IndividualPlots/>
+        </RootContext.Provider>);
+
+        await waitFor(() => expect(mockAxios.history.get.length)
+            .toBe(1));
+
+        let pagination = screen.getAllByRole("listitem");
+        expect(pagination.length).toBe(3);
+
+        expect(pagination[0]).toHaveClass("active");
+        expect(pagination[0].textContent).toBe("1(current)");
+        expect(pagination[1]).not.toHaveClass("active");
+        expect(pagination[1].textContent).toBe("2");
+        expect(pagination[2]).not.toHaveClass("active");
+        expect(pagination[2].textContent).toBe("3");
+
+        const paginationButtons = screen.getAllByRole("button") as HTMLButtonElement[];
+        expect(paginationButtons.length).toBe(2);
+
+        expect(paginationButtons[0].textContent).toBe("2");
+
+        await userEvent.click(paginationButtons[0]);
+
+        await waitFor(() => expect(mockAxios.history.get.length)
+            .toBe(2));
+
+        expect(mockAxios.history.get[1].url).toContain("page=2");
+        pagination = screen.getAllByRole("listitem");
+        expect(pagination[0]).not.toHaveClass("active");
+        expect(pagination[0].textContent).toBe("1");
+        expect(pagination[1]).toHaveClass("active");
+        expect(pagination[1].textContent).toBe("2(current)");
+        expect(pagination[2]).not.toHaveClass("active");
+        expect(pagination[2].textContent).toBe("3");
     });
 });
