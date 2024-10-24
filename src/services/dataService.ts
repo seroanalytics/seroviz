@@ -106,6 +106,13 @@ export class DataService {
             .withError(ActionType.ERROR_ADDED)
             .delete("/dataset/" + dataset + "/")
     }
+
+    async endSession() {
+        return await this._api
+            .withSuccess(ActionType.SESSION_ENDED)
+            .ignoreErrors()
+            .delete("/session/")
+    }
 }
 
 export const dataService = (lang: string, dispatch: Dispatch<RootAction>) => new DataService(new APIService(lang, dispatch));

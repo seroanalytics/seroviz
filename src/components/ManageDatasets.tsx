@@ -23,9 +23,8 @@ export function ManageDatasets() {
         <Col xs={12} sm={{span: 6, offset: 3}}>
             <Form>
                 <p><Info className={"me-2"}/>Files you upload are
-                    only accessible to you and
-                    will be deleted automatically when you close your
-                    browser.</p>
+                    only accessible to you. Files will be deleted automatically when you close your
+                    browser, or instantly when you click the "End session" link on the top right.</p>
                 <fieldset>
                     {state.datasetNames.length > 0 &&
                         <ListDatasets/>
