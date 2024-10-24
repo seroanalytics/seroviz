@@ -1,5 +1,5 @@
 import {AppState} from "../types";
-import {ActionType, RootAction} from "../RootContext";
+import {ActionType, initialState, RootAction} from "../RootContext";
 import {datasetReducer} from "./datasetReducer";
 
 export const rootReducer = (state: AppState, action: RootAction): AppState => {
@@ -26,6 +26,8 @@ export const rootReducer = (state: AppState, action: RootAction): AppState => {
             return {...state, uploadError: null}
         case ActionType.DATASET_NAMES_FETCHED:
             return {...state, datasetNames: action.payload}
+        case ActionType.SESSION_ENDED:
+            return {...initialState}
         default:
             return datasetReducer(state, action)
     }

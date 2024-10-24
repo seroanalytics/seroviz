@@ -28,6 +28,7 @@ export enum ActionType {
     SELECT_SCALE = "SELECT_SCALE",
     SET_SPLINE_OPTIONS = "SET_SPLINE_OPTIONS",
     SET_INDIVIDUAL_OPTIONS   = "SET_INDIVIDUAL_OPTIONS",
+    SESSION_ENDED = "SESSION_ENDED"
 }
 
 export interface RootAction {

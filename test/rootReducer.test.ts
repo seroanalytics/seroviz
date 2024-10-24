@@ -5,7 +5,7 @@ import {
     mockDatasetNames, mockDatasetSettings,
     mockError
 } from "./mocks";
-import {ActionType} from "../src/RootContext";
+import {ActionType, initialState} from "../src/RootContext";
 import {rootReducer} from "../src/reducers/rootReducer";
 
 describe("rootReducer", () => {
@@ -199,5 +199,16 @@ describe("rootReducer", () => {
         const newState = rootReducer(state,
             {type: ActionType.DATASET_DELETED, payload: "d1"});
         expect(newState.datasetNames).toEqual(["d2"]);
+    });
+
+    it("should revert to initial state on SESSION_DELETED", () => {
+        const state = mockAppState({
+            datasetNames: ["d1", "d2"],
+            selectedDataset: "d1",
+            selectedPlot: "individual"
+        });
+        const newState = rootReducer(state,
+            {type: ActionType.SESSION_ENDED, payload: null});
+        expect(newState).toEqual(initialState);
     });
 });

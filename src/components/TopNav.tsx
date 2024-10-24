@@ -1,6 +1,8 @@
 import {Container, Nav, Navbar} from "react-bootstrap";
 import ThemeSwitch from "./ThemeSwitch";
-import React from "react";
+import React, {useContext} from "react";
+import {RootContext, RootDispatchContext} from "../RootContext";
+import {dataService} from "../services/dataService";
 
 interface Props {
     theme: string
@@ -18,6 +20,15 @@ function GithubLogo() {
 export default function TopNav({
                                    theme, setTheme
                                }: Props) {
+
+    const state = useContext(RootContext);
+    const dispatch = useContext(RootDispatchContext);
+
+    const endSession = async () => {
+        await dataService(state.language, dispatch)
+            .endSession()
+    }
+
     return <Navbar expand="lg" className={"bg-light"}>
         <Container fluid>
             <img alt="SeroViz logo"
@@ -31,6 +42,11 @@ export default function TopNav({
                     <Nav.Link href="/docs">Docs</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
+            <Nav>
+                <Nav.Link onClick={endSession}>
+                    End session
+                </Nav.Link>
+            </Nav>
             <ThemeSwitch theme={theme} setTheme={setTheme}></ThemeSwitch>
             <a className="text-body-secondary"
                href="https://github.com/seroanalytics/seroviz">
