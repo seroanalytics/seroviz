@@ -28,11 +28,13 @@ mkdir -p $PATH_CONFIG
 # certificate.
 cp /usr/local/share/ssl/dhparam.pem $PATH_DHPARAM
 
-if [ -v $SSL_KEY ]; then
+if [[ -v "SSL_KEY" ]]; then
+  echo "Found SSL_KEY in env. Copying into place."
   echo $SSL_KEY >> $PATH_KEY
 fi
 
-if [ -v $SSL_CERT ]; then
+if [[ -v "SSL_CERT" ]]; then
+  echo "Found SSL_CERT in env. Copying into place."
   echo $SSL_CERT >> $PATH_CERT
 fi
 
