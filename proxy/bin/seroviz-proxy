@@ -28,6 +28,14 @@ mkdir -p $PATH_CONFIG
 # certificate.
 cp /usr/local/share/ssl/dhparam.pem $PATH_DHPARAM
 
+if [ -v $SSL_KEY ]; then
+  echo $SSL_KEY >> $PATH_KEY
+fi
+
+if [ -v $SSL_CERT ]; then
+  echo $SSL_CERT >> $PATH_CERT
+fi
+
 # Wait for the ssl certificates to be copied in or generated
 echo "Waiting for certificates at $PATH_CERT and $PATH_KEY"
 while [ ! -e $PATH_CERT ] || [ ! -e $PATH_KEY ]; do
