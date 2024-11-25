@@ -30,12 +30,14 @@ cp /usr/local/share/ssl/dhparam.pem $PATH_DHPARAM
 
 if [[ -v "SSL_KEY" ]]; then
   echo "Found SSL_KEY in env. Copying into place."
-  echo $SSL_KEY >> $PATH_KEY
+  echo "$SSL_KEY" > $PATH_KEY
+  chmod 600 $PATH_KEY
 fi
 
 if [[ -v "SSL_CERT" ]]; then
   echo "Found SSL_CERT in env. Copying into place."
-  echo $SSL_CERT >> $PATH_CERT
+  echo "$SSL_CERT" > $PATH_CERT
+  chmod 644 $PATH_CERT
 fi
 
 while [ ! -e $PATH_CERT ] || [ ! -e $PATH_KEY ]; do
