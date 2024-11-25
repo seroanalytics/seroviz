@@ -4,7 +4,7 @@ set -e
 PACKAGE_ROOT=$(realpath $HERE/..)
 PACKAGE_NAME=seroviz
 PACKAGE_ORG=seroanalytics
-SEROVIZR_VERSION=paging
+SEROVIZR_VERSION=main
 
 if [[ -v "GITHUB_SHA" ]]; then
     GIT_SHA=${GITHUB_SHA:0:7}
