@@ -38,9 +38,9 @@ if [[ -v "SSL_CERT" ]]; then
   echo $SSL_CERT >> $PATH_CERT
 fi
 
-# Wait for the ssl certificates to be copied in or generated
-echo "Waiting for certificates at $PATH_CERT and $PATH_KEY"
 while [ ! -e $PATH_CERT ] || [ ! -e $PATH_KEY ]; do
+  # Wait for the ssl certificates to be copied in or generated
+  echo "Waiting for certificates at $PATH_CERT and $PATH_KEY"
   sleep 1
 done
 
