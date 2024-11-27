@@ -43,9 +43,10 @@ jobs:
       - name: 🚢 Push image
         run: ./scripts/push
 
-      - name: Deploy
-        uses: digitalocean/app_action/deploy@v2.0.6
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          app_name: seroviz
-          print_deploy_logs: true
+
+      - name: Deploy
+        run: doctl apps create-deployment ${{ secrets.DIGITALOCEAN_APP_ID }} --force-rebuild
