@@ -12,6 +12,5 @@ VOLUME /run/proxy
 COPY build /usr/share/nginx/html
 COPY proxy/nginx.conf /etc/nginx/nginx.conf.template
 COPY proxy/bin /usr/local/bin
-COPY proxy/ssl /usr/local/share/ssl
 
 ENTRYPOINT ["/usr/local/bin/seroviz-proxy"]

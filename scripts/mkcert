@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+
+TEMP_INT_1=$(mktemp -q)
+hcp vs secrets open ssl_intermediate_1 --app seroviz --out-file=$TEMP_INT_1
+TEMP_INT_2=$(mktemp -q)
+hcp vs secrets open ssl_intermediate_2 --app seroviz --out-file=$TEMP_INT_2
+TEMP_INT_3=$(mktemp -q)
+hcp vs secrets open ssl_intermediate_3 --app seroviz --out-file=$TEMP_INT_3
+TEMP_INT_CERT=$(mktemp -q)
+hcp vs secrets open ssl_cert --app seroviz --out-file=$TEMP_INT_CERT
+
+TEMP_BUNDLE=$(mktemp -q)
+cat $TEMP_INT_CERT $TEMP_INT_1 $TEMP_INT_2 $TEMP_INT_3 >> $TEMP_BUNDLE
+cat $TEMP_BUNDLE
