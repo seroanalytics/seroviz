@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - digitalocean
   pull_request:
 
 env:
@@ -49,4 +48,4 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Deploy
-        run: doctl apps create-deployment ${{ secrets.DIGITALOCEAN_APP_ID }} --force-rebuild
+        run: doctl apps create-deployment ${{ secrets.DIGITALOCEAN_APP_ID }} --force-rebuild=true
