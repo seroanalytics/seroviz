@@ -48,3 +48,4 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_name: seroviz
+          print_deploy_logs: true
