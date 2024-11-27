@@ -44,7 +44,7 @@ jobs:
         run: ./scripts/push
 
       - name: Deploy
-        uses: digitalocean/app_action/deploy@v2
+        uses: digitalocean/app_action/deploy@v2.0.6
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_name: seroviz
