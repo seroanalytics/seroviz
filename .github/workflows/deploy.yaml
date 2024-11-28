@@ -54,6 +54,8 @@ jobs:
           fi
           echo "GIT_SHA=${long_sha:0:7}" >> $GITHUB_OUTPUT
           echo $GIT_SHA
+      - name: Check sha
+        run: echo ${{ steps.sha.outputs.GIT_SHA }}
 
       - name: Deploy the app
         uses: digitalocean/app_action/deploy@v2
