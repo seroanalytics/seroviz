@@ -46,14 +46,13 @@ jobs:
         name: Setup Environment
         shell: bash
         run: |
-          if [ "${{github.event_name}}" = "pull_request" ];
-          then
-            long_sha=${{ github.event.pull_request.head.sha }}
+          if [[ -v "GITHUB_SHA" ]]; then
+            GIT_SHA=${GITHUB_SHA:0:7}
           else
-            long_sha=${GITHUB_SHA}
+            GIT_SHA=$(git rev-parse --short=7 HEAD)
           fi
-          echo "GIT_SHA=${long_sha:0:7}" >> $GITHUB_OUTPUT
-          echo $GIT_SHA
+          echo "GIT_SHA=${GIT_SHA}" >> $GITHUB_OUTPUT
+
       - name: Check sha
         run: echo ${{ steps.sha.outputs.GIT_SHA }}
 
