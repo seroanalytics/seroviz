@@ -53,9 +53,6 @@ jobs:
           fi
           echo "GIT_SHA=${GIT_SHA}" >> $GITHUB_OUTPUT
 
-      - name: Check sha
-        run: echo ${{ steps.sha.outputs.GIT_SHA }}
-
       - name: Deploy the app
         uses: digitalocean/app_action/deploy@v2
         env:
@@ -63,3 +60,4 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_name: seroviz
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
