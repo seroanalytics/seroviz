@@ -7,7 +7,7 @@
 ![Docker Image Version](https://img.shields.io/docker/v/seroanalytics/seroviz?logo=docker)
 ![GitHub License](https://img.shields.io/github/license/seroanalytics/seroviz)
 
-Client-side React application for visualising serological data.
+Client-side React application for visualising serological data. Front-end for the [serovizr API](https://github.com/seroanalytics/serovizr).
 
 ## Development
 
@@ -54,15 +54,10 @@ See the [proxy/README.md](proxy/README.md) for details.
 * To push an image to DockerHub run `./scripts/push`
 * To start a copy of the Dockerised app locally run `./scripts/run`.
 
-### Secrets
-Secrets (at the moment this is just the real SSL private key and certificate) are stored in 
-HashiCorp Cloud Vault. To access the secrets in Vault, you need to create an account with [HashiCorp Cloud](https://portal.cloud.hashicorp.com/sign-in)
-and ask Alex to add you to the organization.
-
 ### Deploying the app
-The app is deployed on DigitalOcean's App Platform. The Seroviz app has 2 services, 
-each deployed using Docker images. One is this app, and the other is the [serovizr API](https://github.com/seroanalytics/serovizr).
-The app topology should look like this:
+The Seroviz app is deployed on DigitalOcean's App Platform. You will need to be added to the seroanalytics team to make any changes to the settings. The Seroviz app has 2 services, 
+each deployed using Docker images. One is the React application in this repo, and the other is the [serovizr API](https://github.com/seroanalytics/serovizr).
+The DigitalOcean app topology should look like this:
 
 ```yaml
 alerts:
@@ -108,8 +103,8 @@ services:
   name: seroviz
 ```
 
-The domain and SSL are also configured on DigitalOcean under the Networking section.
+When changes to this repo are merged to main, the [deploy.yaml](https://github.com/seroanalytics/seroviz/blob/main/.github/workflows/deploy.yaml) Github Action will update the app spec with the latest Docker tag, which will trigger a deploy of the new version. Changes to `serovizr` are automatically deployed in a similar way.
 
-## Domain name
-The domain name `seroanalytics.org` is registered with NameCheap.
-Contact Alex if you need to add or change a DNS record.
+## Domain 
+The domain name `seroanalytics.org` is registered with NameCheap, but DNS is managed via DigitalOcean under the Networking section.
+
