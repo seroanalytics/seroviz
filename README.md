@@ -55,7 +55,7 @@ See the [proxy/README.md](proxy/README.md) for details.
 * To start a copy of the Dockerised app locally run `./scripts/run`.
 
 ### Deploying the app
-The Seroviz app is deployed on DigitalOcean's App Platform. You will need to be added to the seroanalytics team to make any changes to the settings. The Seroviz app has 2 services, 
+The Seroviz app is deployed on [DigitalOcean](https://cloud.digitalocean.com/) via the App Platform. You will need to be added to the seroanalytics team to make any changes to the settings. The Seroviz app has 2 services, 
 each deployed using Docker images. One is the React application in this repo, and the other is the [serovizr API](https://github.com/seroanalytics/serovizr).
 The DigitalOcean app topology should look like this:
 
