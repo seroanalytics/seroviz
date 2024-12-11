@@ -44,6 +44,7 @@ describe("DataService", () => {
         const sut = dataService("en", dispatch);
         const res = await sut.getDatasetMetadata("testpopulation") as GenericResponse<DatasetMetadata>;
         const expectedPayload = {
+            type: "surveillance",
             variables: [
                 {
                     name: "sex",
