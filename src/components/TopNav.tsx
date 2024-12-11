@@ -40,7 +40,6 @@ export default function TopNav({
                 <Nav className="me-auto">
                     <Nav.Link href="/">Manage datasets</Nav.Link>
                     <Nav.Link href="/faq">FAQ</Nav.Link>
-                    <Nav.Link href="/docs">Docs</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             <Nav>
