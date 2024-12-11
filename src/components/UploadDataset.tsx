@@ -126,8 +126,8 @@ export default function UploadDataset() {
             <Col sm={6}>
                 <Form.Select onChange={onSelectDataType}
                              value={dataType}>
-                    <option value={"surveillance"}>Surveillance</option>
-                    <option value={"post-exposure"}>Post-exposure</option>
+                    <option value={"surveillance"}>surveillance</option>
+                    <option value={"post-exposure"}>post-exposure</option>
                 </Form.Select>
                 <Form.Text>
                 Is this an absolute (surveillance) or a relative
@@ -141,7 +141,7 @@ export default function UploadDataset() {
         </div>
         <Button key="go-btn" variant="success"
                 className={"mt-2 mb-3"}
-                disabled={!validName}
+                disabled={!validName || isUploading}
                 type="submit" onClick={uploadNewFile}>Upload
         </Button>
     </Form.Group>
