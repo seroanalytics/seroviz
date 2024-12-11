@@ -14,7 +14,7 @@ import {
 import {userEvent} from "@testing-library/user-event";
 
 describe("<SideBar />", () => {
-    test("it renders detected biomarkers", () => {
+    test("it renders detected biomarkers and series type", () => {
         const state = mockAppState({
             datasetMetadata: mockDatasetMetadata({
                 biomarkers: ["ab", "ba"]
@@ -26,7 +26,8 @@ describe("<SideBar />", () => {
             <SideBar></SideBar>
         </RootContext.Provider>);
 
-        expect(container.textContent).toContain("Detected biomarkers ab, ba")
+        expect(container.textContent).toContain("Detected biomarkers ab, ba");
+        expect(container.textContent).toContain("Time series type surveillance");
     });
 
     test("user can change dataset", async () => {

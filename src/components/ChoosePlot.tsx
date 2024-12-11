@@ -23,9 +23,9 @@ export default function ChoosePlot({
         <Form.Select id="plot" onChange={onSelectPlot}
                      value={selectedPlot}>
             <option value={"population"}>Population trajectories</option>
-            {seriesType === "post-exposure" &&
-                <option value={"histogram"}>Population histogram</option>
-            }
+            {/*{seriesType === "post-exposure" &&*/}
+            {/*    <option value={"histogram"}>Population histogram</option>*/}
+            {/*}*/}
             <option value={"individual"}>Individual trajectories</option>
         </Form.Select>
     </Form.Group>
