@@ -56,7 +56,7 @@ jobs:
       - name: Deploy the app
         uses: digitalocean/app_action/deploy@v2
         env:
-          IMAGE_TAG_SEROVIZ: ${{ steps.sha.outputs.GIT_SHA }}
+          IMAGE_TAG_SEROANALYTICS-SEROVIZ: ${{ steps.sha.outputs.GIT_SHA }}
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           app_name: seroviz
