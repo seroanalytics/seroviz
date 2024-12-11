@@ -12,12 +12,14 @@ export default function UploadDataset() {
     const apiService = api(state.language, dispatch);
 
     const [timeColumnHeader, setTimeColumnHeader] = useState("day");
+    const [dataType, setDataType] = useState("surveillance");
     const [datasetName, setDatasetName] = useState("");
     const [validName, setValidName] = useState(true);
     const [selectedFile, selectFile] = useState("");
     const [isUploading, setIsUploading] = useState(false);
 
     const onSelectTimeColumnHeader = (e: any) => setTimeColumnHeader(e.target.value);
+    const onSelectDataType = (e: any) => setDataType(e.target.value);
     const onSelectDatasetName = (e: any) => {
         setDatasetName(e.target.value);
         setValidName(isAlphaNumeric(e.target.value));
@@ -52,6 +54,7 @@ export default function UploadDataset() {
         formData.append('file', selectedFile);
         formData.append('xcol', timeColumnHeader);
         formData.append('name', datasetName);
+        formData.append('series_type', dataType);
 
         const dataService = new DataService(apiService);
 
@@ -115,6 +118,20 @@ export default function UploadDataset() {
                     specify
                     that here. Numeric and date type values are
                     supported.
+                </Form.Text>
+            </Col>
+        </Form.Group>
+        <Form.Group className={"row mb-3"}>
+            <Form.Label column sm={3}>Time series type</Form.Label>
+            <Col sm={6}>
+                <Form.Select onChange={onSelectDataType}
+                             value={dataType}>
+                    <option value={"surveillance"}>Surveillance</option>
+                    <option value={"post-exposure"}>Post-exposure</option>
+                </Form.Select>
+                <Form.Text>
+                Is this an absolute (surveillance) or a relative
+                    (post-exposure) time series?
                 </Form.Text>
             </Col>
         </Form.Group>

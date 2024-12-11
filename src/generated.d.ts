@@ -20,6 +20,7 @@ export interface DatasetMetadata {
   variables: VariableSchema[];
   biomarkers: string[];
   xcol: string;
+  type: "surveillance" | "post-exposure";
 }
 export interface VariableSchema {
   name: string;
@@ -29,7 +30,6 @@ export type DatasetNames = string[];
 export interface ErrorDetail {
   error: string;
   detail: string | null;
-  [k: string]: unknown;
 }
 export interface Plotly {
   data: {
@@ -48,12 +48,10 @@ export interface ResponseFailure {
   status: "failure";
   data: null;
   errors: ErrorDetailSchema[];
-  [k: string]: unknown;
 }
 export interface ErrorDetailSchema {
   error: string;
   detail: string | null;
-  [k: string]: unknown;
 }
 export interface ResponseSuccess {
   status: "success";
