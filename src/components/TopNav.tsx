@@ -39,7 +39,7 @@ export default function TopNav({
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href="/">Manage datasets</Nav.Link>
-                    <Nav.Link href="/docs">Docs</Nav.Link>
+                    <Nav.Link href="/faq">FAQ</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             <Nav>

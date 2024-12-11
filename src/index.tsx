@@ -4,6 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import FAQ from "./components/FAQ";
+import NoPage from "./components/NoPage";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -20,7 +23,13 @@ const getApiUrl = () => {
 
 root.render(
   <React.StrictMode>
-    <App />
+      <BrowserRouter>
+          <Routes>
+              <Route path="/" element={<App />} />
+                  <Route path="FAQ" element={<FAQ />} />
+                  <Route path="*" element={<NoPage />} />
+          </Routes>
+      </BrowserRouter>
   </React.StrictMode>
 );
 

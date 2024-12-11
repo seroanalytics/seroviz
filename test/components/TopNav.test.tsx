@@ -8,6 +8,12 @@ import {
 } from "../../src/RootContext";
 import TopNav from "../../src/components/TopNav";
 
+test("Displays FAQ link", async () => {
+    render(<TopNav theme={"light"} setTheme={jest.fn()}/>);
+    const faq = screen.getByText("FAQ") as HTMLAnchorElement;
+    expect(faq.href).toBe("http://localhost/faq");
+});
+
 test("user can end session", async () => {
     mockAxios.onDelete(`/session/`)
         .reply(200, mockSuccess("OK"));
