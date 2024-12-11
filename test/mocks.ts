@@ -36,6 +36,7 @@ export function mockDatasetMetadata(datasetMetadata: Partial<DatasetMetadata> = 
         variables: [mockVariable()],
         xcol: "day",
         biomarkers: ["ab"],
+        type: "surveillance",
         ...datasetMetadata
     }
 }

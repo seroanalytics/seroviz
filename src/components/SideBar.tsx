@@ -33,14 +33,21 @@ export default function SideBar() {
             <fieldset>
                 <ChooseDataset selectedDataset={state.selectedDataset}
                                selectDataset={selectDataset}/>
-                <ChoosePlot selectedPlot={state.selectedPlot}
-                            selectPlot={selectPlot}/>
+                <Row className={"mb-3"}>
+                    <Col>
+                        Time series type <br/><span
+                        className={"text-secondary"}>{state.datasetMetadata?.type}</span>
+                    </Col>
+                </Row>
                 <Row className={"mb-3"}>
                     <Col>
                         Detected biomarkers <br/><span
                         className={"text-secondary"}>{state.datasetMetadata?.biomarkers.join(", ")}</span>
                     </Col>
                 </Row>
+                <ChoosePlot selectedPlot={state.selectedPlot}
+                            selectPlot={selectPlot}
+                            seriesType={state.datasetMetadata?.type || "surveillance"}/>
                 <ChooseScale/>
                 <hr/>
                 <PopulationOptions/>
