@@ -1,0 +1,17 @@
+name: 🗑 Cleanup session files
+# Hitting the API checks for inactive sessions and cleans up any orphaned files.
+# This action runs on an hourly schedule to make sure this cleanup happens at least
+# once an hour.
+
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 * * * *'
+
+jobs:
+  cleanup:
+    name: 🗑 Cleanup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup
+        run: curl https://seroviz.seroanalytics.org/api/
