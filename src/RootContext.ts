@@ -3,8 +3,10 @@ import {AppState} from "./types";
 
 export const initialState: AppState = {
     datasetNames: [],
+    publicDatasets: [],
     datasetMetadata: null,
     selectedDataset: "",
+    selectedDatasetIsPublic: false,
     selectedPlot: "population",
     datasetSettings: {},
     uploadError: null,
@@ -19,6 +21,7 @@ export enum ActionType {
     UPLOAD_ERROR_ADDED = "UPLOAD_ERROR_ADDED",
     UPLOAD_ERROR_DISMISSED = "UPLOAD_ERROR_DISMISSED",
     DATASET_NAMES_FETCHED = "DATASET_NAMES_FETCHED",
+    PUBLIC_DATASETS_FETCHED = "PUBLIC_DATASETS_FETCHED",
     DATASET_METADATA_FETCHED = "DATASET_METADATA_FETCHED",
     DATASET_SELECTED = "DATASET_SELECTED",
     DATASET_DELETED = "DATASET_DELETED",

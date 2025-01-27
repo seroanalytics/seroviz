@@ -53,10 +53,14 @@ const datasetSettings = (): DatasetSettings => ({
 
 const selectDataset = (state: AppState, action: RootAction): AppState => {
     const newState = {...state}
-    if (!newState.datasetSettings[action.payload]) {
-        newState.datasetSettings[action.payload] = datasetSettings()
+    const dataset = action.payload.dataset
+    const isPublic = action.payload.public;
+    if (!newState.datasetSettings[dataset]) {
+        newState.datasetSettings[dataset] = datasetSettings()
     }
-    newState.selectedDataset = action.payload
+    newState.datasetMetadata = null
+    newState.selectedDataset = dataset
+    newState.selectedDatasetIsPublic = isPublic
     return newState
 }
 

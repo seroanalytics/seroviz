@@ -44,6 +44,11 @@ export interface Plotly {
   numPages: number;
   page: number;
 }
+export type PublicDatasets = {
+  name: string;
+  description: string;
+  [k: string]: unknown;
+}[];
 export interface ResponseFailure {
   status: "failure";
   data: null;

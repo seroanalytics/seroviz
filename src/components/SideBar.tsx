@@ -13,10 +13,10 @@ export default function SideBar() {
     const state = useContext(RootContext);
     const dispatch = useContext(RootDispatchContext);
 
-    const selectDataset = (name: string) => {
+    const selectDataset = (name: string, isPublic: boolean) => {
         dispatch({
             type: ActionType.DATASET_SELECTED,
-            payload: name
+            payload: {dataset: name, public: isPublic}
         })
     }
 

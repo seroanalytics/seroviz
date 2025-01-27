@@ -26,6 +26,8 @@ export const rootReducer = (state: AppState, action: RootAction): AppState => {
             return {...state, uploadError: null}
         case ActionType.DATASET_NAMES_FETCHED:
             return {...state, datasetNames: action.payload}
+        case ActionType.PUBLIC_DATASETS_FETCHED:
+            return {...state, publicDatasets: action.payload}
         case ActionType.SESSION_ENDED:
             return {...initialState}
         default:

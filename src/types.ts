@@ -1,6 +1,6 @@
 import {
     DatasetMetadata,
-    DatasetNames, ErrorDetail,
+    DatasetNames, ErrorDetail, PublicDatasets,
     ResponseFailure,
     Variable
 } from "./generated";
@@ -45,8 +45,10 @@ export interface DatasetSettings {
 
 export interface AppState {
     datasetNames: DatasetNames
+    publicDatasets: PublicDatasets
     datasetMetadata: DatasetMetadata | null
     selectedDataset: string
+    selectedDatasetIsPublic: boolean
     datasetSettings: Dict<DatasetSettings>
     selectedPlot: "population" | "individual"
     uploadError: ErrorDetail | null

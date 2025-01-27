@@ -32,7 +32,7 @@ export function IndividualPlots() {
             setWarnings([]);
             setLoading(true);
             const result = await dataService(state.language, dispatch)
-                .getIndividualData(state.selectedDataset, scale, settings, page);
+                .getIndividualData(state.selectedDataset, scale, settings, page, state.selectedDatasetIsPublic);
 
             if (result && result.data) {
                 const data = result.data.data.filter(d => d.x instanceof Array && d.y instanceof Array);
@@ -59,7 +59,7 @@ export function IndividualPlots() {
             fetchData();
         }
 
-    }, [state.language, dispatch, state.selectedDataset, scale, settings, page], 100);
+    }, [state.language, dispatch, state.selectedDataset, scale, settings, page, state.selectedDatasetIsPublic], 100);
 
     const title = settings.filter || "individual trajectories";
 
