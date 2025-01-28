@@ -1,7 +1,6 @@
 import React, {useContext, useState} from "react";
 import {RootContext, RootDispatchContext} from "../RootContext";
-import {Alert, Col, Row} from "react-bootstrap";
-import SideBar from "./SideBar";
+import {Alert, Col} from "react-bootstrap";
 import Plot from "react-plotly.js";
 import {useDebouncedEffect} from "../hooks/useDebouncedEffect";
 import {dataService} from "../services/dataService";
