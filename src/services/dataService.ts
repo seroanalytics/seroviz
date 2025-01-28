@@ -4,7 +4,7 @@ import {
     DataSeries,
     DatasetMetadata,
     DatasetNames,
-    Plotly,
+    Plotly, PublicDatasets,
     UploadResult
 } from "../generated";
 import {
@@ -37,11 +37,18 @@ export class DataService {
             .get<DatasetNames>("/datasets/")
     }
 
-    async getDatasetMetadata(selectedDataset: string): Promise<void | GenericResponse<DatasetMetadata>> {
+    async getPublicDatasets(): Promise<void | GenericResponse<PublicDatasets>> {
+        return await this._api
+            .withSuccess(ActionType.PUBLIC_DATASETS_FETCHED)
+            .withError(ActionType.ERROR_ADDED)
+            .get<PublicDatasets>("/public/datasets/")
+    }
+
+    async getDatasetMetadata(selectedDataset: string, isPublic: boolean): Promise<void | GenericResponse<DatasetMetadata>> {
         return await this._api
             .withSuccess(ActionType.DATASET_METADATA_FETCHED)
             .withError(ActionType.ERROR_ADDED)
-            .get<DatasetMetadata>("/dataset/" + selectedDataset + "/")
+            .get<DatasetMetadata>("/dataset/" + selectedDataset + "/" + (isPublic ? "?public=TRUE": ""))
     }
 
     async uploadDataset(formData: FormData) {
@@ -56,8 +63,8 @@ export class DataService {
                         facetDefinition: string,
                         covariateSettings: CovariateSettings[],
                         scale: "log" | "natural" | "log2",
-                        splineSettings: SplineSettings) {
-
+                        splineSettings: SplineSettings,
+                        isPublic: boolean) {
 
         const traces = covariateSettings
             .filter(v => v.display === "trace")
@@ -74,6 +81,10 @@ export class DataService {
 
         queryString += `scale=${scale}&method=${splineSettings.method}&span=${splineSettings.span}&k=${splineSettings.k}`
 
+        if (isPublic) {
+            queryString += "&public=TRUE"
+        }
+
         return await this._api
             .ignoreSuccess()
             .ignoreErrors()
@@ -83,7 +94,8 @@ export class DataService {
     async getIndividualData(selectedDataset: string,
                             scale: "log" | "natural" | "log2",
                             individualSettings: IndividualSettings,
-                            page: number) {
+                            page: number,
+                            isPublic: boolean) {
 
         let queryString = `?color=${encodeURIComponent(individualSettings.color)}&`
         queryString += `linetype=${encodeURIComponent(individualSettings.linetype)}&`
@@ -93,6 +105,10 @@ export class DataService {
         }
 
         queryString += `scale=${scale}`
+
+        if (isPublic) {
+            queryString += "&public=TRUE"
+        }
 
         return await this._api
             .ignoreSuccess()

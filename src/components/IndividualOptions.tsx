@@ -17,7 +17,10 @@ export default function IndividualOptions() {
 
     const settings = state.datasetSettings[state.selectedDataset].individualSettings;
 
-    const filterLevels = state.datasetMetadata?.variables.find(v => v.name === filterBy)?.levels as string[] || [];
+    let filterLevels = state.datasetMetadata?.variables.find(v => v.name === filterBy)?.levels as string[] || [];
+    if (filterBy === "biomarker") {
+        filterLevels = [...state.datasetMetadata?.biomarkers || []]
+    }
 
     const onSelectFilter = (event: any) => {
         setFilterBy(event.target.value);

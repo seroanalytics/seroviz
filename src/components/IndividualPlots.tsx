@@ -1,7 +1,6 @@
 import React, {useContext, useState} from "react";
 import {RootContext, RootDispatchContext} from "../RootContext";
-import {Alert, Col, Row} from "react-bootstrap";
-import SideBar from "./SideBar";
+import {Alert, Col} from "react-bootstrap";
 import Plot from "react-plotly.js";
 import {useDebouncedEffect} from "../hooks/useDebouncedEffect";
 import {dataService} from "../services/dataService";
@@ -32,7 +31,7 @@ export function IndividualPlots() {
             setWarnings([]);
             setLoading(true);
             const result = await dataService(state.language, dispatch)
-                .getIndividualData(state.selectedDataset, scale, settings, page);
+                .getIndividualData(state.selectedDataset, scale, settings, page, state.selectedDatasetIsPublic);
 
             if (result && result.data) {
                 const data = result.data.data.filter(d => d.x instanceof Array && d.y instanceof Array);
@@ -59,41 +58,39 @@ export function IndividualPlots() {
             fetchData();
         }
 
-    }, [state.language, dispatch, state.selectedDataset, scale, settings, page], 100);
+    }, [state.language, dispatch, state.selectedDataset, scale, settings, page, state.selectedDatasetIsPublic], 100);
 
     const title = settings.filter || "individual trajectories";
 
-    return <Row>
-        <SideBar/>
-        <Col sm={8} className={"mt-2"}>
-            {warnings.length > 0 &&
-                <Alert className={"rounded-0 border-0 mb-1 ms-4"}
-                       variant={"warning"}>
-                    Plot generated some warnings:
-                    <ul>{
-                        warnings.map(w =>
-                            <li key={w}>{w}</li>)}
-                    </ul>
-                </Alert>}
-            {loading && <h2>Loading</h2>}
-            {!!plotError && <PlotError title={title} error={plotError}/>}
-            {!!settings.pid && data.length > 0 && <Plot data={data}
-                                                        layout={{
-                                                            ...layout,
-                                                            autosize: true
-                                                        }}
-                                                        useResizeHandler={true}
-                                                        style={{
-                                                            minWidth: "400px",
-                                                            width: "100%",
-                                                            height: "800px"
-                                                        }}
-                                                        config={{toImageButtonOptions: {filename: toFilename(title)}}}/>
-            }
-            {!settings.pid &&
-                <p className={"mt-3"}>Please select an id column</p>}
-            {!!settings.pid && data.length > 0 && <PageNav currentPage={page} numPages={numPages}
+    return <Col sm={8} className={"mt-2"}>
+        {warnings.length > 0 &&
+            <Alert className={"rounded-0 border-0 mb-1 ms-4"}
+                   variant={"warning"}>
+                Plot generated some warnings:
+                <ul>{
+                    warnings.map(w =>
+                        <li key={w}>{w}</li>)}
+                </ul>
+            </Alert>}
+        {loading && <h2>Loading</h2>}
+        {!!plotError && <PlotError title={title} error={plotError}/>}
+        {!!settings.pid && data.length > 0 && <Plot data={data}
+                                                    layout={{
+                                                        ...layout,
+                                                        autosize: true
+                                                    }}
+                                                    useResizeHandler={true}
+                                                    style={{
+                                                        minWidth: "400px",
+                                                        width: "100%",
+                                                        height: "800px"
+                                                    }}
+                                                    config={{toImageButtonOptions: {filename: toFilename(title)}}}/>
+        }
+        {!settings.pid &&
+            <p className={"mt-3"}>Please select an id column</p>}
+        {!!settings.pid && data.length > 0 &&
+            <PageNav currentPage={page} numPages={numPages}
                      setPage={setPage}></PageNav>}
-        </Col>
-    </Row>
+    </Col>
 }

@@ -1,8 +1,9 @@
 import Form from "react-bootstrap/Form";
 import React, {useContext} from "react";
-import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
+import {RootContext, RootDispatchContext} from "../RootContext";
 import {Button} from "react-bootstrap";
 import {dataService} from "../services/dataService";
+import {useNavigate} from "react-router-dom";
 
 function DatasetListItem({dataset, onSelectDataset, onRemoveDataset}: {
     dataset: string,
@@ -21,9 +22,10 @@ export default function ListDatasets() {
 
     const state = useContext(RootContext);
     const dispatch = useContext(RootDispatchContext);
+    const navigate = useNavigate()
 
     const onSelectData = (dataset: string) => {
-        dispatch({type: ActionType.DATASET_SELECTED, payload: dataset})
+        navigate("/dataset/" + dataset)
     }
     const onRemoveData = async (dataset: string) => {
         await dataService(state.language, dispatch)

@@ -12,6 +12,14 @@ import {
     RootDispatchContext
 } from "../../src/RootContext";
 import {userEvent} from "@testing-library/user-event";
+import {MemoryRouter} from "react-router";
+
+const mockedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockedNavigate
+}));
 
 describe("<SideBar />", () => {
     test("it renders detected biomarkers and series type", () => {
@@ -22,9 +30,12 @@ describe("<SideBar />", () => {
             selectedDataset: "d1",
             datasetSettings: {"d1": mockDatasetSettings()}
         });
-        const {container} = render(<RootContext.Provider value={state}>
-            <SideBar></SideBar>
-        </RootContext.Provider>);
+        const {container} = render(
+            <MemoryRouter>
+                <RootContext.Provider value={state}>
+                    <SideBar></SideBar>
+                </RootContext.Provider>
+            </MemoryRouter>);
 
         expect(container.textContent).toContain("Detected biomarkers ab, ba");
         expect(container.textContent).toContain("Time series type surveillance");
@@ -37,20 +48,43 @@ describe("<SideBar />", () => {
             datasetSettings: {"d1": mockDatasetSettings()}
         });
         const dispatch = jest.fn();
-        render(
+        render(<MemoryRouter>
             <RootContext.Provider value={state}>
                 <RootDispatchContext.Provider value={dispatch}>
                     <SideBar></SideBar>
                 </RootDispatchContext.Provider>
-            </RootContext.Provider>);
+            </RootContext.Provider>
+        </MemoryRouter>);
 
         const selectDataset = screen.getAllByRole("combobox")[0] as HTMLSelectElement;
         await userEvent.selectOptions(selectDataset, "d2");
 
-        expect(dispatch.mock.calls[0][0]).toEqual({
-            type: ActionType.DATASET_SELECTED,
-            payload: "d2"
+        expect(mockedNavigate.mock.calls[0][0]).toBe("/dataset/d2")
+    });
+
+    test("user can select public dataset", async () => {
+        const state = mockAppState({
+            datasetNames: ["d1", "d2"],
+            selectedDataset: "d1",
+            datasetSettings: {"d1": mockDatasetSettings()},
+            publicDatasets: [
+                {name: "p1", description: "first public dataset"},
+                {name: "p2", description: "second public dataset"}
+            ]
         });
+        const dispatch = jest.fn();
+        render(<MemoryRouter>
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider value={dispatch}>
+                    <SideBar></SideBar>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>
+        </MemoryRouter>);
+
+        const selectDataset = screen.getAllByRole("combobox")[0] as HTMLSelectElement;
+        await userEvent.selectOptions(selectDataset, "p1");
+
+        expect(mockedNavigate.mock.calls[0][0]).toBe("/dataset/public/p1")
     });
 
     test("user can change plot", async () => {
@@ -62,11 +96,13 @@ describe("<SideBar />", () => {
         });
         const dispatch = jest.fn();
         render(
-            <RootContext.Provider value={state}>
-                <RootDispatchContext.Provider value={dispatch}>
-                    <SideBar></SideBar>
-                </RootDispatchContext.Provider>
-            </RootContext.Provider>);
+            <MemoryRouter>
+                <RootContext.Provider value={state}>
+                    <RootDispatchContext.Provider value={dispatch}>
+                        <SideBar></SideBar>
+                    </RootDispatchContext.Provider>
+                </RootContext.Provider>
+            </MemoryRouter>);
 
         const selectPlot = screen.getAllByRole("combobox")[1] as HTMLSelectElement;
         await userEvent.selectOptions(selectPlot, "individual");
@@ -96,9 +132,12 @@ describe("<SideBar />", () => {
                     })
                 }
             });
-            const {container} = render(<RootContext.Provider value={state}>
-                <SideBar></SideBar>
-            </RootContext.Provider>);
+            const {container} = render(
+                <MemoryRouter>
+                    <RootContext.Provider value={state}>
+                        <SideBar></SideBar>
+                    </RootContext.Provider>
+                </MemoryRouter>);
 
             const selectVariable = screen.getAllByRole("listbox")[1] as HTMLSelectElement;
             let items = selectVariable.options;
@@ -116,9 +155,13 @@ describe("<SideBar />", () => {
                 selectedDataset: "d1",
                 datasetSettings: {"d1": mockDatasetSettings()}
             });
-            const {container} = render(<RootContext.Provider value={state}>
-                <SideBar></SideBar>
-            </RootContext.Provider>);
+            const {container} = render(
+                <MemoryRouter>
+                    <RootContext.Provider
+                        value={state}>
+                        <SideBar></SideBar>
+                    </RootContext.Provider>
+                </MemoryRouter>);
 
             expect(container.textContent).not.toContain("Disaggregate by");
         });
@@ -131,11 +174,13 @@ describe("<SideBar />", () => {
             });
             const dispatch = jest.fn();
             const {container} = render(
-                <RootContext.Provider value={state}>
-                    <RootDispatchContext.Provider value={dispatch}>
-                        <SideBar></SideBar>
-                    </RootDispatchContext.Provider>
-                </RootContext.Provider>);
+                <MemoryRouter>
+                    <RootContext.Provider value={state}>
+                        <RootDispatchContext.Provider value={dispatch}>
+                            <SideBar></SideBar>
+                        </RootDispatchContext.Provider>
+                    </RootContext.Provider>
+                </MemoryRouter>);
 
             expect(container.textContent).toContain("Spline options")
         });
@@ -151,11 +196,13 @@ describe("<SideBar />", () => {
             });
             const dispatch = jest.fn();
             const {container} = render(
-                <RootContext.Provider value={state}>
-                    <RootDispatchContext.Provider value={dispatch}>
-                        <SideBar></SideBar>
-                    </RootDispatchContext.Provider>
-                </RootContext.Provider>);
+                <MemoryRouter initialEntries={['/']}>
+                    <RootContext.Provider value={state}>
+                        <RootDispatchContext.Provider value={dispatch}>
+                            <SideBar></SideBar>
+                        </RootDispatchContext.Provider>
+                    </RootContext.Provider>
+                </MemoryRouter>);
 
             expect(container.textContent).toContain("Id column")
         });

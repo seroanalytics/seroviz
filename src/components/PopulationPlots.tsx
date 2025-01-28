@@ -1,7 +1,6 @@
 import {useContext} from "react";
 import {RootContext} from "../RootContext";
 import {Col, Row} from "react-bootstrap";
-import SideBar from "./SideBar";
 import LinePlot from "./LinePlot";
 import {calculateFacets} from "../services/utils";
 
@@ -22,9 +21,7 @@ export function PopulationPlots() {
     }
 
     if (facetLevels.length === 0) {
-        return <Row>
-            <SideBar/>
-            <Col sm={8}>
+        return <Col sm={8}>
                 {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b =>
                     <Row key={b}>
                         <Col>
@@ -34,12 +31,9 @@ export function PopulationPlots() {
                         </Col>
                     </Row>)}
             </Col>
-        </Row>
     }
 
-    return <Row>
-        <SideBar/>
-        <Col sm={8}>
+    return <Col sm={8}>
             {state.datasetMetadata && state.datasetMetadata.biomarkers.map(b =>
                 <Row key={b}>
                     {facetLevels.map((l, i) => <LinePlot biomarker={b}
@@ -48,5 +42,4 @@ export function PopulationPlots() {
                                                          facetLevels={l}/>)}
                 </Row>)}
         </Col>
-    </Row>
 }

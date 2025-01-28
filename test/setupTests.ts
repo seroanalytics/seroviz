@@ -4,4 +4,6 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 import 'jest-canvas-mock';
+import { TextEncoder, TextDecoder } from 'util';
 global.URL.createObjectURL = jest.fn();
+Object.assign(global, { TextDecoder, TextEncoder });

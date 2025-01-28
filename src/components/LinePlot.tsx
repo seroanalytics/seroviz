@@ -56,7 +56,7 @@ export default function LinePlot({
         const fetchData = async () => {
             const result = await dataService(state.language, dispatch)
                 .getDataSeries(state.selectedDataset,
-                    biomarker, facetDefinition, covariateSettings, scale, splineSettings);
+                    biomarker, facetDefinition, covariateSettings, scale, splineSettings, state.selectedDatasetIsPublic);
 
             if (result && result.data) {
                 setSeries(result.data)
@@ -68,7 +68,7 @@ export default function LinePlot({
             }
         }
         fetchData();
-    }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, covariateSettings, scale, splineSettings], 100);
+    }, [state.language, dispatch, state.selectedDataset, biomarker, facetDefinition, covariateSettings, scale, splineSettings, state.selectedDatasetIsPublic], 100);
 
     let series: any[] = [];
     const warnings: Dict<string[]> = {};

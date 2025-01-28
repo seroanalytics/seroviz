@@ -5,7 +5,7 @@ import {
     DataSeries,
     DatasetMetadata,
     DatasetNames,
-    Plotly
+    Plotly, PublicDatasets
 } from "../../src/generated";
 import {getFormData} from "./helpers";
 
@@ -42,7 +42,7 @@ describe("DataService", () => {
     test("it can fetch dataset metadata", async () => {
         const dispatch = jest.fn();
         const sut = dataService("en", dispatch);
-        const res = await sut.getDatasetMetadata("testpopulation") as GenericResponse<DatasetMetadata>;
+        const res = await sut.getDatasetMetadata("testpopulation", false) as GenericResponse<DatasetMetadata>;
         const expectedPayload = {
             type: "surveillance",
             variables: [
@@ -62,6 +62,15 @@ describe("DataService", () => {
         expect(dispatch.mock.calls[1][0].payload).toEqual(expectedPayload);
     });
 
+    test("it can fetch public dataset metadata", async () => {
+        const dispatch = jest.fn();
+        const sut = dataService("en", dispatch);
+        const res = await sut.getDatasetMetadata("antia2018", true) as GenericResponse<DatasetMetadata>;
+        expect(res.data!!.xcol).toEqual("age");
+        expect(dispatch.mock.calls[1][0].type).toBe(ActionType.DATASET_METADATA_FETCHED);
+        expect(dispatch.mock.calls[1][0].payload.xcol).toEqual("age");
+    });
+
     test("it can fetch data series", async () => {
         const dispatch = jest.fn();
         const sut = dataService("en", dispatch);
@@ -70,7 +79,7 @@ describe("DataService", () => {
                 method: "auto",
                 span: 0.75,
                 k: 10
-            }) as GenericResponse<DataSeries>;
+            }, false) as GenericResponse<DataSeries>;
         expect(res.data!![0].name).toBe("all");
         expect(res.data!![0].raw.x).toEqual([1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4]);
         expect(dispatch.mock.calls.length).toBe(1);
@@ -84,7 +93,7 @@ describe("DataService", () => {
                 method: "auto",
                 span: 0.75,
                 k: 10
-            }) as GenericResponse<DataSeries>;
+            }, false) as GenericResponse<DataSeries>;
 
         expect(res.data!!.length).toBe(1);
         expect(res.data!![0].name).toBe("sex:F");
@@ -103,7 +112,7 @@ describe("DataService", () => {
             method: "auto",
             span: 0.75,
             k: 10
-        }) as GenericResponse<DataSeries>;
+        }, false) as GenericResponse<DataSeries>;
 
         expect(res.data!!.length).toBe(2);
         expect(res.data!![0].name).toBe("0-5");
@@ -122,7 +131,7 @@ describe("DataService", () => {
                 linetype: "biomarker",
                 pid: "day",
                 filter: "sex:M"
-            }, 1) as GenericResponse<Plotly>;
+            }, 1, false) as GenericResponse<Plotly>;
 
         expect(res.data!!.data.length).toBe(4);
         expect(res.data!!.data.map(d => d.name)).toEqual([
@@ -132,4 +141,43 @@ describe("DataService", () => {
             "(5+,ab_units)"])
         expect(dispatch.mock.calls.length).toBe(1);
     });
+
+    test("it can fetch individual plot data from public data", async () => {
+        const dispatch = jest.fn();
+        const sut = dataService("en", dispatch);
+        const res = await sut.getIndividualData("sim", "natural",
+            {
+                color: "biomarker",
+                linetype: "biomarker",
+                pid: "id",
+                filter: ""
+            }, 1, true) as GenericResponse<Plotly>;
+
+        expect(res.data!!.data.length).toBe(20);
+        expect(dispatch.mock.calls.length).toBe(1);
+    });
+
+    test("it can fetch public data series", async () => {
+        const dispatch = jest.fn();
+        const sut = dataService("en", dispatch);
+        const res = await sut.getDataSeries("sim", "sVNT", "", [], "natural", {
+            method: "auto",
+            span: 0.75,
+            k: 10
+        }, true) as GenericResponse<DataSeries>;
+
+        expect(res.data!![0].name).toBe("all");
+        expect(dispatch.mock.calls.length).toBe(1);
+    });
+
+    test("it can fetch public datasets", async () => {
+        const dispatch = jest.fn();
+        const sut = dataService("en", dispatch);
+        const res = await sut.getPublicDatasets() as GenericResponse<PublicDatasets>;
+
+        expect(res.data!![0].name).toBe("antia2018");
+        expect(res.data!![0].description.length).toBeGreaterThan(0);
+        expect(dispatch.mock.calls[1][0].type).toBe(ActionType.PUBLIC_DATASETS_FETCHED);
+    });
+
 });

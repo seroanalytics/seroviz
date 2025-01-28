@@ -212,6 +212,78 @@ describe("<LinePlot />", () => {
                 }])
     });
 
+    test("requests data for public dataset", async () => {
+        mockAxios.onGet(`/dataset/d1/trace/ab/?filter=age%3A0%2Bsex%3AF&scale=natural&method=auto&span=0.75&k=10&public=TRUE`)
+            .reply(200, mockSuccess<DataSeries>([{
+                name: "all",
+                model: {
+                    x: [1.1, 2.2],
+                    y: [3.3, 4.4]
+                },
+                raw: {
+                    x: [1, 2],
+                    y: [3, 4]
+                },
+                warnings: null
+            }]));
+
+        const dispatch = jest.fn();
+        const state = mockAppState({
+            selectedDataset: "d1",
+            selectedDatasetIsPublic: true,
+            datasetMetadata: mockDatasetMetadata(),
+            datasetSettings: {
+                "d1": mockDatasetSettings()
+            }
+        });
+        render(
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider value={dispatch}>
+                    <LinePlot biomarker={"ab"}
+                              facetLevels={["0", "F"]}
+                              facetVariables={["age", "sex"]}/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>);
+
+        await waitFor(() => expect(mockAxios.history.get.length)
+            .toBe(1));
+
+        await waitFor(() => expect((Plot as Mock))
+            .toBeCalledTimes(1));
+
+        const plot = Plot as Mock
+        expect(plot.mock.calls[0][0].data).toEqual([
+            {
+                legendgroup: "all",
+                line: {
+                    shape: "spline",
+                    width: 2
+                },
+                marker: {
+                    color: "#1f77b4"
+                },
+                mode: "line",
+                name: "all",
+                showlegend: false,
+                type: "scatter",
+                x: [1.1, 2.2],
+                y: [3.3, 4.4]
+            },
+            {
+                legendgroup: "all",
+                marker: {
+                    color: "#1f77b4",
+                    opacity: 0.5
+                },
+                mode: "markers",
+                name: "all",
+                showlegend: false,
+                type: "scatter",
+                x: [1, 2],
+                y: [3, 4]
+            }]);
+    });
+
     test("clears plot and renders error if request to API fails", async () => {
         mockAxios.onGet("/dataset/d1/trace/ab/?scale=natural&method=auto&span=0.75&k=10")
             .reply(200, mockSuccess<DataSeries>([{
