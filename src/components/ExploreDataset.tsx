@@ -3,40 +3,38 @@ import {ActionType, RootContext, RootDispatchContext} from "../RootContext";
 import {PopulationPlots} from "./PopulationPlots";
 import {IndividualPlots} from "./IndividualPlots";
 import {ManageDatasets} from "./ManageDatasets";
-import {useParams, useSearchParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {dataService} from "../services/dataService";
+import {Row} from "react-bootstrap";
+import SideBar from "./SideBar";
 
-export default function ExploreDataset() {
+export default function ExploreDataset({isPublic}: {isPublic: boolean}) {
     const state = useContext(RootContext);
     const dispatch = useContext(RootDispatchContext);
     const params = useParams()
-    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         const name = params.name!!
-        const isPublic = searchParams.get("public") === "true"
         dispatch({
             type: ActionType.DATASET_SELECTED,
             payload: {dataset: name, public: isPublic}
         });
         dataService(state.language, dispatch)
             .getDatasetMetadata(name, isPublic);
-    }, [state.language, searchParams, params.name, dispatch]);
-
-    useEffect(() => {
-        if (state.selectedDataset) {
-            dataService(state.language, dispatch)
-                .getDatasetMetadata(state.selectedDataset, state.selectedDatasetIsPublic);
-        }
-    }, [state.selectedDataset, state.language, dispatch, state.selectedDatasetIsPublic]);
-
+    }, [isPublic, state.language, params.name, dispatch]);
 
     if (!state.selectedDataset) {
         return <ManageDatasets/>
     }
     if (state.selectedPlot === "population") {
-        return <PopulationPlots/>
+        return <Row>
+            <SideBar/>
+            <PopulationPlots/>
+        </Row>
     } else {
-        return <IndividualPlots/>
+        return <Row>
+            <SideBar/>
+            <IndividualPlots/>
+        </Row>
     }
 }

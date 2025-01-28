@@ -7,6 +7,14 @@ import {
 import {render, screen, waitFor} from "@testing-library/react";
 import {mockAppState, mockAxios, mockSuccess} from "../mocks";
 import {userEvent} from "@testing-library/user-event";
+import {MemoryRouter} from "react-router";
+
+const mockedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockedNavigate
+}));
 
 describe("<ManageDatasets/>", () => {
 
@@ -21,11 +29,13 @@ describe("<ManageDatasets/>", () => {
         let state = mockAppState();
         const dispatch = jest.fn();
 
-        render(<RootContext.Provider value={state}>
-            <RootDispatchContext.Provider
-                value={dispatch}><ManageDatasets/>
-            </RootDispatchContext.Provider>
-        </RootContext.Provider>);
+        render(<MemoryRouter>
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider
+                    value={dispatch}><ManageDatasets/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>
+        </MemoryRouter>);
 
         await waitFor(() => expect(dispatch.mock.calls.length).toBe(2));
 
@@ -44,11 +54,13 @@ describe("<ManageDatasets/>", () => {
         });
         const dispatch = jest.fn();
 
-        render(<RootContext.Provider value={state}>
-            <RootDispatchContext.Provider
-                value={dispatch}><ManageDatasets/>
-            </RootDispatchContext.Provider>
-        </RootContext.Provider>);
+        render(<MemoryRouter>
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider
+                    value={dispatch}><ManageDatasets/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>
+        </MemoryRouter>);
 
         const links = screen.getAllByRole("button") as HTMLAnchorElement[];
         expect(links[0].textContent).toBe("d1");
@@ -64,11 +76,13 @@ describe("<ManageDatasets/>", () => {
         });
         const dispatch = jest.fn();
 
-        render(<RootContext.Provider value={state}>
-            <RootDispatchContext.Provider
-                value={dispatch}><ManageDatasets/>
-            </RootDispatchContext.Provider>
-        </RootContext.Provider>);
+        render(<MemoryRouter>
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider
+                    value={dispatch}><ManageDatasets/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>
+        </MemoryRouter>);
 
         expect(screen.queryAllByRole("button").length).toBe(1);
         expect(screen.getByRole("button").textContent).toBe("Upload");
@@ -84,20 +98,19 @@ describe("<ManageDatasets/>", () => {
         const dispatch = jest.fn();
         const user = userEvent.setup();
 
-        render(<RootContext.Provider value={state}>
-            <RootDispatchContext.Provider
-                value={dispatch}><ManageDatasets/>
-            </RootDispatchContext.Provider>
-        </RootContext.Provider>);
+        render(<MemoryRouter>
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider
+                    value={dispatch}><ManageDatasets/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>
+        </MemoryRouter>);
 
         const links = screen.getAllByRole("button") as HTMLAnchorElement[];
+        await user.click(links[0]);
 
-        await user.click(links[2]);
+        expect(mockedNavigate.mock.calls[0][0]).toBe("/dataset/d1")
 
-        expect(dispatch.mock.calls[2][0]).toEqual({
-            type: ActionType.DATASET_SELECTED,
-            payload: "d2"
-        });
     });
 
     test("user can delete dataset", async () => {
@@ -113,11 +126,13 @@ describe("<ManageDatasets/>", () => {
         const dispatch = jest.fn();
         const user = userEvent.setup();
 
-        render(<RootContext.Provider value={state}>
-            <RootDispatchContext.Provider
-                value={dispatch}><ManageDatasets/>
-            </RootDispatchContext.Provider>
-        </RootContext.Provider>);
+        render(<MemoryRouter>
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider
+                    value={dispatch}><ManageDatasets/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>
+        </MemoryRouter>);
 
         const links = screen.getAllByRole("button") as HTMLAnchorElement[];
 
@@ -142,11 +157,13 @@ describe("<ManageDatasets/>", () => {
         const dispatch = jest.fn();
         const user = userEvent.setup();
 
-        render(<RootContext.Provider value={state}>
-            <RootDispatchContext.Provider
-                value={dispatch}><ManageDatasets/>
-            </RootDispatchContext.Provider>
-        </RootContext.Provider>);
+        render(<MemoryRouter>
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider
+                    value={dispatch}><ManageDatasets/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>
+        </MemoryRouter>);
 
         const fileInput = screen.getByTestId("upload-file");
         const testFile = new File(['hello'], 'hello.csv', {type: 'text/csv'});
@@ -177,11 +194,13 @@ describe("<ManageDatasets/>", () => {
         const dispatch = jest.fn();
         const user = userEvent.setup();
 
-        render(<RootContext.Provider value={state}>
-            <RootDispatchContext.Provider
-                value={dispatch}><ManageDatasets/>
-            </RootDispatchContext.Provider>
-        </RootContext.Provider>);
+        render(<MemoryRouter>
+            <RootContext.Provider value={state}>
+                <RootDispatchContext.Provider
+                    value={dispatch}><ManageDatasets/>
+                </RootDispatchContext.Provider>
+            </RootContext.Provider>
+        </MemoryRouter>);
 
         const datasetName = screen.getByTestId("dataset-name");
         await user.type(datasetName, "bad name");

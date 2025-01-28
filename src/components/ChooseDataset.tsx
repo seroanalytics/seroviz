@@ -5,18 +5,21 @@ import {useNavigate} from "react-router-dom";
 
 interface Props {
     selectedDataset: string;
-    selectDataset: (name: string, isPublic: boolean) => void
 }
 
-export default function ChooseDataset({selectedDataset, selectDataset}: Props) {
+export default function ChooseDataset({selectedDataset}: Props) {
 
     const state = useContext(RootContext);
     const navigate = useNavigate();
 
     const onSelectData = (event: any) => {
        const datasetName = event.target.value;
-        const isPublic = !!event.target[event.target.selectedIndex].getAttribute('data-public')
-        navigate(`/dataset/${datasetName}?public=${isPublic}`)
+        const isPublic = !!event.target[event.target.selectedIndex].getAttribute('data-public');
+        if (isPublic) {
+            navigate(`/dataset/public/${datasetName}`)
+        } else {
+            navigate(`/dataset/${datasetName}`)
+        }
     }
 
     return <Form.Group key="choose-dataset" className={"mb-3"}>

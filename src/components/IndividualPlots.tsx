@@ -63,37 +63,35 @@ export function IndividualPlots() {
 
     const title = settings.filter || "individual trajectories";
 
-    return <Row>
-        <SideBar/>
-        <Col sm={8} className={"mt-2"}>
-            {warnings.length > 0 &&
-                <Alert className={"rounded-0 border-0 mb-1 ms-4"}
-                       variant={"warning"}>
-                    Plot generated some warnings:
-                    <ul>{
-                        warnings.map(w =>
-                            <li key={w}>{w}</li>)}
-                    </ul>
-                </Alert>}
-            {loading && <h2>Loading</h2>}
-            {!!plotError && <PlotError title={title} error={plotError}/>}
-            {!!settings.pid && data.length > 0 && <Plot data={data}
-                                                        layout={{
-                                                            ...layout,
-                                                            autosize: true
-                                                        }}
-                                                        useResizeHandler={true}
-                                                        style={{
-                                                            minWidth: "400px",
-                                                            width: "100%",
-                                                            height: "800px"
-                                                        }}
-                                                        config={{toImageButtonOptions: {filename: toFilename(title)}}}/>
-            }
-            {!settings.pid &&
-                <p className={"mt-3"}>Please select an id column</p>}
-            {!!settings.pid && data.length > 0 && <PageNav currentPage={page} numPages={numPages}
+    return <Col sm={8} className={"mt-2"}>
+        {warnings.length > 0 &&
+            <Alert className={"rounded-0 border-0 mb-1 ms-4"}
+                   variant={"warning"}>
+                Plot generated some warnings:
+                <ul>{
+                    warnings.map(w =>
+                        <li key={w}>{w}</li>)}
+                </ul>
+            </Alert>}
+        {loading && <h2>Loading</h2>}
+        {!!plotError && <PlotError title={title} error={plotError}/>}
+        {!!settings.pid && data.length > 0 && <Plot data={data}
+                                                    layout={{
+                                                        ...layout,
+                                                        autosize: true
+                                                    }}
+                                                    useResizeHandler={true}
+                                                    style={{
+                                                        minWidth: "400px",
+                                                        width: "100%",
+                                                        height: "800px"
+                                                    }}
+                                                    config={{toImageButtonOptions: {filename: toFilename(title)}}}/>
+        }
+        {!settings.pid &&
+            <p className={"mt-3"}>Please select an id column</p>}
+        {!!settings.pid && data.length > 0 &&
+            <PageNav currentPage={page} numPages={numPages}
                      setPage={setPage}></PageNav>}
-        </Col>
-    </Row>
+    </Col>
 }

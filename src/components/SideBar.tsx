@@ -13,13 +13,6 @@ export default function SideBar() {
     const state = useContext(RootContext);
     const dispatch = useContext(RootDispatchContext);
 
-    const selectDataset = (name: string, isPublic: boolean) => {
-        dispatch({
-            type: ActionType.DATASET_SELECTED,
-            payload: {dataset: name, public: isPublic}
-        })
-    }
-
     const selectPlot = (name: string) => {
         dispatch({
             type: ActionType.PLOT_SELECTED,
@@ -31,8 +24,7 @@ export default function SideBar() {
                 data-testid="sidebar">
         <Form>
             <fieldset>
-                <ChooseDataset selectedDataset={state.selectedDataset}
-                               selectDataset={selectDataset}/>
+                <ChooseDataset selectedDataset={state.selectedDataset}/>
                 <Row className={"mb-3"}>
                     <Col>
                         Time series type <br/><span

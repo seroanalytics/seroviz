@@ -39,7 +39,8 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<ManageDatasets />} />
-                    <Route path="/dataset/:name" element={<ExploreDataset />} />
+                    <Route path="/dataset/:name" element={<ExploreDataset isPublic={false}/>} />
+                    <Route path="/dataset/public/:name" element={<ExploreDataset isPublic={true}/>} />
                     <Route path="/public" element={<PublicDatasets />} />
                     <Route path="FAQ" element={<FAQ />} />
                     <Route path="*" element={<NoPage />} />

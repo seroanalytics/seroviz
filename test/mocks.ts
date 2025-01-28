@@ -16,8 +16,10 @@ import {
 export function mockAppState(state: Partial<AppState> = {}): AppState {
     return {
         datasetNames: [],
+        publicDatasets: [],
         datasetMetadata: null,
         selectedDataset: "",
+        selectedDatasetIsPublic: false,
         selectedPlot: "population",
         datasetSettings: {},
         uploadError: null,

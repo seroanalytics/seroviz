@@ -74,10 +74,11 @@ describe("rootReducer", () => {
     it("should select dataset and add key to dataset settings on DATASET_SELECTED", () => {
         const state = mockAppState();
         const newState = rootReducer(state,
-            {type: ActionType.DATASET_SELECTED, payload: "d1"});
+            {type: ActionType.DATASET_SELECTED, payload: {dataset: "d1", public: true}});
         expect(newState.selectedDataset).toBe("d1");
         expect(newState.datasetSettings["d1"].covariateSettings).toEqual([]);
         expect(newState.datasetSettings["d1"].scale).toEqual("natural");
+        expect(newState.selectedDatasetIsPublic).toBe(true);
     });
 
     it("should add covariate on SELECT_COVARIATE", () => {
