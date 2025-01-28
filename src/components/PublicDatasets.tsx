@@ -1,8 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import {Col, Row} from "react-bootstrap";
 import {RootContext, RootDispatchContext} from "../RootContext";
-import {DataService} from "../services/dataService";
-import {api} from "../services/apiService";
+import {dataService} from "../services/dataService";
 import Form from "react-bootstrap/Form";
 import {Link} from "react-router-dom";
 import {DownloadIcon, ExternalLinkIcon} from "lucide-react";
@@ -15,7 +14,7 @@ export default function PublicDatasets() {
     const dispatch = useContext(RootDispatchContext);
 
     useEffect(() => {
-        (new DataService(api(state.language, dispatch)))
+        (dataService(state.language, dispatch))
             .getPublicDatasets();
 
     }, [state.language, dispatch]);

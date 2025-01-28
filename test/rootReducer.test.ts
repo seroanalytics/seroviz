@@ -74,12 +74,28 @@ describe("rootReducer", () => {
     it("should select dataset and add key to dataset settings on DATASET_SELECTED", () => {
         const state = mockAppState();
         const newState = rootReducer(state,
-            {type: ActionType.DATASET_SELECTED, payload: {dataset: "d1", public: true}});
+            {
+                type: ActionType.DATASET_SELECTED,
+                payload: {dataset: "d1", public: true}
+            });
         expect(newState.selectedDataset).toBe("d1");
         expect(newState.datasetSettings["d1"].covariateSettings).toEqual([]);
         expect(newState.datasetSettings["d1"].scale).toEqual("natural");
         expect(newState.selectedDatasetIsPublic).toBe(true);
     });
+
+    it("should add public datasets", () => {
+        const state = mockAppState();
+        const newState = rootReducer(state,
+            {
+                type: ActionType.PUBLIC_DATASETS_FETCHED,
+                payload: [{name: "d1", description: "desc 1"}]
+            });
+        expect(newState.publicDatasets).toEqual([{
+            name: "d1",
+            description: "desc 1"
+        }])
+    })
 
     it("should add covariate on SELECT_COVARIATE", () => {
         const state = mockAppState({
@@ -174,7 +190,10 @@ describe("rootReducer", () => {
         expect(newState.datasetSettings["d1"].individualSettings.color).toBe("age");
 
         newState = rootReducer(state,
-            {type: ActionType.SET_INDIVIDUAL_OPTIONS, payload: {filter: "sex:F"}});
+            {
+                type: ActionType.SET_INDIVIDUAL_OPTIONS,
+                payload: {filter: "sex:F"}
+            });
         expect(newState.datasetSettings["d1"].individualSettings.filter).toBe("sex:F");
 
         expect(newState.datasetSettings["d1"].individualSettings).toEqual({
