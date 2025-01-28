@@ -5,6 +5,9 @@ import {DataService} from "../services/dataService";
 import {api} from "../services/apiService";
 import Form from "react-bootstrap/Form";
 import {Link} from "react-router-dom";
+import {DownloadIcon, ExternalLinkIcon} from "lucide-react";
+
+declare let apiUrl: string;
 
 export default function PublicDatasets() {
 
@@ -29,8 +32,15 @@ export default function PublicDatasets() {
                         <ul className={"list-unstyled"}>
                             {state.publicDatasets.map(d =>
                                 <li key={d.name} className={"mt-4"}>
+                                    <h5>{d.name}</h5>
                                     <Link
-                                        to={`/dataset/${d.name}?public=true`}>{d.name}</Link>
+                                        to={`/dataset/public/${d.name}`}>View<ExternalLinkIcon
+                                        className={"ms-1"}
+                                        style={{marginTop: "-5px"}}></ExternalLinkIcon></Link> /
+                                    <a href={`${apiUrl}/public/dataset/${d.name}`}
+                                       className={"ps-1"}>Download<DownloadIcon
+                                        className={"ms-1"}
+                                        style={{marginTop: "-5px"}}></DownloadIcon></a>
                                     <p className="text-muted"
                                        dangerouslySetInnerHTML={{__html: d.description}}></p>
                                 </li>)}
