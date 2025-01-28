@@ -33,7 +33,7 @@ export default function PublicDatasets() {
                                 <li key={d.name} className={"mt-4"}>
                                     <h5>{d.name}</h5>
                                     <Link
-                                        to={`/dataset/public/${d.name}`}>View<ExternalLinkIcon
+                                        to={`/dataset/public/${d.name}/`}>View<ExternalLinkIcon
                                         className={"ms-1"}
                                         style={{marginTop: "-5px"}}></ExternalLinkIcon></Link> /
                                     <a href={`${apiUrl}/public/dataset/${d.name}`}

@@ -67,6 +67,6 @@ describe("<PublicDatatsets/>", () => {
     it("use can download csv", () => {
         renderComponent(state, jest.fn());
         const link = screen.getAllByRole<HTMLLinkElement>("link")[1];
-        expect(link.href).toBe("http://localhost/api/public/dataset/d1");
+        expect(link.href).toBe("http://localhost/api/public/dataset/d1/");
     });
 });
