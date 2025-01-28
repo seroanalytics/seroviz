@@ -36,7 +36,7 @@ export default function PublicDatasets() {
                                         to={`/dataset/public/${d.name}`}>View<ExternalLinkIcon
                                         className={"ms-1"}
                                         style={{marginTop: "-5px"}}></ExternalLinkIcon></Link> /
-                                    <a href={`${apiUrl}/public/dataset/${d.name}`}
+                                    <a href={`${apiUrl}/public/dataset/${d.name}/`}
                                        className={"ps-1"}>Download<DownloadIcon
                                         className={"ms-1"}
                                         style={{marginTop: "-5px"}}></DownloadIcon></a>
