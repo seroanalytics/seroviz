@@ -39,7 +39,7 @@ describe("<IndividualPlots/>", () => {
         expect(container.textContent).not.toContain("Please select an id column");
     });
 
-    test("fetches data id id col selected", async () => {
+    test("fetches data if id col selected", async () => {
 
         mockAxios.onGet()
             .reply(200, mockSuccess(mockPlotlyData()));
@@ -65,6 +65,35 @@ describe("<IndividualPlots/>", () => {
         await waitFor(() => expect(mockAxios.history.get.length)
             .toBe(1));
         expect(mockAxios.history.get.length).toBe(1);
+    });
+
+    test("fetches public data if dataset is public", async () => {
+
+        mockAxios.onGet("/dataset/d1/individual/pid/?color=&linetype=biomarker&page=1&scale=natural&public=TRUE")
+            .reply(200, mockSuccess(mockPlotlyData()));
+
+        const state = mockAppState({
+            selectedPlot: "individual",
+            selectedDataset: "d1",
+            selectedDatasetIsPublic: true,
+            datasetSettings: {
+                "d1": mockDatasetSettings({
+                    individualSettings: mockIndividualSettings({
+                        pid: "pid"
+                    })
+                })
+            },
+            datasetMetadata: mockDatasetMetadata({
+                biomarkers: ["ab", "ba"]
+            })
+        });
+        render(<RootContext.Provider value={state}>
+            <IndividualPlots/>
+        </RootContext.Provider>);
+
+        await waitFor(() => expect(mockAxios.history.get.length)
+            .toBe(1));
+        expect(mockAxios.history.get[0].url).toBe("/dataset/d1/individual/pid/?color=&linetype=biomarker&page=1&scale=natural&public=TRUE");
     });
 
     test("displays single warning", async () => {
